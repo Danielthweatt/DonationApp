@@ -1,0 +1,23 @@
+{
+  "name": "donationapp",
+  "version": "1.0.0",
+  "description": "This is a template for an app that accepts donations for a non-profit that implements it.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Danielthweatt/DonationApp.git"
+  },
+  "author": "Cavan Wagg, Majid Jamaleldine, Maddy Fiksdal, Robert Queeney, Daniel Thweatt",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Danielthweatt/DonationApp/issues"
+  },
+  "homepage": "https://github.com/Danielthweatt/DonationApp#readme",
+  "devDependencies": {
+    "eslint": "^5.0.1",
+    "eslint-plugin-react": "^7.10.0"
+  }
+}
