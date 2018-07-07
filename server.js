@@ -16,10 +16,10 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 // Routes
-app.use(routes);
+// app.use(routes);
 
 // Connection to MongoDB
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/donation_app');
+// mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/donation_app');
 
 // API server Start
 app.listen(PORT, function() {
