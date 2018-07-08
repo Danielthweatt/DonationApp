@@ -3,7 +3,7 @@ import React from 'react';
 
 const Wrapper = props => (
 	<div className="container" style= {{width: '800px'}} >
-		<div className="page-header"><h1>NYT bologna</h1></div>
+		{/* <div className="page-header"><h1>NYT bologna</h1></div> */}
 		{props.children}
 	</div>
 );
