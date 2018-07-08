@@ -6,101 +6,123 @@ class Home extends Component {
     super(props);
 
     this.state = {
-      counters: []
+      setupBegan: false,
+      isLoadingFieldsNeeded: true,
+      error: null
     };
 
-    this.newCounter = this.newCounter.bind(this);
-    this.incrementCounter = this.incrementCounter.bind(this);
-    this.decrementCounter = this.decrementCounter.bind(this);
-    this.deleteCounter = this.deleteCounter.bind(this);
-
-    this._modifyCounter = this._modifyCounter.bind(this);
+    // binding function to component
+    this.fetchFieldsNeeded= this.fetchFieldsNeeded.bind(this);
+    this.onClickBeginSetup = this.onClickBeginSetup.bind(this);
+    this.onStartAccountSetup = this.onStartAccountSetup.bind(this);
+   
   }
 
-  componentDidMount() {
-    fetch('/api/counters')
+  componentWillMount() {
+    this.fetchFieldsNeeded();
+  }
+
+  fetchFieldsNeeded() {
+    fetch('/api/stripe/account/get', { method: 'POST' })
       .then(res => res.json())
       .then(json => {
-        this.setState({
-          counters: json
-        });
+        const {
+          success,
+          message,
+          setupBegan,
+        } = json;
+
+       if (success) {
+          this.setState({
+            setupBegan,
+            isLoadingFieldsNeeded: false,
+          });
+       } else {
+         // failed
+         this.setState({
+           error: message,
+           isLoadingFieldsNeeded: false,
+         });
+       }
       });
   }
 
-  newCounter() {
-    fetch('/api/counters', { method: 'POST' })
-      .then(res => res.json())
-      .then(json => {
-        let data = this.state.counters;
-        data.push(json);
+  onStartAccountSetup() {
+    this.setState({
+      isLoadingFieldsNeeded: true,
+    });
+    fetch('/api/stripe/account/setup', { 
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        countryCode: 'US'
+      }),
+     })
+    .then(res => res.json())
+    .then(json => {
+      const {
+        success,
+        message,
+      } = json;
 
-        this.setState({
-          counters: data
-        });
-      });
+     if (success) {
+       this.fetchFieldsNeeded();
+       
+     } else {
+       // failed
+       this.setState({
+         error: message,
+         isLoadingFieldsNeeded: false,
+       });
+     }
+    });
+
   }
 
-  incrementCounter(index) {
-    const id = this.state.counters[index]._id;
-
-    fetch(`/api/counters/${id}/increment`, { method: 'PUT' })
-      .then(res => res.json())
-      .then(json => {
-        this._modifyCounter(index, json);
-      });
+  onClickBeginSetup() {
+    console.log('onClickBeginSetup');
+    this.onStartAccountSetup();
   }
-
-  decrementCounter(index) {
-    const id = this.state.counters[index]._id;
-
-    fetch(`/api/counters/${id}/decrement`, { method: 'PUT' })
-      .then(res => res.json())
-      .then(json => {
-        this._modifyCounter(index, json);
-      });
-  }
-
-  deleteCounter(index) {
-    const id = this.state.counters[index]._id;
-
-    fetch(`/api/counters/${id}`, { method: 'DELETE' })
-      .then(_ => {
-        this._modifyCounter(index, null);
-      });
-  }
-
-  _modifyCounter(index, data) {
-    let prevData = this.state.counters;
-
-    if (data) {
-      prevData[index] = data;
-    } else {
-      prevData.splice(index, 1);
+  render() {
+    const {
+      isLoadingFieldsNeeded,
+      setupBegan,
+      error,
+    } = this.state;
+    if (isLoadingFieldsNeeded) {
+      return (
+        <p>Loading...</p>
+      );
     }
 
-    this.setState({
-      counters: prevData
-    });
-  }
+    if (!setupBegan) {
+      return (
+        <div>
+          {
+            (error) ? (
+              <p>(error)</p>
+            ) : (null)
+          }
+          <button onClick={this.onClickBeginSetup}>
+            Begin setup
+            </button>
+            <p> By clicking setup you are agree to the TOS for Stripe.</p>
+          </div>
+      )
+    }
 
-  render() {
     return (
-      <>
-        <p>Counters:</p>
-
-        <ul>
-          { this.state.counters.map((counter, i) => (
-            <li key={i}>
-              <span>{counter.count} </span>
-              <button onClick={() => this.incrementCounter(i)}>+</button>
-              <button onClick={() => this.decrementCounter(i)}>-</button>
-              <button onClick={() => this.deleteCounter(i)}>x</button>
-            </li>
-          )) }
-        </ul>
-
-        <button onClick={this.newCounter}>New counter</button>
-      </>
+      <div>
+        {
+          (error) ? (
+            <p>(error)</p>
+          ) : (null)
+        }
+        <p> Start adding Stripe elements</p>
+        </div>
     );
   }
 }
