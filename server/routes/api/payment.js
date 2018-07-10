@@ -21,6 +21,7 @@ module.exports = (app) => {
               success: false,
               message: `Error: ${err.message}`,
               setupBegan: true,
+              account: null,
             });
           } else {
             res.send({
