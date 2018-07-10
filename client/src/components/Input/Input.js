@@ -1,11 +1,11 @@
 import React from 'react';
 
 const Input = () => (
-	<div class="input-group">
-		<div class="input-group-prepend">
-			<span class="input-group-text">With textarea</span>
+	<div className="input-group">
+		<div className="input-group-prepend">
+			<span className="input-group-text">With textarea</span>
 		</div>
-		<textarea class="form-control" aria-label="With textarea"></textarea>
+		<textarea className="form-control" aria-label="With textarea"></textarea>
 	</div>
 );
 
