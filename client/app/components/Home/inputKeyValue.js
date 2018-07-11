@@ -8,10 +8,16 @@ const InputKeyValue = (props) => (
     <input
       type="text"
       id={props.id}
-      onChange={() => {}}
+      onChange={(e) => props.onTextboxChange(e, props.id )}
       value={props.value}
       />
     </div>
 );
+
+InputKeyValue.propTypes = {
+  id: propTypes.string.isRequired,
+  text: propTypes.string.isRequired,
+  value: propTypes.string.isRequired,
+};
 
 export default InputKeyValue;

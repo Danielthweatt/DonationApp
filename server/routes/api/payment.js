@@ -1,5 +1,10 @@
 const config = require('../../../config/config')
-const stripe = require('stripe')(config.stripe_secret_key)
+const stripe = require('stripe')(config.stripe_secret_key);
+
+function nestObj(keys, val) {
+  var o = {}, k = keys.split('.')
+  return k.reduce((r, e, i) => r[e] || (r[e] = (k.length-1 != i) ? {} : val), o), o
+}
 
 module.exports = (app) => {
   // Returns the fields needed
@@ -32,8 +37,6 @@ module.exports = (app) => {
             });
           }
         }),
-
-
 
   // Begin Stripe Connect setup
   app.post('/api/stripe/account/setup', function (req, res, next) {
@@ -82,9 +85,28 @@ module.exports = (app) => {
           });
         });
       }
-    })
+    });
   };
+});
+app.post('/api/stripe/account/save', function (req, res, next) {
+ const dob = '29';
+ const mob = "11";
+
+ let obj = nestObj('legal_entity.dob.day', dob);
+
+ const stripeAccountId = 'acct_1CldUrBlnDwW7J6d';
+  
+ const stripeAccountId = 'acct'
+ if (!stripeAccountId) {
+  res.send({
+    success: true,
+    message: 'Missing stripe account.',
+    setupBegan: false,
+  });
+} else {
 })
 }
   })
-}
+
+  // /api/stripe/account/save
+};
