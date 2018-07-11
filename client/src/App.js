@@ -1,22 +1,29 @@
 import React, { Component } from 'react';
-import {Elements, StripeProvider} from 'react-stripe-elements';
+import About from './pages/About/About';
+import Home from './pages/Home';
+import Donations from './pages/Donations';
+import Header from './components/Header/Header'; 
+import Wrapper from './components/Wrapper/Wrapper'; 
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import DonateForm from "./components/DonateForm"
 import './App.css';
 
+// import Home from './pages/Home';
+
+
 class App extends Component {
-  render() {
-    return (
-      <StripeProvider apiKey="pk_test_LwL4RUtinpP3PXzYirX2jNfR">
-        <div className="example">
-          <h1>React Stripe Elements Example</h1>
-          <Elements>
-            <DonateForm />
-          </Elements>
-        </div>
-      </StripeProvider>
-    );
-  }
+	render() {
+		return (
+			<Router>
+				<div>
+					<Switch>
+						<Route exact path="/about" component= {About} />
+						<Route exact path="/donations" component= {Donations} />
+						<Route exact path="*" component= {Home} />
+					</Switch>
+				</div>
+			</Router>
+		);
+	}
 }
 
 export default App;
