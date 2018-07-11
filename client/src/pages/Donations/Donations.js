@@ -6,12 +6,13 @@ import DonationImpact from '../../components/DonationImpact/DonationImpact';
 import Wrapper from '../../components/Wrapper/Wrapper'; 
 
 class Donations extends Component {
+
 	render() {
 		return (
 			<Wrapper>
 				<Header />
 				<DonateOptions />
-				<DonationInput />
+				<DonationInput/>
 				<DonationImpact />
 			</Wrapper>
 		);
