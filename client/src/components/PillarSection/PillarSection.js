@@ -1,3 +1,4 @@
+import React from 'react';
 import Pillar from '../Pillar';
 
 const PillarSection = () => {
