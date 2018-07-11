@@ -5,12 +5,18 @@ class DonationInput extends Component {
 	render () {
 		return (
 			<div className = "donation-input">
-				<h3>Name</h3>
-				<Input />
-				<h3>Credit Card</h3>
-				<Input />
-				<h3>Email</h3>
-				<Input />
+				
+				<Input 
+					title = "Name"
+				/>
+				
+				<Input 
+					title = "Credit Card"
+				/>
+				
+				<Input 
+					title = "email"
+				/>
 			</div>
 		);
 	}

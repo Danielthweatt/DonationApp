@@ -3,15 +3,17 @@ import Header from '../../components/Header/Header';
 import DonateOptions from '../../components/DonateOptions/DonateOptions'; 
 import DonationInput from '../../components/DonationInput/DonationInput'; 
 import DonationImpact from '../../components/DonationImpact/DonationImpact'; 
+import Wrapper from '../../components/Wrapper/Wrapper'; 
 
 class Donations extends Component {
 	render() {
 		return (
-			<div>
+			<Wrapper>
+				<Header />
 				<DonateOptions />
 				<DonationInput />
 				<DonationImpact />
-			</div>
+			</Wrapper>
 		);
 	}
 }
