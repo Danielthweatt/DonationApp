@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
+import DonateForm from '../DonateForm';
 import Input from '../Input/Input'; 
+import {Elements, StripeProvider} from 'react-stripe-elements';
 
 class DonationInput extends Component {
 
 	state= {
 		name:"",
 		card:"",
-		email:""
+		email:"",
+		complete: false
 	}
 
 	handleNameInput = e => {
@@ -32,15 +35,21 @@ class DonationInput extends Component {
 			/>
 			
 			<Input 
-				title = "Credit Card"
-				handleInput={this.handleCardInput}
-			/>
-			
-			<Input 
-				title = "email"
+				title = "Email"
 				handleInput={this.handleEmailInput}
 			/>
-			<div className="btn btn-primary">Submit</div>
+
+			{/* <Input
+				title = "Credit Card"
+				handleInput={this.handleCardInput}
+			/> */}
+
+			<StripeProvider apiKey="pk_test_LwL4RUtinpP3PXzYirX2jNfR">
+				<Elements>
+					<DonateForm/>
+				</Elements>
+			</StripeProvider>
+			
 		</div>
 		)
 	}

@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import "./DonateForm.css"
 //cardelement creates a "card-type" element that displays on page - includes inputs for cc info
 //injectStripe will wrap the component
 import {CardElement, injectStripe} from 'react-stripe-elements';
@@ -30,11 +31,12 @@ class DonateForm extends Component {
         
         return (
           <div className="checkout">
-            <h1>Is this working?</h1>
-            <p>Would you like to complete the purchase?</p>
-            <CardElement />
-            <button onClick={this.submit}>Send</button>
-          </div>
+            <div className="input-group-prepend">   
+                <span className="input-group-text">Credit Card</span>
+            </div>
+                <CardElement />
+                <button onClick={this.submit}>Send</button>   
+            </div>    
         );
       }
 };
