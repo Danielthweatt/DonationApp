@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {Elements, StripeProvider} from 'react-stripe-elements';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import Home from "./pages/Home"
+import DonateForm from "./components/DonateForm"
 import './App.css';
 
 class App extends Component {
@@ -11,7 +11,7 @@ class App extends Component {
         <div className="example">
           <h1>React Stripe Elements Example</h1>
           <Elements>
-            <Home />
+            <DonateForm />
           </Elements>
         </div>
       </StripeProvider>
