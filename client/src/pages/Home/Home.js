@@ -1,9 +1,9 @@
 import React from 'react';
 import Wrapper from '../../components/Wrapper';
-import Jumbotron from '../../components/Jumbotron';
 import Header from '../../components/Header';
-import PillarSection from '../../components/PillarSection';
-import Mission from '../../components/Mission';
+import Jumbotron from '../../components/HomeComponents/Jumbotron';
+import PillarSection from '../../components/HomeComponents/PillarSection';
+import Mission from '../../components/HomeComponents/Mission';
 
 class Home extends React.Component {
     render () {
