@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import DonateForm from '../DonateForm';
-import Input from '../Input/Input'; 
+import Input from '../../Input'; 
 import {Elements, StripeProvider} from 'react-stripe-elements';
 
 class DonationInput extends Component {
