@@ -17,17 +17,21 @@ class DonateForm extends Component {
     //where u put the method to tokenize card data
         async submit(e) {
         let {token} = await this.props.stripe.createToken({name: "Name"});
+        //console.log({token})
         let response = await fetch("/charge", {
             method: "POST",
             headers: {"Content-Type": "text/plain"},
             body: token.id
         });
 
-        if(response.ok) this.setState({complete: true})
+        if(response.ok) {
+            //console.log(response)
+            this.setState({complete: true})
+        }
     }
 
     render() {
-        if (this.state.complete) return <h1>Purchase COMPLETE!</h1>
+        if (this.state.complete) return <p>$$$$Purchase COMPLETE!$$$$$</p>
         
         return (
           <div className="checkout">

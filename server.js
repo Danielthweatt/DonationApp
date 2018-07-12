@@ -28,7 +28,6 @@ app.post("/charge", async(req,res) => {
 			description: "AN EXAMPLE CHARGE",
 			source: req.body
 		});
-
 		res.json({status});
 	} catch(err) {
 		res.status(500).end();

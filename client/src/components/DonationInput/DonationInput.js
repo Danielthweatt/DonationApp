@@ -7,18 +7,12 @@ class DonationInput extends Component {
 
 	state= {
 		name:"",
-		card:"",
 		email:"",
-		complete: false
 	}
 
 	handleNameInput = e => {
 		//console.log(e.target.value)
 		this.setState({name: e.target.value})
-	}
-
-	handleCardInput = e => {
-		this.setState({card: e.target.value})
 	}
 
 	handleEmailInput = e => {
@@ -44,7 +38,7 @@ class DonationInput extends Component {
 				handleInput={this.handleCardInput}
 			/> */}
 
-			<StripeProvider apiKey="pk_test_LwL4RUtinpP3PXzYirX2jNfR">
+			<StripeProvider apiKey="pk_test_xwATFGfvWsyNnp1dDh2MOk8I">
 				<Elements>
 					<DonateForm/>
 				</Elements>
