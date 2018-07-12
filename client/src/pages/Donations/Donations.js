@@ -4,6 +4,7 @@ import DonateOptions from '../../components/DonateOptions/DonateOptions';
 import DonationInput from '../../components/DonationInput/DonationInput'; 
 import DonationImpact from '../../components/DonationImpact/DonationImpact'; 
 import Wrapper from '../../components/Wrapper/Wrapper'; 
+import Footer from '../../components/Footer/Footer'; 
 
 class Donations extends Component {
 
@@ -14,6 +15,7 @@ class Donations extends Component {
 				<DonateOptions />
 				<DonationInput/>
 				<DonationImpact />
+				<Footer />
 			</Wrapper>
 		);
 	}
