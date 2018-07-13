@@ -33,11 +33,6 @@
     "express": "^4.16.3",
     "if-env": "^1.0.4",
     "mongoose": "^5.2.1",
-    "react": "^16.4.1",
-    "react-dom": "^16.4.1",
-    "react-router-dom": "^4.3.1",
-    "react-scripts": "^1.1.4",
-    "react-stripe-elements": "^2.0.0",
     "stripe": "^6.2.1"
   }
 }
