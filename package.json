@@ -8,7 +8,7 @@
     "start:prod": "node server.js",
     "start:dev": "concurrently \"nodemon --ignore 'client/*'\" \"npm run client\"",
     "client": "cd client && npm run start",
-    "install": "cd client && yarn install",
+    "install": "cd client && npm install",
     "build": "cd client && npm run build",
     "heroku-postbuild": "npm run build"
   },
@@ -35,6 +35,9 @@
     "mongoose": "^5.2.1",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
-    "react-scripts": "^1.1.4"
+    "react-router-dom": "^4.3.1",
+    "react-scripts": "^1.1.4",
+    "react-stripe-elements": "^2.0.0",
+    "stripe": "^6.2.1"
   }
 }
