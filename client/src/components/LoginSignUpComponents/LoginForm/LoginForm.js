@@ -19,19 +19,22 @@ class LoginForm extends Component {
 
 	render() {
 		return (
-			<form action="/signin" method="post">
-				<div>
-					<label>Username:</label>
-					<Input title = "Name" name="email" handleInput={this.handleEmailInput}/>
-				</div>
-				<div>
-					<label>Password:</label>
-					<Input title = "Name" type="password" name="password" handleInput={this.handlePasswordInput}/>
-				</div>
-				<div>
-					<input type="submit"/>
-				</div>
-			</form>
+			<div>
+				<form action="/signin" method="post">
+					<div>
+						<label>Username:</label>
+						<Input title = "Name" name="email" handleInput={this.handleEmailInput}/>
+					</div>
+					<div>
+						<label>Password:</label>
+						<Input title = "Name" type="password" name="password" handleInput={this.handlePasswordInput}/>
+					</div>
+					<div>
+						<input type="submit"/>
+					</div>
+				</form>
+				<a href="/signup">Sign Up</a>
+			</div>
 		)
 	}
 };
