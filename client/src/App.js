@@ -4,6 +4,7 @@ import Home from './pages/Home';
 import Donations from './pages/Donations';
 import Header from './components/Header/Header'; 
 import Wrapper from './components/Wrapper/Wrapper'; 
+import Login from './components/LoginSignUpComponents/LoginForm'; 
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import './App.css';
 
@@ -18,6 +19,7 @@ class App extends Component {
 					<Switch>
 						<Route exact path="/about" component= {About} />
 						<Route exact path="/donations" component= {Donations} />
+						<Route exact path="/login" component= {Login} />
 						<Route exact path="*" component= {Home} />
 					</Switch>
 				</div>
