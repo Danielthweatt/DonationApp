@@ -1,76 +1,50 @@
-// Dependencies
-const bCrypt = require('bcrypt-nodejs');
-
 // Exporting Configuration
 module.exports = function(passport, User){
 
 	const LocalStrategy = require('passport-local').Strategy;
 
+	// called on login, saves the id to session req.session.passport.user = {id:'..'}
 	passport.serializeUser(function(user, done){
-		done(null, user.id);
+		console.log('*** serializeUser called, user: ');
+		console.log(user); // the whole raw user object!
+		console.log('---------');
+		done(null, {_id: user._id});
 	});
 
+	// user object attaches to the request as req.user
 	passport.deserializeUser(function(id, done){
-		User.findById(id, function(err, user){
-			done(err, user);
-		});
+		console.log('DeserializeUser called');
+		User.findOne(
+			{ _id: id },
+			'username',
+			(err, user) => {
+				console.log('*** Deserialize user, user:');
+				console.log(user);
+				console.log('--------------');
+				done(err, user);
+			}
+		);
 	});
 
-	passport.use('local-signup', new LocalStrategy({
-		usernameField: 'email',
-		passwordField: 'password'
-	}, function(email, password, done){
-		const generateHash = function(password){
-			return bCrypt.hashSync(password, bCrypt.genSaltSync(8), null);
-		};
-		User.findOne({email: email}, function(err, user){
-			if (err) {
-				return done(err);
-			} else if (user) {
-				return done(null, false, {
-					message: 'That email is already taken'
-				});
-			} else {
-				const userPassword = generateHash(password);
-				const data = {
-					email: email,
-					password: userPassword,
-				};
-				User.create(data, function(err, newUser){
-					if (err) {
-						return done(err);
-					} else {
-						return done(null, newUser);
-					}
-				});           
-			}
-		});
-	}));
-
-	passport.use('local-signin', new LocalStrategy({
-		usernameField: 'email',
-		passwordField: 'password'
-	}, function(email, password, done){
-		const isValidPassword = function(userpass, password){
-			return bCrypt.compareSync(password, userpass);
-		};
-		User.findOne({email: email}, function(err, user){
-			if (err) {
-				return done(null, false, {
-					message: 'Something went wrong with your Signin'
-				});
-			} else if (!user) {
-				return done(null, false, {
-					message: 'Email does not exist'
-				});
-			} else if (!isValidPassword(user.password, password)) {
-				return done(null, false, {
-					message: 'Incorrect password'
-				});
-			} else {
+	passport.use(new LocalStrategy(
+		{
+			usernameField: 'email',
+			passwordField: 'password'
+		},
+		function(email, password, done) {
+			User.findOne({ email: email }, (err, user) => {
+				if (err) {
+					return done(err);
+				}
+				if (!user) {
+					return done(null, false, { message: 'Incorrect username' });
+				}
+				if (!user.checkPassword(password)) {
+					return done(null, false, { message: 'Incorrect password' });
+				}
 				return done(null, user);
-			}
-		});
-	}));
+			});
+		}
+	));
 
 };
