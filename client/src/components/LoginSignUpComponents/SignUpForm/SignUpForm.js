@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import Input from '../../Input'; 
 
 class SignUpForm extends Component {
 
-	state= {
+	state = {
 		email:"",
 		password:"",
 		confirmPassword:""
@@ -23,9 +24,33 @@ class SignUpForm extends Component {
 		this.setState({name: e.target.value})
 	}
 
+	handleSubmit(event) {
+		event.preventDefault();
+		console.log('Sign-up handleSubmit, email: ');
+		console.log(this.state.email);
+		const signUpInfo = {
+			email: this.state.email,
+			password: this.state.password
+		};
+		axios.post('/user/signup', signUpInfo).then(response => {
+			console.log(response);
+			if (!response.data.errmsg) {
+				console.log('Successful signup');
+				this.setState({ //redirect to login page
+					redirectTo: '/login'
+				});
+			} else {
+				console.log('username already taken');
+			}
+		}).catch(error => {
+			console.log('Signup error: ');
+			console.log(error);
+		});
+	}
+
 	render() {
 		return (
-			<form action="/signin" method="post">
+			<form>
 				<div>
 					<label>Username:</label>
 					<Input title = "Name" name="email" handleInput={this.handleEmailInput}/>
@@ -39,7 +64,7 @@ class SignUpForm extends Component {
 					<Input title = "Name" type="password" name="confirmPassword" handleInput={this.handlePasswordConfirmInput}/>
 				</div>
 				<div>
-					<input type="submit"/>
+					<input type="submit" onClick={this.handleSubmit}/>
 				</div>
 			</form>
 		)

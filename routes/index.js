@@ -22,7 +22,7 @@ module.exports = function(app, passport, User){
 	});
 
 	//Sign-Up Route
-	app.post('/signup', (req, res) => {
+	app.post('/user/signup', (req, res) => {
 		console.log('User signup route hit');
 		const { email, password } = req.body;
 		User.findOne({ email: email }, (err, user) => {
@@ -49,7 +49,7 @@ module.exports = function(app, passport, User){
 
 	//Sign-In Route
 	app.post(
-		'/signin',
+		'/user/signin',
 		function (req, res, next) {
 			console.log('User signin route hit, req.body: ');
 			console.log(req.body);
@@ -66,7 +66,7 @@ module.exports = function(app, passport, User){
 	);
 
 	//Check to see if signed-in Route
-	app.get('/signin-check', (req, res, next) => {
+	app.get('/user', (req, res, next) => {
 		console.log('Signin-check route hit, req.user: ');
 		console.log(req.user);
 		if (req.user) {
@@ -77,7 +77,7 @@ module.exports = function(app, passport, User){
 	});
 
 	//Sign-Out Route
-	app.post('/signout', (req, res) => {
+	app.post('/user/signout', (req, res) => {
 		if (req.user) {
 			console.log('Signing out.');
 			req.logout();
