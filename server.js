@@ -6,6 +6,8 @@ const flash = require('connect-flash');
 const passport = require('passport');
 const User = require('./models').User;
 const mongoose = require('mongoose');
+const routes = require('./routes');
+const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3001;
 
@@ -28,6 +30,7 @@ require('./routes')(app, passport, User);
 
 // Use routes (once router is exported (see above))
 // app.use(routes);
+
 
 // Connection to MongoDB
 // mongoose.Promise = Promise;
