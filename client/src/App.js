@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import About from './pages/About/About';
 import Home from './pages/Home';
+import Login from './pages/Login'; 
 import Donations from './pages/Donations';
 import Header from './components/Header/Header'; 
 import Wrapper from './components/Wrapper/Wrapper'; 
@@ -18,6 +19,7 @@ class App extends Component {
 					<Switch>
 						<Route exact path="/about" component= {About} />
 						<Route exact path="/donations" component= {Donations} />
+						<Route exact path="/login" component= {Login} />
 						<Route exact path="*" component= {Home} />
 					</Switch>
 				</div>
