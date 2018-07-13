@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const routes = require('./routes');
 const path = require("path")
 const app = express();
-const stripe = require("stripe")("sk_test_TwTTlid3GeOG6YPydOjARw4I");
+const stripe = require("stripe")("sk_test_AKVA7CFMVqdEG0ZnhF7uiLz7");
 const PORT = process.env.PORT || 3001;
 
 // Middleware
@@ -21,9 +21,11 @@ if (process.env.NODE_ENV === 'production') {
 app.use(routes);
 
 app.post("/charge", async(req,res) => {
+	//console.log(req.body)
 	try {
 		let {status} = await stripe.charges.create({
-			amount: 0000,
+			//in cents
+			amount: 50,
 			currency: "usd",
 			description: "AN EXAMPLE CHARGE",
 			source: req.body
@@ -33,6 +35,7 @@ app.post("/charge", async(req,res) => {
 		res.status(500).end();
 	}
 })
+
 // Connection to MongoDB
 // mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/donation_app');
 

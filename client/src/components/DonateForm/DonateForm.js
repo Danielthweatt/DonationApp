@@ -6,6 +6,7 @@ import {CardElement, injectStripe} from 'react-stripe-elements';
 
 class DonateForm extends Component {
     constructor(props) {
+        //access the props inside the constructor
         super(props);
         this.state = {complete: false};
         this.submit = this.submit.bind(this);
@@ -25,7 +26,7 @@ class DonateForm extends Component {
         });
 
         if(response.ok) {
-            //console.log(response)
+            console.log(response)
             this.setState({complete: true})
         }
     }
@@ -45,4 +46,5 @@ class DonateForm extends Component {
       }
 };
 
+//injectStripe wraps the component which holds the STRIPE OBJECT
 export default injectStripe(DonateForm);
