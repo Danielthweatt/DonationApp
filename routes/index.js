@@ -1,14 +1,33 @@
 //Dependencies
 const path = require('path');
-const router = require('express').Router();
-const apiRoutes = require('./api');
+const usersController = require('../../controllers/usersController');
 
-//API Routes
-router.use('/api', apiRoutes);
+module.exports = function(app, passport, User){
 
-//React App
-router.use(function(req, res) {
-	res.sendFile(path.join(__dirname, '../client/build/index.html'));
-});
+	//Sign-Up Route
+	app.post('/signup', passport.authenticate('local-signup', {
+		successRedirect: '/',
+		failureRedirect: '/signup',
+		failureFlash: true
+	}));
 
-module.exports = router;
+	//Sign-In Route
+	app.post('/signin', passport.authenticate('local-signin', {
+		successRedirect: '/',
+		failureRedirect: '/signin',
+		failureFlash: true 
+	}));
+
+	//Sign-Out Route
+	app.post('/logout', function(req, res){
+		req.session.destroy(function(err){
+			res.redirect('/');
+		});
+	});
+
+	//React App
+	app.get('*', function(req, res) {
+		res.sendFile(path.join(__dirname, '../client/build/index.html'));
+	});
+
+};

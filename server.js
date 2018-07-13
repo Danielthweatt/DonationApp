@@ -4,8 +4,7 @@ const session = require('express-session');
 const bodyParser = require('body-parser');
 const flash = require('connect-flash');
 const passport = require('passport');
-const User = require('../models').User;
-const routes = require('./routes');
+const User = require('./models').User;
 const mongoose = require('mongoose');
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -20,9 +19,14 @@ app.use(bodyParser.json());
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
+
+// Configure Passport
 require('./config/passport/passport.js')(passport, User);
 
-// Routes
+// Configure Routes (to do: make routes a export a function that returns a router)
+require('./routes')(app, passport, User);
+
+// Use routes (once router is exported (see above))
 // app.use(routes);
 
 // Connection to MongoDB
