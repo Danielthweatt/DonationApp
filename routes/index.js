@@ -1,6 +1,6 @@
 //Dependencies
 const path = require('path');
-const usersController = require('../../controllers/usersController');
+const usersController = require('../controllers/usersController');
 const stripe = require("stripe")("sk_test_TwTTlid3GeOG6YPydOjARw4I");
 
 module.exports = function(app, passport, User){
