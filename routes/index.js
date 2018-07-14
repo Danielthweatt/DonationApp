@@ -6,20 +6,37 @@ const keySecret = 'sk_test_AKVA7CFMVqdEG0ZnhF7uiLz7';
 const stripe = require("stripe")(keySecret)
 module.exports = function(app, passport, User){
 
-	// Charge Route
+	// Charge Route for no customer creation
 	app.post("/charge", (req,res) => {
 		console.log(req.body)
+		//get to dollar amount by *100
 		let amount = (req.body.amount) * 100;
-		//console.log(amount)
-
 		stripe.charges.create({
 			amount,
 			source: req.body.source,
 			description: 'test charge',
 			currency: 'usd',
 		}).then(charge => res.send(charge))
+		//confirmation email needed
 		
 	});
+
+	//charge route first time logged in to save info
+	app.put("/charge:id", (req,res) => {
+		stripe.customers.create({
+			email: req.body.email,
+			//source is the token linked to their card
+			source: req.body.source
+		}).then(customer=>{
+			//charge needed
+			if (err){
+				console.log(err)
+			}
+			else {
+				console.log(customer)
+			}
+		})
+	})
 
 
 	//Sign-Up Route

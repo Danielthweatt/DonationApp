@@ -42,13 +42,22 @@ class DonationInput extends Component {
 
 	onToken = (token) => {
         axios.post('/charge', {
-            description: 'example charge',
+			description: 'example charge',
+			email: this.state.email,
 			source: token.id,
 			amount: this.state.amount
         }).then((data) => {
             console.log(data.status)
             if (data.status === 200){
-                alert('it worked!')
+				alert('it worked!')
+				//clear state values
+				this.setState({
+					name:"",
+					email:"",
+					amount:""
+				})
+				//probs take this out?
+				window.location.reload();
             }
         })
         .catch((err) => {
