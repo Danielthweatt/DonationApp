@@ -63,7 +63,12 @@ class App extends Component {
 					<p>Join the party {this.state.id}!</p>
 					<Switch>
 						<Route exact path="/about" component= {About} />
-						<Route exact path="/donations" component= {Donations} />
+						<Route exact path="/donations" render= {() => 
+							<Donations userInfo={{
+								loggedIn: this.state.loggedIn,
+								hasCustomerAccount: this.state.hasCustomerAccount,
+								mongoId: this.state.id
+							}}/>} />
 						<Route exact path="/login" render={() =>
             				<Login updateUser={this.updateUser}/>} />
 						<Route exact path="/signup" component= {SignUp} />
