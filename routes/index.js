@@ -1,25 +1,24 @@
 //Dependencies
 const path = require('path');
-const usersController = require('../../controllers/usersController');
-const stripe = require("stripe")("sk_test_TwTTlid3GeOG6YPydOjARw4I");
-
+const usersController = require('../controllers/usersController');
+const keyPublishable = 'pk_test_xwATFGfvWsyNnp1dDh2MOk8I';
+const keySecret = 'sk_test_AKVA7CFMVqdEG0ZnhF7uiLz7';
+const stripe = require("stripe")(keySecret)
 module.exports = function(app, passport, User){
 
 	// Charge Route
-	app.post("/charge", async(req,res) => {
-		try {
-			let {status} = await stripe.charges.create({
-				amount: 0000,
-				currency: "usd",
-				description: "AN EXAMPLE CHARGE",
-				source: req.body
-			});
-	
-			res.json({status});
-		} catch(err) {
-			res.status(500).end();
-		}
-	});
+	app.post("/charge", (req,res) => {
+		console.log(req.body)
+		let amount = 50
+
+		stripe.charges.create({
+			amount,
+			source: req.body.source,
+			description: 'test charge',
+			currency: 'usd',
+		}).then(charge => res.send(charge))
+		
+	})
 
 	//Sign-Up Route
 	app.post('/signup', passport.authenticate('local-signup', {

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import DonateForm from '../DonateForm';
 import Input from '../../Input'; 
 import {Elements, StripeProvider} from 'react-stripe-elements';
+import Checkout from '../Checkout'
 
 class DonationInput extends Component {
 
@@ -40,7 +40,7 @@ class DonationInput extends Component {
 
 			<StripeProvider apiKey="pk_test_xwATFGfvWsyNnp1dDh2MOk8I">
 				<Elements>
-					<DonateForm/>
+					<Checkout/>
 				</Elements>
 			</StripeProvider>
 			
