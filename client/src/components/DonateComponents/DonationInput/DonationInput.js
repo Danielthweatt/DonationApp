@@ -4,6 +4,7 @@ import Input from '../../Input';
 import {Elements, StripeProvider} from 'react-stripe-elements';
 import StripeCheckout from 'react-stripe-checkout';
 import DonateOptions from '../DonateOptions'; 
+import Checkbox from "../Checkbox";
 
 class DonationInput extends Component {
 
@@ -63,8 +64,8 @@ class DonationInput extends Component {
         .catch((err) => {
             console.log(err)
         });
-    }
-
+	}
+	
 	render() {
 		console.log(this.props.userInfo);
 		return (
@@ -76,6 +77,7 @@ class DonationInput extends Component {
 				handleTen={this.handleTen}
 				handleTwenty={this.handleTwenty}
 			/>
+
 
 			{this.props.userInfo.loggedIn ? (
 				<div></div>
@@ -95,6 +97,9 @@ class DonationInput extends Component {
 				/>
 			)}
 
+
+			<Checkbox/>
+			
 			<StripeProvider apiKey="pk_test_xwATFGfvWsyNnp1dDh2MOk8I">
 				<Elements>
 				<StripeCheckout
