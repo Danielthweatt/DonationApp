@@ -1,14 +1,22 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
 import axios from 'axios';
 import Input from '../../Input'; 
 import { userInfo } from 'os';
 
 class LoginForm extends Component {
+	constructor() {
+        super();
+        this.state = {
+            username: '',
+            password: '',
+            redirectTo: null
+        };
+        this.handleSubmit = this.handleSubmit.bind(this);
+		this.handleEmailInput = this.handleEmailInput.bind(this);
+		this.handlePasswordInput = this.handlePasswordInput.bind(this);  
+    }
 
-	state = {
-		email:"",
-		password:""
-	}
 
 	handleEmailInput = e => {
 		this.setState({email: e.target.value});
@@ -16,7 +24,7 @@ class LoginForm extends Component {
 
 	handlePasswordInput = e => {
 		//console.log(e.target.value)
-		this.setState({name: e.target.value});
+		this.setState({password: e.target.value});
 	}
 
 	handleSubmit(event) {
@@ -47,24 +55,28 @@ class LoginForm extends Component {
     }
 
 	render() {
-		return (
-			<div>
-				<form>
-					<div>
-						<label>Email:</label>
-						<Input title = "Name" name="email" handleInput={this.handleEmailInput}/>
-					</div>
-					<div>
-						<label>Password:</label>
-						<Input title = "Name" type="password" name="password" handleInput={this.handlePasswordInput}/>
-					</div>
-					<div>
-						<input type="submit" onClick={this.handleSubmit}/>
-					</div>
-				</form>
-				<a href="/signup">Sign Up</a>
-			</div>
-		)
+		if (this.state.redirectTo) {
+            return <Redirect to={{ pathname: this.state.redirectTo }} />
+        } else {
+			return (
+				<div>
+					<form>
+						<div>
+							<label>Email:</label>
+							<Input title = "Name" name="email" handleInput={this.handleEmailInput}/>
+						</div>
+						<div>
+							<label>Password:</label>
+							<Input title = "Name" type="password" name="password" handleInput={this.handlePasswordInput}/>
+						</div>
+						<div>
+							<input type="submit" onClick={this.handleSubmit}/>
+						</div>
+					</form>
+					<a href="/signup">Sign Up</a>
+				</div>
+			)
+		}
 	}
 };
 
