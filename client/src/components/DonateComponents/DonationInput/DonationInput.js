@@ -67,6 +67,7 @@ class DonationInput extends Component {
 	}
 	
 	render() {
+		console.log(this.props.userInfo);
 		return (
 			<div className = "donation-input">
 				
@@ -77,16 +78,25 @@ class DonationInput extends Component {
 				handleTwenty={this.handleTwenty}
 			/>
 
-		
-			<Input 
-				title = "Name"
-				handleInput={this.handleNameInput}
-			/>
-			
-			<Input 
-				title = "Email"
-				handleInput={this.handleEmailInput}
-			/>
+
+			{this.props.userInfo.loggedIn ? (
+				<div></div>
+			) : (
+				<Input 
+					title = "Name"
+					handleInput={this.handleNameInput}
+				/>
+			)}
+
+			{this.props.userInfo.loggedIn ? (
+				<div></div>
+			) : (
+				<Input 
+					title = "Email"
+					handleInput={this.handleEmailInput}
+				/>
+			)}
+
 
 			<Checkbox/>
 			
