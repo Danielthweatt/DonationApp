@@ -3,13 +3,13 @@ import axios from 'axios';
 import StripeCheckout from 'react-stripe-checkout';
 
 
-export default class TakeMoney extends React.Component {
+export default class Checkout extends React.Component {
+
+
     onToken = (token) => {
         axios.post('/charge', {
             description: 'example charge',
             source: token.id,
-            currency: 'usd',
-            amount: '50'
         }).then((data) => {
             console.log(data.status)
             if (data.status === 200){
@@ -24,6 +24,8 @@ export default class TakeMoney extends React.Component {
     render() {
         return(
             <StripeCheckout
+            name={this.props.name}
+            email={this.props.email}
             token={this.onToken}
             stripeKey={'pk_test_xwATFGfvWsyNnp1dDh2MOk8I'}
             />

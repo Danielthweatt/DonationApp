@@ -40,7 +40,10 @@ class DonationInput extends Component {
 
 			<StripeProvider apiKey="pk_test_xwATFGfvWsyNnp1dDh2MOk8I">
 				<Elements>
-					<Checkout/>
+					<Checkout
+						name={this.state.name}
+						email={this.state.email}
+					/>
 				</Elements>
 			</StripeProvider>
 			
