@@ -11,7 +11,8 @@ class DonationInput extends Component {
 	state= {
 		name:"",
 		email:"",
-		amount:""
+		amount:"",
+		rememberMe: false
 	}
 
 	handleNameInput = e => {
@@ -41,29 +42,41 @@ class DonationInput extends Component {
 	handleCustom = e => {
 	}
 
+	updatePaymentInfo = () => {}
+
+	forgetMe = () => {}
+
 	onToken = (token) => {
-        axios.post('/charge', {
-			description: 'example charge',
-			email: this.state.email,
-			source: token.id,
-			amount: this.state.amount
-        }).then((data) => {
-            console.log(data.status)
-            if (data.status === 200){
-				alert('it worked!')
-				//clear state values
-				this.setState({
-					name:"",
-					email:"",
-					amount:""
-				})
-				//probs take this out?
-				window.location.reload();
-            }
-        })
-        .catch((err) => {
-            console.log(err)
-        });
+		if (this.props.userInfo.loggedIn && this.state.rememberMe) {
+
+		} else if (this.props.userInfo.loggedIn && this.props.userInfo.hasCustomerAccount) {
+
+		} else {
+			axios.post('/charge', {
+				description: 'example charge',
+				email: this.state.email,
+				source: token.id,
+				amount: this.state.amount,
+				mongoId: this.props.userInfo.mongoId
+        	}).then((data) => {
+            	console.log(data.status)
+            	if (data.status === 200){
+					alert('it worked!')
+					//clear state values
+					this.setState({
+						name:"",
+						email:"",
+						amount:""
+					});
+					//probs take this out?
+					window.location.reload();
+            	}
+        	})
+        	.catch((err) => {
+            	console.log(err)
+			});
+		}
+
 	}
 	
 	render() {
