@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import 'whatwg-fetch';
 import InputKeyValue from './inputKeyValue';
+import BankAccountForm from './BankAccountForm';
 
 
 class Home extends Component {
@@ -177,6 +178,13 @@ class Home extends Component {
           <div>
             {
             fields_needed.map(fieldKey => {
+              if (fieldKey === 'bank_account'){
+                return(
+                  <Elements>
+                    <BankAccountForm />
+                  </Elements>
+                );
+              }
               return (
                 <InputKeyValue
                 text={fieldKey}

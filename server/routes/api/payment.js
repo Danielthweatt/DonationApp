@@ -1,5 +1,7 @@
 const config = require('../../../config/config')
 const stripe = require('stripe')(config.stripe_secret_key);
+const _ = require('lodash');
+
 
 function nestObj(keys, val) {
   var o = {}, k = keys.split('.')
@@ -89,14 +91,13 @@ module.exports = (app) => {
   };
 });
 app.post('/api/stripe/account/save', function (req, res, next) {
- const dob = '29';
- const mob = "11";
+//  const dob = '29';
+//  const mob = "11";
 
- let obj = nestObj('legal_entity.dob.day', dob);
+//  let obj = nestObj('legal_entity.dob.day', dob);
 
  const stripeAccountId = 'acct_1CldUrBlnDwW7J6d';
   
- const stripeAccountId = 'acct'
  if (!stripeAccountId) {
   res.send({
     success: true,
@@ -104,9 +105,39 @@ app.post('/api/stripe/account/save', function (req, res, next) {
     setupBegan: false,
   });
 } else {
+  let i = 0;
+  let stripeObj = {};
+  // Have stripe account
+  _.forEach(req.body, (value, key) => {
+    const obj = nestObj(key, value);
+    console.log('obj', obj);
+
+      stripeObj = assign(stripeObj, obj);
+      i += 1;
+
+      if (i === Object.keys(req.body).length) {
+        console.log('end', stripeObj);
+
+        stripe.accounts.update(
+          stripeAccountId,
+          stripeObj
+        ).then(() => {
+        res.send({
+          success: true,
+          message: 'Saved',
+        });
+      }, (err) => {
+        console.log('er', err);
+        res.send({
+          success: false,
+          message: 'error',
+        });
+    });
+  };
 })
+};
+})
+  // /api/stripe/account/save
 }
   })
-
-  // /api/stripe/account/save
-};
+}
