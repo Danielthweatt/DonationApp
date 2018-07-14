@@ -1,12 +1,21 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
+import axios from 'axios';
 import Input from '../../Input'; 
 
 class SignUpForm extends Component {
-
-	state= {
-		email:"",
-		password:"",
-		confirmPassword:""
+	constructor() {
+		super();
+		this.state = {
+			username: '',
+			password: '',
+			confirmPassword: '',
+			redirectTo: null
+		};
+		this.handleSubmit = this.handleSubmit.bind(this);
+		this.handleEmailInput = this.handleEmailInput.bind(this);
+		this.handlePasswordInput = this.handlePasswordInput.bind(this); 
+		this.handlePasswordConfirmInput = this.handlePasswordInput.bind(this); 
 	}
 
 	handleEmailInput = e => {
@@ -15,34 +24,62 @@ class SignUpForm extends Component {
 
 	handlePasswordInput = e => {
 		//console.log(e.target.value)
-		this.setState({name: e.target.value})
+		this.setState({password: e.target.value})
 	}
 
 	handlePasswordConfirmInput = e => {
 		//console.log(e.target.value)
-		this.setState({name: e.target.value})
+		this.setState({confirmPassword: e.target.value})
+	}
+
+	handleSubmit(event) {
+		event.preventDefault();
+		console.log('Sign-up handleSubmit, email: ');
+		console.log(this.state.email);
+		const signUpInfo = {
+			email: this.state.email,
+			password: this.state.password
+		};
+		axios.post('/user/signup', signUpInfo).then(response => {
+			console.log(response);
+			if (!response.data.errmsg) {
+				console.log('Successful signup');
+				this.setState({ //redirect to login page
+					redirectTo: '/'
+				});
+			} else {
+				console.log('username already taken');
+			}
+		}).catch(error => {
+			console.log('Signup error: ');
+			console.log(error);
+		});
 	}
 
 	render() {
-		return (
-			<form action="/signin" method="post">
-				<div>
-					<label>Username:</label>
-					<Input title = "Name" name="email" handleInput={this.handleEmailInput}/>
-				</div>
-				<div>
-					<label>Password:</label>
-					<Input title = "Name" type="password" name="password" handleInput={this.handlePasswordInput}/>
-				</div>
-				<div>
-					<label>Confirm Password:</label>
-					<Input title = "Name" type="password" name="confirmPassword" handleInput={this.handlePasswordConfirmInput}/>
-				</div>
-				<div>
-					<input type="submit"/>
-				</div>
-			</form>
-		)
+		if (this.state.redirectTo) {
+            return <Redirect to={{ pathname: this.state.redirectTo }} />
+        } else {
+			return (
+				<form>
+					<div>
+						<label>Email:</label>
+						<Input title = "Name" name="email" handleInput={this.handleEmailInput}/>
+					</div>
+					<div>
+						<label>Password:</label>
+						<Input title = "Name" type="password" name="password" handleInput={this.handlePasswordInput}/>
+					</div>
+					<div>
+						<label>Confirm Password:</label>
+						<Input title = "Name" type="password" name="confirmPassword" handleInput={this.handlePasswordConfirmInput}/>
+					</div>
+					<div>
+						<input type="submit" onClick={this.handleSubmit}/>
+					</div>
+				</form>
+			)
+		}
 	}
 };
 
