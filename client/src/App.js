@@ -18,6 +18,7 @@ class App extends Component {
 		super();
 		this.state = {
 			loggedIn: false,
+			hasCustomerAccount: false,
 			id: null
 		};
 		this.checkUser = this.checkUser.bind(this);
@@ -29,8 +30,10 @@ class App extends Component {
 		this.checkUser();
 	}
 
-	updateUser (userObject){
+	updateUser(userObject){
+		console.log('updating user in app state');
 		this.setState(userObject);
+		console.log(this.state.id);
 	}
 
 	checkUser(){
@@ -61,7 +64,8 @@ class App extends Component {
 					<Switch>
 						<Route exact path="/about" component= {About} />
 						<Route exact path="/donations" component= {Donations} />
-						<Route exact path="/login" component= {Login} />
+						<Route exact path="/login" render={() =>
+            				<Login updateUser={this.updateUser}/>} />
 						<Route exact path="/signup" component= {SignUp} />
 						<Route exact path="*" component= {Home} />
 					</Switch>
