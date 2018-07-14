@@ -8,8 +8,9 @@ module.exports = function(app, passport, User){
 
 	// Charge Route
 	app.post("/charge", (req,res) => {
-		//console.log(req.body)
-		let amount = 50;
+		console.log(req.body)
+		let amount = (req.body.amount) * 100;
+		//console.log(amount)
 
 		stripe.charges.create({
 			amount,
