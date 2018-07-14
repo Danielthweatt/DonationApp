@@ -59,7 +59,7 @@ module.exports = function(app, passport, User){
 		(req, res) => {
 			console.log('User logged in: ' + req.user);
 			var userInfo = {
-				email: req.user.email
+				id: req.user._id
 			};
 			res.send(userInfo);
 		}
