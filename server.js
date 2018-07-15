@@ -12,6 +12,7 @@ const PORT = process.env.PORT || 3001;
 if (process.env.NODE_ENV === 'production') {
 	app.use(express.static('client/build'));
 }
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(session({secret: 'keyboard cat', resave: false, saveUninitialized:false}));
@@ -36,9 +37,10 @@ require('./config/passport/passport.js')(passport, User);
 // Configure Routes (to do: make routes a export a function that returns a router)
 require('./routes')(app, passport, User);
 
-// Use routes (once router is exported (see above))
-// app.use(routes);
 
+
+// Use routes (once router is exported (see above))
+//app.use(routes);
 
 // Connection to MongoDB
 mongoose.Promise = Promise;

@@ -38,11 +38,11 @@ class LoginForm extends Component {
             console.log('Login response: ');
             console.log(response);
             if (response.status === 200) {
-                // // update App.js state
-                // this.props.updateUser({
-                //     loggedIn: true,
-                //     id: response.data._id
-                // })
+                // update App.js state
+                this.props.updateUser({
+                    loggedIn: true,
+                    id: response.data.id
+                });
                 // update the state to redirect to home
                 this.setState({
                     redirectTo: '/'
@@ -63,7 +63,7 @@ class LoginForm extends Component {
 					<form>
 						<div>
 							<label>Email:</label>
-							<Input title = "Name" name="email" handleInput={this.handleEmailInput}/>
+							<Input title = "Name" type="text" name="email" handleInput={this.handleEmailInput}/>
 						</div>
 						<div>
 							<label>Password:</label>
