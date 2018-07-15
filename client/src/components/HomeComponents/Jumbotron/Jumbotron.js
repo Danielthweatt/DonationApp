@@ -1,4 +1,5 @@
 import React from 'react';
+import Button from '@material/react-button/dist'; // /index.js is implied
 
 class Jumbotron extends React.Component {
     render () {
@@ -9,6 +10,9 @@ class Jumbotron extends React.Component {
                 <hr className="my-4"></hr>
                 <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
                 <p className="lead">
+                    <Button raised className='button-alternate' onClick={() => console.log('clicked!')}>
+                        Learn more
+                    </Button>
                     <a className="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
                 </p>
             </div>
