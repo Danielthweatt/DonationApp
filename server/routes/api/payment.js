@@ -1,6 +1,7 @@
 const config = require('../../../config/config')
 const stripe = require('stripe')(config.stripe_secret_key);
 const _ = require('lodash');
+var assign = require('assign-deep');
 
 
 function nestObj(keys, val) {
@@ -55,9 +56,17 @@ module.exports = (app) => {
       });
     } else {
       stripe.accounts.create({
-        type: 'custom',
+        type: 'standard',
         country,
         email,
+        //test
+        // external_account: {
+        //   object: "bank_account",
+        //   country: "US",
+        //   currency: "usd",
+        //   routing_number: "110000000",
+        //   account_number: "000123456789",
+        // },
       }, function(err, account) {
         if (err) {
           console.log('err', err);
@@ -91,10 +100,6 @@ module.exports = (app) => {
   };
 });
 app.post('/api/stripe/account/save', function (req, res, next) {
-//  const dob = '29';
-//  const mob = "11";
-
-//  let obj = nestObj('legal_entity.dob.day', dob);
 
  const stripeAccountId = 'acct_1CldUrBlnDwW7J6d';
   
@@ -137,7 +142,48 @@ app.post('/api/stripe/account/save', function (req, res, next) {
 })
 };
 })
-  // /api/stripe/account/save
-}
+
+app.post('/api/stripe/account/save/account', function (req, res, next) {
+  
+   const stripeAccountId = 'acct_1CldUrBlnDwW7J6d';
+
+   const stripeTokenId = req.body.stripeTokenId;
+    console.log('stripeTokenId', stripeTokenId);
+   if (!stripeAccountId) {
+    res.send({
+      success: true,
+      message: 'Missing stripe account.',
+      setupBegan: false,
+      account: null,
+    });
+  } else if (!stripeTokenId) {
+    res.send({
+      success: false,
+      message: 'Missing stripe token',
+      setupBegan: false,
+      account: null,
+    });
+  } else {
+          const stripeObj = {          
+              external_account: stripeTokenId,
+          };
+          stripe.accounts.update(
+            stripeAccountId,
+            stripeObj
+          ).then(() => {
+          res.send({
+            success: true,
+            message: 'Saved',
+          });
+        }, (err) => {
+          console.log('er', err);
+          res.send({
+            success: false,
+            message: 'error',
+          });
+      });
+  };
   })
+};
+})
 }

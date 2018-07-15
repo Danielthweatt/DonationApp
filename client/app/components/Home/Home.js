@@ -23,6 +23,7 @@ class Home extends Component {
     this.getFieldValue = this.getFieldValue.bind(this);
     this.fieldsNeededFormChange = this.fieldsNeededFormChange.bind(this);
     this.onClickSaveFieldsNeeded = this.onClickSaveFieldsNeeded.bind(this);
+    this.onSaveAccount = this.onSaveAccount.bind(this);
   }
 
   componentWillMount() {
@@ -142,6 +143,40 @@ class Home extends Component {
         }
       });
   }
+
+  onSaveAccount(id) {
+    console.log('onSaveAccount', id);
+    
+    this.setState({
+      isLoading: true
+    });
+    fetch('/api/stripe/account/save/account', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        stripeTokenId: id,
+      })
+    })
+      .then(res => res.json())
+      .then(json => {
+        const { success, message } = json;
+
+        if (success) {
+          this.fetchAccount();
+        } else {
+          // failed
+          this.setState({
+            error: message,
+            isLoading: false
+          });
+        }
+      });
+    
+  }
+
   render() {
     const { 
       isLoading, 
@@ -169,6 +204,8 @@ class Home extends Component {
     const { verification } = account;
     const { fields_needed } = verification;
 
+    console.log('fields_needed', fields_needed);
+
     return (
       <div>
         {error ? <p>(error)</p> : null}
@@ -181,7 +218,9 @@ class Home extends Component {
               if (fieldKey === 'bank_account'){
                 return(
                   <Elements>
-                    <BankAccountForm />
+                    <BankAccountForm 
+                    onSaveAccount={this.onSaveAccount}          
+                    />
                   </Elements>
                 );
               }
