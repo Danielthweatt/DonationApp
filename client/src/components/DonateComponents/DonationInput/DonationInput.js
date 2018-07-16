@@ -11,7 +11,8 @@ class DonationInput extends Component {
 	state= {
 		name:"",
 		email:"",
-		amount:""
+		amount:"",
+		checked: false
 	}
 
 	handleNameInput = e => {
@@ -99,7 +100,7 @@ class DonationInput extends Component {
 
 
 			<Checkbox/>
-			
+
 			<StripeProvider apiKey="pk_test_xwATFGfvWsyNnp1dDh2MOk8I">
 				<Elements>
 				<StripeCheckout
