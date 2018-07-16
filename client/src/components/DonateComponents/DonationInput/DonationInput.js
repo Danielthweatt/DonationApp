@@ -12,7 +12,7 @@ class DonationInput extends Component {
 		name:"",
 		email:"",
 		amount:"",
-		checked: false
+		checked: false,
 		rememberMe: false
 	}
 
