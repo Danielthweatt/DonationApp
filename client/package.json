@@ -4,6 +4,7 @@
   "private": true,
   "proxy": "http://localhost:3001/",
   "dependencies": {
+    "@material/card": "^0.37.0",
     "@material/react-button": "^0.3.0",
     "axios": "^0.18.0",
     "react": "^16.4.1",
