@@ -2,8 +2,9 @@
 const path = require('path');
 const usersController = require('../controllers/usersController');
 const keyPublishable = 'pk_test_xwATFGfvWsyNnp1dDh2MOk8I';
-const secret = require('dotenv').config()
-const keySecret = secret.parsed.SECRET_KEY;
+const secret = require('../config/config.js')
+//console.log(secret)
+const keySecret = secret.SECRET_KEY;
 const stripe = require("stripe")(keySecret)
 module.exports = function(app, passport, User){
 
