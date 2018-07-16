@@ -12,6 +12,7 @@ class DonationInput extends Component {
 		name:"",
 		email:"",
 		amount:"",
+		checked: false
 		rememberMe: false
 	}
 
@@ -112,7 +113,7 @@ class DonationInput extends Component {
 
 
 			<Checkbox/>
-			
+
 			<StripeProvider apiKey="pk_test_xwATFGfvWsyNnp1dDh2MOk8I">
 				<Elements>
 				<StripeCheckout
