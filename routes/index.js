@@ -17,6 +17,7 @@ module.exports = function(app, passport, User){
 			source: req.body.source,
 			description: 'test charge',
 			currency: 'usd',
+			receipt_email: req.body.email
 		}).then(charge => res.send(charge))
 		//confirmation email needed
 	});
