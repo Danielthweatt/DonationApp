@@ -76,6 +76,7 @@ class DonationInput extends Component {
 			}).catch(err => console.log(err))
 
 		} else if (this.props.userInfo.loggedIn && this.props.userInfo.hasCustomerAccount) {
+			
 
 		} else {
 			axios.post('/charge', {
@@ -136,10 +137,14 @@ class DonationInput extends Component {
 				/>
 			)}
 
-
-			<Checkbox
-			handleCheckbox = {this.handleCheckbox}
-			/>
+			{this.props.userInfo.hasCustomerAccount ? (
+				<div><h2>{"U have an account already dumbo"}</h2></div>
+			) : (
+				<Checkbox
+					handleCheckbox = {this.handleCheckbox}
+				/>
+			)}
+			
 
 			<StripeProvider apiKey="pk_test_xwATFGfvWsyNnp1dDh2MOk8I">
 				<Elements>

@@ -22,6 +22,7 @@ class App extends Component {
 			id: null
 		};
 		this.checkUser = this.checkUser.bind(this);
+		this.checkForAccount = this.checkForAccount.bind(this);
 		this.componentDidMount = this.componentDidMount.bind(this);
 		this.updateUser = this.updateUser.bind(this);
 	}
@@ -38,14 +39,15 @@ class App extends Component {
 
 	checkUser(){
 		axios.get('/user').then(response => {
-			//console.log('Get user response: ');
-			//console.log(response.data);
+			console.log('Get user response: ');
+			console.log(response.data);
 			if (response.data.user) {
 			  console.log('Get User: There is a user saved in the server session: ');
 			  this.setState({
 					loggedIn: true,
 					id: response.data.user._id
 			  });
+			  this.checkForAccount();
 			} else {
 			  console.log('Get user: no user');
 			  this.setState({
@@ -54,6 +56,23 @@ class App extends Component {
 			  });
 			}
 		});
+	}
+
+	checkForAccount(){
+		axios.get('/user/' + this.state.id)
+		.then(response => {
+			if (response.data.customerId){
+				console.log('good good good gogogodoodgo')
+				this.setState({
+					hasCustomerAccount: true
+				})
+			}
+			else {
+				this.setState({
+					hasCustomerAccount: false
+				})
+			}
+		})
 	}
 
 	render() {

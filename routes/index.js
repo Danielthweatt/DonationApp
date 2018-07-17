@@ -40,9 +40,7 @@ module.exports = function(app, passport, User){
 			})
 
 			User.findOneAndUpdate({_id: id}, {
-				$set: {
-					customerId : customer.id
-				}
+				$set: {customerId : customer.id}
 			}, (err, data) => {
 				if(err){
 					console.log(err)
@@ -52,7 +50,6 @@ module.exports = function(app, passport, User){
 				}
 			})
 		})
-
 	})
 
 
@@ -121,6 +118,18 @@ module.exports = function(app, passport, User){
 			res.send({ msg: 'no user to log out' });
 		}
 	});
+
+	//see if user has account
+	app.get('/user/:id', (req,res) => {
+		User.findById({_id: req.params.id}, (err, data) => {
+			if(err){
+				res.json(err)
+			} 
+			else {
+				res.json(data)
+			}
+		})
+	})
 
 	//React App
 	// app.get('*', function(req, res) {
