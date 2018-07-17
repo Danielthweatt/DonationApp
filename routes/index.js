@@ -2,7 +2,8 @@
 const path = require('path');
 const usersController = require('../controllers/usersController');
 const keyPublishable = 'pk_test_xwATFGfvWsyNnp1dDh2MOk8I';
-const keySecret = 'sk_test_AKVA7CFMVqdEG0ZnhF7uiLz7';
+const secret = require('dotenv').config()
+const keySecret = secret.parsed.SECRET_KEY;
 const stripe = require("stripe")(keySecret)
 module.exports = function(app, passport, User){
 
@@ -16,9 +17,9 @@ module.exports = function(app, passport, User){
 			source: req.body.source,
 			description: 'test charge',
 			currency: 'usd',
+			receipt_email: req.body.email
 		}).then(charge => res.send(charge))
 		//confirmation email needed
-		
 	});
 
 	//charge route first time logged in to save info
@@ -27,7 +28,7 @@ module.exports = function(app, passport, User){
 			email: req.body.email,
 			//source is the token linked to their card
 			source: req.body.source
-		}).then(customer=>{
+		}).then(customer => {
 			//charge needed
 			if (err){
 				console.log(err)
