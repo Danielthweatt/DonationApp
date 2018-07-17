@@ -12,8 +12,11 @@ class DonationInput extends Component {
 		name:"",
 		email:"",
 		amount:"",
-		checked: false,
 		rememberMe: false
+	}
+
+	componentDidMount(){
+		console.log(this.state)
 	}
 
 	handleNameInput = e => {
@@ -47,8 +50,30 @@ class DonationInput extends Component {
 
 	forgetMe = () => {}
 
+	handleCheckbox = e => {
+		this.setState({rememberMe: true})
+	}
+
 	onToken = (token) => {
 		if (this.props.userInfo.loggedIn && this.state.rememberMe) {
+			let userId = this.props.userInfo.mongoId
+			//console.log(userId)
+			axios.post('/charge/' + userId, {
+				description:'save info charge',
+				email: this.state.email,
+				source: token.id,
+				amount: this.state.amount,
+				mongoId: this.props.userInfo.mongoId
+			}).then((data) => {
+				if(data.status === 200) {
+					alert('customer saved!')
+					this.setState({
+						name:"",
+						email:"",
+						amount:""
+					});
+				}
+			}).catch(err => console.log(err))
 
 		} else if (this.props.userInfo.loggedIn && this.props.userInfo.hasCustomerAccount) {
 
@@ -112,7 +137,9 @@ class DonationInput extends Component {
 			)}
 
 
-			<Checkbox/>
+			<Checkbox
+			handleCheckbox = {this.handleCheckbox}
+			/>
 
 			<StripeProvider apiKey="pk_test_xwATFGfvWsyNnp1dDh2MOk8I">
 				<Elements>

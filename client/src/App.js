@@ -31,15 +31,15 @@ class App extends Component {
 	}
 
 	updateUser(userObject){
-		console.log('updating user in app state');
+		//console.log('updating user in app state');
 		this.setState(userObject);
-		console.log(this.state.id);
+		//console.log(this.state.id);
 	}
 
 	checkUser(){
 		axios.get('/user').then(response => {
-			console.log('Get user response: ');
-			console.log(response.data);
+			//console.log('Get user response: ');
+			//console.log(response.data);
 			if (response.data.user) {
 			  console.log('Get User: There is a user saved in the server session: ');
 			  this.setState({

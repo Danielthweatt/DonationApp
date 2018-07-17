@@ -18,26 +18,41 @@ module.exports = function(app, passport, User){
 			source: req.body.source,
 			description: 'test charge',
 			currency: 'usd',
-			receipt_email: req.body.email
+			//receipt_email: req.body.email
 		}).then(charge => res.send(charge))
 		//confirmation email needed
 	});
 
 	//charge route first time logged in to save info
-	app.put("/charge:id", (req,res) => {
+	app.post("/charge/:id", (req,res) => {
+		let id = req.params.id;
+		let amount = (req.body.amount) * 100;
+		console.log(id)
 		stripe.customers.create({
 			email: req.body.email,
 			//source is the token linked to their card
 			source: req.body.source
-		}).then(customer => {
-			//charge needed
-			if (err){
-				console.log(err)
-			}
-			else {
-				console.log(customer)
-			}
+		}).then((customer) => {
+			stripe.charges.create({
+				amount,
+				currency: 'usd',
+				customer: customer.id
+			})
+
+			User.findOneAndUpdate({_id: id}, {
+				$set: {
+					customerId : customer.id
+				}
+			}, (err, data) => {
+				if(err){
+					console.log(err)
+				} 
+				else {
+					console.log(data)
+				}
+			})
 		})
+
 	})
 
 
