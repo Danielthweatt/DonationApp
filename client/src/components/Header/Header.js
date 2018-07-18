@@ -19,7 +19,7 @@ class Header extends Component {
 				});
 			}
 		}).catch(err => {
-				console.log(`Logoutf error: ${err}`);
+				console.log(`Logout error: ${err}`);
 		});
 	}
 
@@ -44,9 +44,9 @@ class Header extends Component {
 						</li>
 						<li className="nav-item">
 							{this.props.userInfo.loggedIn ? (
-								<a className="nav-link disabled" href="/login">Login</a>
-							) : (
 								<button className="nav-link disabled" onClick={this.logout}>Logout</button>
+							) : (
+								<a className="nav-link disabled" href="/login">Login</a>
 							)}
 						</li>
 					</ul>

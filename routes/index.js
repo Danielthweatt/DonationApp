@@ -109,9 +109,25 @@ module.exports = function(app, passport, User){
 	);
 
 	//Check to see if signed-in Route
-	app.get('/user', (req, res, next) => {
+	app.get('/user', (req, res) => {
 		if (req.user) {
-			res.json({ user: req.user });
+			User.findById({_id: req.user._id}, (err, data) => {
+				if (err) {
+					res.json(err);
+				} else {
+					if (data.customerId) {
+						res.json({
+							user: req.user,
+							hasCustomerAccount: true
+						});
+					} else {
+						res.json({
+							user: req.user,
+							hasCustomerAccount: false
+						});
+					}
+				}
+			});
 		} else {
 			res.json({ user: null });
 		}
@@ -125,18 +141,6 @@ module.exports = function(app, passport, User){
 		} else {
 			res.send({ message: 'No user to log out' });
 		}
-	});
-
-	//see if user has account
-	app.get('/user/:id', (req,res) => {
-		User.findById({_id: req.params.id}, (err, data) => {
-			if(err){
-				res.json(err);
-			} 
-			else {
-				res.json(data);
-			}
-		});
 	});
 
 	//React App

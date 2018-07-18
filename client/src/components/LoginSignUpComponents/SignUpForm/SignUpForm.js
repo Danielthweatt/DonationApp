@@ -15,21 +15,19 @@ class SignUpForm extends Component {
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.handleEmailInput = this.handleEmailInput.bind(this);
 		this.handlePasswordInput = this.handlePasswordInput.bind(this); 
-		this.handlePasswordConfirmInput = this.handlePasswordInput.bind(this); 
+		this.handlePasswordConfirmInput = this.handlePasswordConfirmInput.bind(this); 
 	}
 
 	handleEmailInput = e => {
-		this.setState({email: e.target.value})
+		this.setState({email: e.target.value});
 	}
 
 	handlePasswordInput = e => {
-		//console.log(e.target.value)
-		this.setState({password: e.target.value})
+		this.setState({password: e.target.value});
 	}
 
 	handlePasswordConfirmInput = e => {
-		//console.log(e.target.value)
-		this.setState({confirmPassword: e.target.value})
+		this.setState({confirmPassword: e.target.value});
 	}
 
 	handleSubmit(event) {
@@ -45,6 +43,7 @@ class SignUpForm extends Component {
 						redirectTo: '/'
 					});
 				} else {
+					// To be replaced
 					console.log('Username already taken');
 				}
 			}).catch(error => {
@@ -52,6 +51,7 @@ class SignUpForm extends Component {
 				console.log(error);
 			});
 		} else {
+			// To be replaced
 			alert("Please re-enter the same password.");
 		}
 	}

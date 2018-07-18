@@ -8,10 +8,9 @@ import Footer from '../../components/Footer/Footer';
 class Login extends Component {
 
 	render (){
-		console.log(this.props.updateUser);
 		return (
 			<Wrapper>
-				<Header />
+				<Header updateUser={this.props.updateUser} userInfo={this.props.userInfo} />
 				<LoginForm updateUser={this.props.updateUser} />
 				<Footer />
 			</Wrapper>

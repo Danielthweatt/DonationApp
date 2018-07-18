@@ -4,8 +4,6 @@ import Home from './pages/Home';
 import Login from './pages/Login'; 
 import SignUp from './pages/SignUp'; 
 import Donations from './pages/Donations';
-import Header from './components/Header/Header'; 
-import Wrapper from './components/Wrapper/Wrapper'; 
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import axios from 'axios';
 import './App.css';
@@ -23,7 +21,6 @@ class App extends Component {
 			customerId: null,
 			id: null
 		};
-		this.checkForAccount = this.checkForAccount.bind(this);
 		this.updateUser = this.updateUser.bind(this);
 		this.checkUser = this.checkUser.bind(this);
 		this.componentDidMount = this.componentDidMount.bind(this);
@@ -40,13 +37,11 @@ class App extends Component {
 	checkUser(){
 		axios.get('/user').then(response => {
 			if (response.data.user) {
-				console.log(response.data.user);
-				// To do: consolidate this and checkForAccount Route
 			  	this.setState({
 					loggedIn: true,
+					hasCustomerAccount: response.data.hasCustomerAccount,
 					id: response.data.user._id
-			  });
-			  this.checkForAccount();
+			  	});
 			} else {
 			  	this.setState({
 					loggedIn: false,
@@ -54,23 +49,6 @@ class App extends Component {
 			  	});
 			}
 		});
-	}
-
-	checkForAccount(){
-		axios.get('/user/' + this.state.id)
-			.then(response => {
-				if (response.data.customerId){
-					this.setState({
-						hasCustomerAccount: true,
-						customerId: response.data.customerId
-					});
-				}
-				else {
-					this.setState({
-						hasCustomerAccount: false
-					});
-				}
-			});
 	}
 
 	render() {
@@ -88,8 +66,12 @@ class App extends Component {
 								mongoId: this.state.id,
 								customerId: this.state.customerId
 							}}/>} />
-					<Route exact path="/login" component={Login}/>} />
-					<Route exact path="/signup" component= {SignUp}/>} />
+					<Route exact path="/login" render={() =>
+						<Login updateUser={this.updateUser} 
+							userInfo={{loggedIn: this.state.loggedIn}}/>} />
+					<Route exact path="/signup" render= {() =>
+						<SignUp updateUser={this.updateUser} 
+							userInfo={{loggedIn: this.state.loggedIn}}/>} />
 					<Route exact path="*" render= {() =>
 						<Home updateUser={this.updateUser} 
 							userInfo={{loggedIn: this.state.loggedIn}}/>} />
