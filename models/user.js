@@ -8,6 +8,7 @@ mongoose.promise = Promise;
 const userSchema = new Schema({
 	email: String,
 	password: String,
+	customerId: String,
 	passwordResetToken: String,
 	passwordResetTokenExpiration: Date,
 	dateCreated: { 
