@@ -8,19 +8,16 @@ import Checkbox from "../Checkbox";
 
 class DonationInput extends Component {
 
-	state= {
+	state = {
 		name:"",
 		email:"",
 		amount:"",
-		rememberMe: false
+		checked: false,
+		rememberMe: false,
+		customAmount: ""
 	}
 
-	//if (this.props.userInfo.loggedIn && this.props.userInfo.hasCustomerAccount) {
-
-	componentDidMount(){
-		//console.log(this.state)
-	}
-
+	
 	handleNameInput = e => {
 		//console.log(e.target.value)
 		this.setState({name: e.target.value})
@@ -30,44 +27,22 @@ class DonationInput extends Component {
 		this.setState({email: e.target.value})
 	}
 
-	handleFive = e => {
-		e.preventDefault();
-		//console.log(e.target.value)
-		if (this.props.userInfo.loggedIn && this.props.userInfo.hasCustomerAccount) {
-			this.setState({amount: e.target.value})
-			this.chargeACustomer();
-		}
-		else {
-			this.setState({amount: e.target.value})
-		}
-		
-	}
 
-	handleTen = e => {
-		e.preventDefault();
-		//console.log(e.target.value)
-		if (this.props.userInfo.loggedIn && this.props.userInfo.hasCustomerAccount) {
-			this.setState({amount: e.target.value})
-			this.chargeACustomer();
-		}
-		else {
-			this.setState({amount: e.target.value})
-		}
-	}
 
-	handleTwenty = e => {
-		e.preventDefault();
-		//console.log(e.target.value)
-		if (this.props.userInfo.loggedIn && this.props.userInfo.hasCustomerAccount) {
-			this.setState({amount: e.target.value})
-			this.chargeACustomer();
-		}
-		else {
-			this.setState({amount: e.target.value})
-		}
+	handleMoneyButton = e => {
+		console.log(e.target.value);
+		this.setState({
+			customAmount: '',
+			amount: e.target.value })
 	}
+	
+	
+	handleMoneyCustom = e => {
+		console.log(e.target.value)
+		this.setState({
+			customAmount: e.target.value,
+			amount: e.target.value })
 
-	handleCustom = e => {
 	}
 
 	updatePaymentInfo = () => {}
@@ -149,11 +124,10 @@ class DonationInput extends Component {
 		return (
 			<div className = "donation-input">
 				
-			<DonateOptions 
-				numValue="8.00"
-				handleFive={this.handleFive}
-				handleTen={this.handleTen}
-				handleTwenty={this.handleTwenty}
+			<DonateOptions
+				handleMoneyButton={this.handleMoneyButton}
+				handleMoneyCustom={this.handleMoneyCustom}
+				customAmount={this.state.customAmount}
 			/>
 
 
@@ -184,7 +158,8 @@ class DonationInput extends Component {
 			)}
 			
 
-			<StripeProvider apiKey="pk_test_xwATFGfvWsyNnp1dDh2MOk8I">
+			<StripeProvider apiKey="pk_test_laDoJCqgOQpou2PvCdG07DE2
+">
 				<Elements>
 		
 				<StripeCheckout
@@ -192,7 +167,7 @@ class DonationInput extends Component {
 					name={this.state.name}
 					email={this.state.email}
 					token={this.onToken}
-					stripeKey={'pk_test_xwATFGfvWsyNnp1dDh2MOk8I'}
+					stripeKey={'pk_test_laDoJCqgOQpou2PvCdG07DE2'}
 				/>
 				
 				</Elements>

@@ -2,15 +2,16 @@
 const path = require('path');
 const usersController = require('../controllers/usersController');
 const keyPublishable = 'pk_test_xwATFGfvWsyNnp1dDh2MOk8I';
-const secret = require('../config/config.js')
-//console.log(secret)
+
+const secret = require('../config/config.js');
 const keySecret = secret.SECRET_KEY;
-const stripe = require("stripe")(keySecret)
+const stripe = require('stripe')(keySecret);
+
 module.exports = function(app, passport, User){
 
 	// Charge Route for no customer creation
-	app.post("/charge", (req,res) => {
-		console.log(req.body)
+	app.post('/charge', (req,res) => {
+		console.log(req.body);
 		//get to dollar amount by *100
 		let amount = (req.body.amount) * 100;
 		stripe.charges.create({
@@ -18,20 +19,23 @@ module.exports = function(app, passport, User){
 			source: req.body.source,
 			description: 'test charge',
 			currency: 'usd',
-			//receipt_email: req.body.email
-		}).then(charge => res.send(charge))
-		//confirmation email needed
+			receipt_email: req.body.email
+		}).then(charge => res.send(charge));
+	
 	});
 
 	//charge route first time logged in to save info
+
 	app.post("/charge/create/:id", (req,res) => {
 		let id = req.params.id;
 		let amount = (req.body.amount) * 100;
 		//console.log(id)
+    
 		stripe.customers.create({
 			email: req.body.email,
 			//source is the token linked to their card
 			source: req.body.source
+
 		}).then((customer) => {
 			stripe.charges.create({
 				amount,
@@ -51,6 +55,7 @@ module.exports = function(app, passport, User){
 			})
 		})
 	})
+
 
 	//charge a customer with a saved card
 	app.post('/charge/:id', (req,res) => {
