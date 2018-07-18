@@ -28,6 +28,7 @@ class DonationInput extends Component {
 	}
 
 
+
 	handleMoneyButton = e => {
 		console.log(e.target.value);
 		this.setState({
@@ -41,16 +42,37 @@ class DonationInput extends Component {
 		this.setState({
 			customAmount: e.target.value,
 			amount: e.target.value })
+
 	}
 
 	updatePaymentInfo = () => {}
 
 	forgetMe = () => {}
 
+	handleCheckbox = e => {
+		this.setState({rememberMe: true})
+	}
+
 	onToken = (token) => {
 		if (this.props.userInfo.loggedIn && this.state.rememberMe) {
-
-		} else if (this.props.userInfo.loggedIn && this.props.userInfo.hasCustomerAccount) {
+			let userId = this.props.userInfo.mongoId
+			//console.log(userId)
+			axios.post('/charge/create/' + userId, {
+				description:'save info charge',
+				email: this.state.email,
+				source: token.id,
+				amount: this.state.amount,
+				mongoId: this.props.userInfo.mongoId
+			}).then((data) => {
+				if(data.status === 200) {
+					alert('customer saved!')
+					this.setState({
+						name:"",
+						email:"",
+						amount:""
+					});
+				}
+			}).catch(err => console.log(err))
 
 		} else {
 			axios.post('/charge', {
@@ -77,8 +99,25 @@ class DonationInput extends Component {
             	console.log(err)
 			});
 		}
-
 	}
+
+	chargeACustomer() {
+		alert('press ok to go thru with this donation')
+			//charge the customer instead of the card
+			let userId = this.props.userInfo.mongoId
+			//console.log(this.props.userInfo)
+			axios.post('/charge/' + userId, {
+				description: 'charge a customer',
+				source: this.props.userInfo.customerId,
+				amount: this.state.amount,
+			}).then((data) => {
+				console.log(data)
+				// if(data.status === 200) {
+				// 	alert('great job')
+				// }
+			}).catch(err => console.log(err))
+	}
+
 	
 	render() {
 		console.log(this.props.userInfo);
@@ -110,18 +149,27 @@ class DonationInput extends Component {
 				/>
 			)}
 
-
-			<Checkbox/>
+			{this.props.userInfo.loggedIn && this.props.userInfo.hasCustomerAccount ? (
+				<div></div>
+			) : (
+				<Checkbox
+					handleCheckbox = {this.handleCheckbox}
+				/>
+			)}
+			
 
 			<StripeProvider apiKey="pk_test_laDoJCqgOQpou2PvCdG07DE2
 ">
 				<Elements>
+		
 				<StripeCheckout
+					allowRememberMe = {false}
 					name={this.state.name}
 					email={this.state.email}
 					token={this.onToken}
 					stripeKey={'pk_test_laDoJCqgOQpou2PvCdG07DE2'}
 				/>
+				
 				</Elements>
 			</StripeProvider>
 			
