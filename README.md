@@ -7,19 +7,19 @@ Donation App was created for non-profits to quickly implement a platform to rece
 Access the game here
 
 ## User Stories:
-[Skylar Morgan](https://app.xtensio.com/9ium2q4l)
-[Joff Waters](https://app.xtensio.com/9ium2q4l)
+- [Skylar Morgan](https://app.xtensio.com/9ium2q4l)
+- [Joff Waters](https://app.xtensio.com/9ium2q4l)
 
 ## Built With:
 - React
 - Node
 - Express
 - Mongoose
-- Materialize
+- Material Design
 
 ## Contributors:
-Daniel Thweatt
-Maddy Fiksdal
-Majid Jamaleldine
-Robert Queeny
-Cavan Wagg
+- Daniel Thweatt
+- Maddy Fiksdal
+- Majid Jamaleldine
+- Robert Queeny
+- Cavan Wagg
