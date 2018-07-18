@@ -12,8 +12,8 @@ class DonationInput extends Component {
 		name:"",
 		email:"",
 		amount:"",
-		checked: false
-		rememberMe: false
+		checked: false,
+		rememberMe: false,
 	}
 
 	handleNameInput = e => {
@@ -25,22 +25,10 @@ class DonationInput extends Component {
 		this.setState({email: e.target.value})
 	}
 
-	handleFive = e => {
-		console.log(e.target.value)
-		this.setState({amount: e.target.value})
-	}
 
-	handleTen = e => {
+	handleMoneyAmount = e => {
 		console.log(e.target.value)
-		this.setState({amount: e.target.value})
-	}
-
-	handleTwenty = e => {
-		console.log(e.target.value)
-		this.setState({amount: e.target.value})
-	}
-
-	handleCustom = e => {
+		this.setState({amount: e.target.value })
 	}
 
 	updatePaymentInfo = () => {}
@@ -85,11 +73,8 @@ class DonationInput extends Component {
 		return (
 			<div className = "donation-input">
 				
-			<DonateOptions 
-				numValue="8.00"
-				handleFive={this.handleFive}
-				handleTen={this.handleTen}
-				handleTwenty={this.handleTwenty}
+			<DonateOptions
+				handleMoneyAmount={this.handleMoneyAmount}
 			/>
 
 
@@ -114,13 +99,14 @@ class DonationInput extends Component {
 
 			<Checkbox/>
 
-			<StripeProvider apiKey="pk_test_xwATFGfvWsyNnp1dDh2MOk8I">
+			<StripeProvider apiKey="pk_test_laDoJCqgOQpou2PvCdG07DE2
+">
 				<Elements>
 				<StripeCheckout
 					name={this.state.name}
 					email={this.state.email}
 					token={this.onToken}
-					stripeKey={'pk_test_xwATFGfvWsyNnp1dDh2MOk8I'}
+					stripeKey={'pk_test_laDoJCqgOQpou2PvCdG07DE2'}
 				/>
 				</Elements>
 			</StripeProvider>

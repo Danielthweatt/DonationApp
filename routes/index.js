@@ -2,14 +2,14 @@
 const path = require('path');
 const usersController = require('../controllers/usersController');
 const keyPublishable = 'pk_test_xwATFGfvWsyNnp1dDh2MOk8I';
-const secret = require('dotenv').config()
-const keySecret = secret.parsed.SECRET_KEY;
-const stripe = require("stripe")(keySecret)
+const secret = require('../config/config.js');
+const keySecret = secret.SECRET_KEY;
+const stripe = require('stripe')(keySecret);
 module.exports = function(app, passport, User){
 
 	// Charge Route for no customer creation
-	app.post("/charge", (req,res) => {
-		console.log(req.body)
+	app.post('/charge', (req,res) => {
+		console.log(req.body);
 		//get to dollar amount by *100
 		let amount = (req.body.amount) * 100;
 		stripe.charges.create({
@@ -18,12 +18,12 @@ module.exports = function(app, passport, User){
 			description: 'test charge',
 			currency: 'usd',
 			receipt_email: req.body.email
-		}).then(charge => res.send(charge))
+		}).then(charge => res.send(charge));
 		//confirmation email needed
 	});
 
 	//charge route first time logged in to save info
-	app.put("/charge:id", (req,res) => {
+	app.put('/charge:id', (req,res) => {
 		stripe.customers.create({
 			email: req.body.email,
 			//source is the token linked to their card
@@ -31,13 +31,13 @@ module.exports = function(app, passport, User){
 		}).then(customer => {
 			//charge needed
 			if (err){
-				console.log(err)
+				console.log(err);
 			}
 			else {
-				console.log(customer)
+				console.log(customer);
 			}
-		})
-	})
+		});
+	});
 
 
 	//Sign-Up Route
