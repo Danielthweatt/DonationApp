@@ -8,14 +8,16 @@ import Checkbox from "../Checkbox";
 
 class DonationInput extends Component {
 
-	state= {
+	state = {
 		name:"",
 		email:"",
 		amount:"",
 		checked: false,
 		rememberMe: false,
+		customAmount: ""
 	}
 
+	
 	handleNameInput = e => {
 		//console.log(e.target.value)
 		this.setState({name: e.target.value})
@@ -26,9 +28,19 @@ class DonationInput extends Component {
 	}
 
 
-	handleMoneyAmount = e => {
+	handleMoneyButton = e => {
+		console.log(e.target.value);
+		this.setState({
+			customAmount: '',
+			amount: e.target.value })
+	}
+	
+	
+	handleMoneyCustom = e => {
 		console.log(e.target.value)
-		this.setState({amount: e.target.value })
+		this.setState({
+			customAmount: e.target.value,
+			amount: e.target.value })
 	}
 
 	updatePaymentInfo = () => {}
@@ -74,7 +86,9 @@ class DonationInput extends Component {
 			<div className = "donation-input">
 				
 			<DonateOptions
-				handleMoneyAmount={this.handleMoneyAmount}
+				handleMoneyButton={this.handleMoneyButton}
+				handleMoneyCustom={this.handleMoneyCustom}
+				customAmount={this.state.customAmount}
 			/>
 
 
