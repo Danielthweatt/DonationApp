@@ -34,26 +34,26 @@ class SignUpForm extends Component {
 
 	handleSubmit(event) {
 		event.preventDefault();
-		console.log('Sign-up handleSubmit, email: ');
-		console.log(this.state.email);
-		const signUpInfo = {
-			email: this.state.email,
-			password: this.state.password
-		};
-		axios.post('/user/signup', signUpInfo).then(response => {
-			console.log(response);
-			if (!response.data.errmsg) {
-				console.log('Successful signup');
-				this.setState({ //redirect to login page
-					redirectTo: '/'
-				});
-			} else {
-				console.log('username already taken');
-			}
-		}).catch(error => {
-			console.log('Signup error: ');
-			console.log(error);
-		});
+		if (this.state.password === this.state.confirmPassword) {
+			const signUpInfo = {
+				email: this.state.email,
+				password: this.state.password
+			};
+			axios.post('/user/signup', signUpInfo).then(response => {
+				if (!response.data.errmsg) {
+					this.setState({ //redirect to login page
+						redirectTo: '/'
+					});
+				} else {
+					console.log('Username already taken');
+				}
+			}).catch(error => {
+				console.log('Signup error: ');
+				console.log(error);
+			});
+		} else {
+			alert("Please re-enter the same password.");
+		}
 	}
 
 	render() {

@@ -21,9 +21,9 @@ class App extends Component {
 			hasCustomerAccount: false,
 			id: null
 		};
-		this.checkUser = this.checkUser.bind(this);
 		this.componentDidMount = this.componentDidMount.bind(this);
 		this.updateUser = this.updateUser.bind(this);
+		this.checkUser = this.checkUser.bind(this);
 	}
 
 	componentDidMount(){
@@ -31,27 +31,21 @@ class App extends Component {
 	}
 
 	updateUser(userObject){
-		console.log('updating user in app state');
 		this.setState(userObject);
-		console.log(this.state.id);
 	}
 
 	checkUser(){
 		axios.get('/user').then(response => {
-			console.log('Get user response: ');
-			console.log(response.data);
 			if (response.data.user) {
-			  console.log('Get User: There is a user saved in the server session: ');
-			  this.setState({
+			  	this.setState({
 					loggedIn: true,
 					id: response.data.user._id
-			  });
+			  	});
 			} else {
-			  console.log('Get user: no user');
-			  this.setState({
+			  	this.setState({
 					loggedIn: false,
 					id: null
-			  });
+			  	});
 			}
 		});
 	}
@@ -59,22 +53,27 @@ class App extends Component {
 	render() {
 		return (
 			<Router>
-				<div>
-					<p>Join the party {this.state.id}!</p>
-					<Switch>
-						<Route exact path="/about" component= {About} />
-						<Route exact path="/donations" render= {() => 
-							<Donations userInfo={{
+				<Switch>
+					<Route exact path="/about" render= {() =>
+						<About updateUser={this.updateUser} 
+							userInfo={{loggedIn: this.state.loggedIn}}/>} />
+					<Route exact path="/donations" render= {() => 
+						<Donations updateUser={this.updateUser} 
+							userInfo={{
 								loggedIn: this.state.loggedIn,
 								hasCustomerAccount: this.state.hasCustomerAccount,
 								mongoId: this.state.id
 							}}/>} />
-						<Route exact path="/login" render={() =>
-            				<Login updateUser={this.updateUser}/>} />
-						<Route exact path="/signup" component= {SignUp} />
-						<Route exact path="*" component= {Home} />
-					</Switch>
-				</div>
+					<Route exact path="/login" render={() =>
+            			<Login updateUser={this.updateUser} 
+							userInfo={{loggedIn: this.state.loggedIn}}/>} />
+					<Route exact path="/signup" render= {() =>
+						<SignUp updateUser={this.updateUser} 
+							userInfo={{loggedIn: this.state.loggedIn}}/>} />
+					<Route exact path="*" render= {() =>
+						<Home updateUser={this.updateUser} 
+							userInfo={{loggedIn: this.state.loggedIn}}/>} />
+				</Switch>
 			</Router>
 		);
 	}

@@ -8,11 +8,11 @@ import Checkbox from "../Checkbox";
 
 class DonationInput extends Component {
 
-	state= {
+	state = {
 		name:"",
 		email:"",
 		amount:"",
-		checked: false
+		checked: false,
 		rememberMe: false
 	}
 
