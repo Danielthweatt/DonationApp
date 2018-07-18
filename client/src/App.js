@@ -19,6 +19,7 @@ class App extends Component {
 		this.state = {
 			loggedIn: false,
 			hasCustomerAccount: false,
+			customerId: null,
 			id: null
 		};
 		this.checkUser = this.checkUser.bind(this);
@@ -64,7 +65,8 @@ class App extends Component {
 			if (response.data.customerId){
 				console.log('good good good gogogodoodgo')
 				this.setState({
-					hasCustomerAccount: true
+					hasCustomerAccount: true,
+					customerId: response.data.customerId
 				})
 			}
 			else {
@@ -86,7 +88,8 @@ class App extends Component {
 							<Donations userInfo={{
 								loggedIn: this.state.loggedIn,
 								hasCustomerAccount: this.state.hasCustomerAccount,
-								mongoId: this.state.id
+								mongoId: this.state.id,
+								customerId: this.state.customerId
 							}}/>} />
 						<Route exact path="/login" render={() =>
             				<Login updateUser={this.updateUser}/>} />

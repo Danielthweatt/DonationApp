@@ -24,10 +24,10 @@ module.exports = function(app, passport, User){
 	});
 
 	//charge route first time logged in to save info
-	app.post("/charge/:id", (req,res) => {
+	app.post("/charge/create/:id", (req,res) => {
 		let id = req.params.id;
 		let amount = (req.body.amount) * 100;
-		console.log(id)
+		//console.log(id)
 		stripe.customers.create({
 			email: req.body.email,
 			//source is the token linked to their card
@@ -52,6 +52,20 @@ module.exports = function(app, passport, User){
 		})
 	})
 
+	//charge a customer with a saved card
+	app.post('/charge/:id', (req,res) => {
+		//console.log('AYO ' + req.body.amount)
+		let amount = (req.body.amount) * 100;
+		let customer = req.body.source
+		console.log(amount)
+		stripe.charges.create({
+			amount,
+			customer,
+			currency: 'usd'
+		})
+		.then(charge => res.json(charge))
+		.catch(err => res.json(err))
+	})
 
 	//Sign-Up Route
 	app.post('/user/signup', (req, res) => {
