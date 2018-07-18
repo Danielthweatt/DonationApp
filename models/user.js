@@ -8,6 +8,7 @@ mongoose.promise = Promise;
 const userSchema = new Schema({
 	email: String,
 	password: String,
+	customerId: String,
 	passwordResetToken: String,
 	passwordResetTokenExpiration: Date,
 	dateCreated: { 
@@ -32,7 +33,6 @@ userSchema.pre('save', function(next){
 		console.log('models/user.js =======NO PASSWORD PROVIDED=======');
 		next();
 	} else {
-		console.log('models/user.js hashPassword in pre save');
 		this.password = this.hashPassword(this.password);
 		next();
 	}

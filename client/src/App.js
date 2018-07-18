@@ -19,11 +19,13 @@ class App extends Component {
 		this.state = {
 			loggedIn: false,
 			hasCustomerAccount: false,
+			customerId: null,
 			id: null
 		};
-		this.componentDidMount = this.componentDidMount.bind(this);
+		this.checkForAccount = this.checkForAccount.bind(this);
 		this.updateUser = this.updateUser.bind(this);
 		this.checkUser = this.checkUser.bind(this);
+		this.componentDidMount = this.componentDidMount.bind(this);
 	}
 
 	componentDidMount(){
@@ -40,7 +42,8 @@ class App extends Component {
 			  	this.setState({
 					loggedIn: true,
 					id: response.data.user._id
-			  	});
+			  });
+			  this.checkForAccount();
 			} else {
 			  	this.setState({
 					loggedIn: false,
@@ -48,6 +51,24 @@ class App extends Component {
 			  	});
 			}
 		});
+	}
+
+	checkForAccount(){
+		axios.get('/user/' + this.state.id)
+			.then(response => {
+				if (response.data.customerId){
+					console.log('good good good gogogodoodgo');
+					this.setState({
+						hasCustomerAccount: true,
+						customerId: response.data.customerId
+					});
+				}
+				else {
+					this.setState({
+						hasCustomerAccount: false
+					});
+				}
+			});
 	}
 
 	render() {
@@ -62,7 +83,8 @@ class App extends Component {
 							userInfo={{
 								loggedIn: this.state.loggedIn,
 								hasCustomerAccount: this.state.hasCustomerAccount,
-								mongoId: this.state.id
+								mongoId: this.state.id,
+								customerId: this.state.customerId
 							}}/>} />
 					<Route exact path="/login" render={() =>
             			<Login updateUser={this.updateUser} 

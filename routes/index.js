@@ -1,9 +1,11 @@
 //Dependencies
 const path = require('path');
 const keyPublishable = 'pk_test_xwATFGfvWsyNnp1dDh2MOk8I';
-const secret = require('dotenv').config();
-const keySecret = secret.parsed.SECRET_KEY;
+
+const secret = require('../config/config.js');
+const keySecret = secret.SECRET_KEY;
 const stripe = require('stripe')(keySecret);
+
 module.exports = function(app, passport, User){
 
 	// Charge Route for no customer creation
@@ -18,26 +20,56 @@ module.exports = function(app, passport, User){
 			currency: 'usd',
 			receipt_email: req.body.email
 		}).then(charge => res.send(charge));
-		//confirmation email needed
+	
 	});
 
 	//charge route first time logged in to save info
-	app.put('/charge:id', (req, res) => {
+
+	app.post('/charge/create/:id', (req,res) => {
+		let id = req.params.id;
+		let amount = (req.body.amount) * 100;
+		//console.log(id)
+    
 		stripe.customers.create({
 			email: req.body.email,
 			//source is the token linked to their card
 			source: req.body.source
-		}).then(customer => {
-			//charge needed
-			if (err){
-				console.log(err);
-			}
-			else {
-				console.log(customer);
-			}
+
+		}).then((customer) => {
+			stripe.charges.create({
+				amount,
+				currency: 'usd',
+				customer: customer.id
+			});
+
+			User.findOneAndUpdate({_id: id}, {
+				$set: {customerId : customer.id}
+			}, (err, data) => {
+				if(err){
+					console.log(err);
+				} 
+				else {
+					console.log(data);
+				}
+			});
 		});
 	});
 
+
+	//charge a customer with a saved card
+	app.post('/charge/:id', (req,res) => {
+		//console.log('AYO ' + req.body.amount)
+		let amount = (req.body.amount) * 100;
+		let customer = req.body.source;
+		console.log(amount);
+		stripe.charges.create({
+			amount,
+			customer,
+			currency: 'usd'
+		})
+			.then(charge => res.json(charge))
+			.catch(err => res.json(err));
+	});
 
 	//Sign-Up Route
 	app.post('/user/signup', (req, res) => {
@@ -93,6 +125,18 @@ module.exports = function(app, passport, User){
 		} else {
 			res.send({ message: 'No user to log out' });
 		}
+	});
+
+	//see if user has account
+	app.get('/user/:id', (req,res) => {
+		User.findById({_id: req.params.id}, (err, data) => {
+			if(err){
+				res.json(err);
+			} 
+			else {
+				res.json(data);
+			}
+		});
 	});
 
 	//React App
