@@ -16,6 +16,7 @@ import './App.css';
 class App extends Component {
 	constructor(){
 		super();
+		// To do: update state (customer account and id properties) here and in other components
 		this.state = {
 			loggedIn: false,
 			hasCustomerAccount: false,
@@ -39,6 +40,8 @@ class App extends Component {
 	checkUser(){
 		axios.get('/user').then(response => {
 			if (response.data.user) {
+				console.log(response.data.user);
+				// To do: consolidate this and checkForAccount Route
 			  	this.setState({
 					loggedIn: true,
 					id: response.data.user._id
@@ -57,7 +60,6 @@ class App extends Component {
 		axios.get('/user/' + this.state.id)
 			.then(response => {
 				if (response.data.customerId){
-					console.log('good good good gogogodoodgo');
 					this.setState({
 						hasCustomerAccount: true,
 						customerId: response.data.customerId
@@ -86,12 +88,8 @@ class App extends Component {
 								mongoId: this.state.id,
 								customerId: this.state.customerId
 							}}/>} />
-					<Route exact path="/login" render={() =>
-            			<Login updateUser={this.updateUser} 
-							userInfo={{loggedIn: this.state.loggedIn}}/>} />
-					<Route exact path="/signup" render= {() =>
-						<SignUp updateUser={this.updateUser} 
-							userInfo={{loggedIn: this.state.loggedIn}}/>} />
+					<Route exact path="/login" component={Login}/>} />
+					<Route exact path="/signup" component= {SignUp}/>} />
 					<Route exact path="*" render= {() =>
 						<Home updateUser={this.updateUser} 
 							userInfo={{loggedIn: this.state.loggedIn}}/>} />

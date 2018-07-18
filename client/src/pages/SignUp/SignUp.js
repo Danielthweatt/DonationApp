@@ -11,7 +11,7 @@ class SignUp extends Component {
 		return (
 			<Wrapper>
 				<Header />
-                <SignUpForm />
+				<SignUpForm />
 				<Footer />
 			</Wrapper>
 		
