@@ -23,20 +23,16 @@ class LoginForm extends Component {
 	}
 
 	handlePasswordInput = e => {
-		//console.log(e.target.value)
 		this.setState({password: e.target.value});
 	}
 
 	handleSubmit(event) {
         event.preventDefault();
-		console.log('HandleSubmit');
 		const signInInfo = {
 			email: this.state.email,
 			password: this.state.password
 		};
         axios.post('/user/signin', signInInfo).then(response => {
-            console.log('Login response: ');
-            console.log(response);
             if (response.status === 200) {
                 // update App.js state
                 this.props.updateUser({

@@ -1,14 +1,16 @@
 //Dependencies
 const path = require('path');
-const usersController = require('../controllers/usersController');
 const keyPublishable = 'pk_test_xwATFGfvWsyNnp1dDh2MOk8I';
-const keySecret = 'sk_test_AKVA7CFMVqdEG0ZnhF7uiLz7';
-const stripe = require("stripe")(keySecret)
+
+const secret = require('../config/config.js');
+const keySecret = secret.SECRET_KEY;
+const stripe = require('stripe')(keySecret);
+
 module.exports = function(app, passport, User){
 
 	// Charge Route for no customer creation
-	app.post("/charge", (req,res) => {
-		console.log(req.body)
+	app.post('/charge', (req,res) => {
+		console.log(req.body);
 		//get to dollar amount by *100
 		let amount = (req.body.amount) * 100;
 		stripe.charges.create({
@@ -16,32 +18,70 @@ module.exports = function(app, passport, User){
 			source: req.body.source,
 			description: 'test charge',
 			currency: 'usd',
-		}).then(charge => res.send(charge))
-		//confirmation email needed
-		
+			receipt_email: req.body.email
+		}).then(charge => res.send(charge));
+	
 	});
 
 	//charge route first time logged in to save info
-	app.put("/charge:id", (req,res) => {
+
+	app.post('/charge/create/:id', (req,res) => {
+		let id = req.params.id;
+		let amount = (req.body.amount) * 100;
+		//console.log(id)
+    
 		stripe.customers.create({
 			email: req.body.email,
 			//source is the token linked to their card
 			source: req.body.source
-		}).then(customer=>{
-			//charge needed
-			if (err){
-				console.log(err)
-			}
-			else {
-				console.log(customer)
-			}
-		})
-	})
 
+		}).then((customer) => {
+			stripe.charges.create({
+				amount,
+				currency: 'usd',
+				customer: customer.id
+			});
+
+			User.findOneAndUpdate({_id: id}, {
+				$set: {customerId : customer.id}
+			}, (err, data) => {
+				if(err){
+					console.log(err);
+				} 
+				else {
+					console.log(data);
+				}
+			});
+		});
+	});
+
+
+	//charge a customer with a saved card
+	app.post('/charge/:id', (req,res) => {
+		//console.log('AYO ' + req.body.amount)
+		let amount = (req.body.amount) * 100;
+		console.log(amount);
+		let customer;
+		User.findById({ _id: req.params.id }, (err, user) => {
+			if (err) {
+				res.json(err);
+			} else if (user) {
+				customer = user.customerId;
+			} else {
+				res.json({ message: 'DB search error.' });
+			}
+		});
+		stripe.charges.create({
+			amount,
+			customer,
+			currency: 'usd'
+		})
+			.then(charge => res.json(charge))
+			.catch(err => res.json(err));
+	});
 
 	//Sign-Up Route
 	app.post('/user/signup', (req, res) => {
-		console.log('User signup route hit');
 		const { email, password } = req.body;
 		User.findOne({ email: email }, (err, user) => {
 			if (err) {
@@ -67,15 +107,9 @@ module.exports = function(app, passport, User){
 
 	//Sign-In Route
 	app.post(
-		'/user/signin',
-		function (req, res, next) {
-			console.log('User signin route hit, req.body: ');
-			console.log(req.body);
-			next();
-		},
+		'/user/signin', 
 		passport.authenticate('local'),
 		(req, res) => {
-			console.log('User logged in: ' + req.user);
 			var userInfo = {
 				id: req.user._id
 			};
@@ -84,11 +118,25 @@ module.exports = function(app, passport, User){
 	);
 
 	//Check to see if signed-in Route
-	app.get('/user', (req, res, next) => {
-		console.log('Signin-check route hit, req.user: ');
-		console.log(req.user);
+	app.get('/user', (req, res) => {
 		if (req.user) {
-			res.json({ user: req.user });
+			User.findById({_id: req.user._id}, (err, data) => {
+				if (err) {
+					res.json(err);
+				} else {
+					if (data.customerId) {
+						res.json({
+							user: req.user,
+							hasCustomerAccount: true
+						});
+					} else {
+						res.json({
+							user: req.user,
+							hasCustomerAccount: false
+						});
+					}
+				}
+			});
 		} else {
 			res.json({ user: null });
 		}
@@ -97,11 +145,10 @@ module.exports = function(app, passport, User){
 	//Sign-Out Route
 	app.post('/user/signout', (req, res) => {
 		if (req.user) {
-			console.log('Signing out.');
 			req.logout();
-			res.send({ msg: 'logging out' });
+			res.send({ message: 'Logging out' });
 		} else {
-			res.send({ msg: 'no user to log out' });
+			res.send({ message: 'No user to log out' });
 		}
 	});
 
