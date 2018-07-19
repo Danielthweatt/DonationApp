@@ -19,30 +19,26 @@ class DonationInput extends Component {
 
 	
 	handleNameInput = e => {
-		//console.log(e.target.value)
-		this.setState({name: e.target.value})
+		this.setState({name: e.target.value});
 	}
 
 	handleEmailInput = e => {
-		this.setState({email: e.target.value})
+		this.setState({email: e.target.value});
 	}
 
 
 
 	handleMoneyButton = e => {
-		console.log(e.target.value);
 		this.setState({
 			customAmount: '',
-			amount: e.target.value })
+			amount: e.target.value });
 	}
 	
 	
 	handleMoneyCustom = e => {
-		console.log(e.target.value)
 		this.setState({
 			customAmount: e.target.value,
-			amount: e.target.value })
-
+			amount: e.target.value });
 	}
 
 	updatePaymentInfo = () => {}
@@ -50,13 +46,12 @@ class DonationInput extends Component {
 	forgetMe = () => {}
 
 	handleCheckbox = e => {
-		this.setState({rememberMe: true})
+		this.setState({rememberMe: true});
 	}
 
 	onToken = (token) => {
 		if (this.props.userInfo.loggedIn && this.state.rememberMe) {
-			let userId = this.props.userInfo.mongoId
-			//console.log(userId)
+			let userId = this.props.userInfo.mongoId;
 			axios.post('/charge/create/' + userId, {
 				description:'save info charge',
 				email: this.state.email,
@@ -65,15 +60,28 @@ class DonationInput extends Component {
 				mongoId: this.props.userInfo.mongoId
 			}).then((data) => {
 				if(data.status === 200) {
-					alert('customer saved!')
+					alert('customer saved!');
 					this.setState({
 						name:"",
 						email:"",
 						amount:""
 					});
 				}
-			}).catch(err => console.log(err))
-
+			}).catch(err => console.log(err));
+		} else if (this.props.userInfo.loggedIn && this.props.userInfo.hasCustomerAccount) {
+			alert('press ok to go thru with this donation');
+			//charge the customer instead of the card
+			let userId = this.props.userInfo.mongoId;
+			//console.log(this.props.userInfo)
+			axios.post('/charge/' + userId, {
+				description: 'charge a customer',
+				amount: this.state.amount
+			}).then((data) => {
+				console.log(data);
+				// if(data.status === 200) {
+				// 	alert('great job')
+				// }
+			}).catch(err => console.log(err));
 		} else {
 			axios.post('/charge', {
 				description: 'example charge',
@@ -96,31 +104,13 @@ class DonationInput extends Component {
             	}
         	})
         	.catch((err) => {
-            	console.log(err)
+            	console.log(err);
 			});
 		}
 	}
 
-	chargeACustomer() {
-		alert('press ok to go thru with this donation')
-			//charge the customer instead of the card
-			let userId = this.props.userInfo.mongoId
-			//console.log(this.props.userInfo)
-			axios.post('/charge/' + userId, {
-				description: 'charge a customer',
-				source: this.props.userInfo.customerId,
-				amount: this.state.amount,
-			}).then((data) => {
-				console.log(data)
-				// if(data.status === 200) {
-				// 	alert('great job')
-				// }
-			}).catch(err => console.log(err))
-	}
-
 	
 	render() {
-		console.log(this.props.userInfo);
 		return (
 			<div className = "donation-input">
 				

@@ -10,8 +10,8 @@ class SignUp extends Component {
 	render (){
 		return (
 			<Wrapper>
-				<Header />
-                <SignUpForm />
+				<Header updateUser={this.props.updateUser} userInfo={this.props.userInfo} />
+				<SignUpForm />
 				<Footer />
 			</Wrapper>
 		
