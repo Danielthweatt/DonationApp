@@ -60,8 +60,17 @@ module.exports = function(app, passport, User){
 	app.post('/charge/:id', (req,res) => {
 		//console.log('AYO ' + req.body.amount)
 		let amount = (req.body.amount) * 100;
-		let customer = req.body.source;
 		console.log(amount);
+		let customer;
+		User.findById({ _id: req.params.id }, (err, user) => {
+			if (err) {
+				res.json(err);
+			} else if (user) {
+				customer = user.customerId;
+			} else {
+				res.json({ message: 'DB search error.' });
+			}
+		});
 		stripe.charges.create({
 			amount,
 			customer,
