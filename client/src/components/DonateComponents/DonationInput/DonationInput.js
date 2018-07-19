@@ -38,11 +38,17 @@ class DonationInput extends Component {
 	
 	
 	handleMoneyCustom = e => {
-		console.log(e.target.value)
 		this.setState({
 			customAmount: e.target.value,
 			amount: e.target.value })
+	}
 
+	checkMoneyInput = () => {
+		const regex = /^\d+(?:\.\d{0,2})$/;
+		console.log('testies', this.state.amount)
+
+		if (!regex.test(this.state.amount))
+			console.log("Invalid Number");
 	}
 
 	updatePaymentInfo = () => {}
@@ -128,6 +134,7 @@ class DonationInput extends Component {
 				handleMoneyButton={this.handleMoneyButton}
 				handleMoneyCustom={this.handleMoneyCustom}
 				customAmount={this.state.customAmount}
+				checkMoneyInput={this.checkMoneyInput}
 			/>
 
 
