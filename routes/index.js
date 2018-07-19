@@ -1,7 +1,6 @@
 //Dependencies
 const path = require('path');
 const keyPublishable = 'pk_test_xwATFGfvWsyNnp1dDh2MOk8I';
-
 const secret = require('../config/config.js');
 const keySecret = secret.SECRET_KEY;
 const stripe = require('stripe')(keySecret);
@@ -9,8 +8,7 @@ const stripe = require('stripe')(keySecret);
 module.exports = function(app, passport, User){
 
 	// Charge Route for no customer creation
-	app.post('/charge', (req,res) => {
-		console.log(req.body);
+	app.post('/charge', (req, res) => {
 		//get to dollar amount by *100
 		let amount = (req.body.amount) * 100;
 		stripe.charges.create({
@@ -24,32 +22,27 @@ module.exports = function(app, passport, User){
 	});
 
 	//charge route first time logged in to save info
-
-	app.post('/charge/create/:id', (req,res) => {
+	app.post('/charge/create/:id', (req, res) => {
 		let id = req.params.id;
 		let amount = (req.body.amount) * 100;
-		//console.log(id)
-    
 		stripe.customers.create({
 			email: req.body.email,
 			//source is the token linked to their card
 			source: req.body.source
-
 		}).then((customer) => {
 			stripe.charges.create({
 				amount,
 				currency: 'usd',
 				customer: customer.id
 			});
-
 			User.findOneAndUpdate({_id: id}, {
 				$set: {customerId : customer.id}
 			}, (err, data) => {
-				if(err){
-					console.log(err);
+				if (err) {
+					res.json(err);
 				} 
 				else {
-					console.log(data);
+					res.json(data);
 				}
 			});
 		});
@@ -58,9 +51,7 @@ module.exports = function(app, passport, User){
 
 	//charge a customer with a saved card
 	app.post('/charge/:id', (req,res) => {
-		//console.log('AYO ' + req.body.amount)
 		let amount = (req.body.amount) * 100;
-		console.log(amount);
 		let customer;
 		User.findById({ _id: req.params.id }, (err, user) => {
 			if (err) {
@@ -75,9 +66,11 @@ module.exports = function(app, passport, User){
 			amount,
 			customer,
 			currency: 'usd'
-		})
-			.then(charge => res.json(charge))
-			.catch(err => res.json(err));
+		}).then(charge => 
+			res.json(charge)
+		).catch(err => 
+			res.json(err)
+		);
 	});
 
 	//Sign-Up Route

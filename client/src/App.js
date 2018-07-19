@@ -14,7 +14,6 @@ import './App.css';
 class App extends Component {
 	constructor(){
 		super();
-		// To do: update state (customer account and id properties) here and in other components
 		this.state = {
 			loggedIn: false,
 			hasCustomerAccount: false,

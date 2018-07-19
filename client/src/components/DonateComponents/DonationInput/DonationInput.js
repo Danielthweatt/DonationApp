@@ -9,31 +9,31 @@ import Checkbox from "../Checkbox";
 class DonationInput extends Component {
 
 	state = {
-		name:"",
+		firstName:"",
+		lastName: "",
 		email:"",
 		amount:"",
-		checked: false,
 		rememberMe: false,
 		customAmount: ""
 	}
-
 	
-	handleNameInput = e => {
-		this.setState({name: e.target.value});
+	handleFirstNameInput = e => {
+		this.setState({firstName: e.target.value});
+	}
+
+	handleLastNameInput = e => {
+		this.setState({lastName: e.target.value});
 	}
 
 	handleEmailInput = e => {
 		this.setState({email: e.target.value});
 	}
 
-
-
 	handleMoneyButton = e => {
 		this.setState({
 			customAmount: '',
 			amount: e.target.value });
 	}
-	
 	
 	handleMoneyCustom = e => {
 		this.setState({
@@ -45,26 +45,31 @@ class DonationInput extends Component {
 
 	forgetMe = () => {}
 
-	handleCheckbox = e => {
-		this.setState({rememberMe: true});
+	handleCheckbox = () => {
+		let newRememberMeValue = !this.state.rememberMe;
+		this.setState({rememberMe: newRememberMeValue});
+		console.log(this.state.rememberMe);
 	}
 
 	onToken = (token) => {
 		if (this.props.userInfo.loggedIn && this.state.rememberMe) {
 			let userId = this.props.userInfo.mongoId;
 			axios.post('/charge/create/' + userId, {
-				description:'save info charge',
+				description: 'save info charge',
 				email: this.state.email,
 				source: token.id,
 				amount: this.state.amount,
 				mongoId: this.props.userInfo.mongoId
 			}).then((data) => {
-				if(data.status === 200) {
+				if (data.status === 200) {
+					console.log(data);
 					alert('customer saved!');
 					this.setState({
-						name:"",
-						email:"",
-						amount:""
+						firstName: "",
+						lastName: "",
+						email: "",
+						amount: "",
+						rememberMe: false
 					});
 				}
 			}).catch(err => console.log(err));
@@ -72,15 +77,14 @@ class DonationInput extends Component {
 			alert('press ok to go thru with this donation');
 			//charge the customer instead of the card
 			let userId = this.props.userInfo.mongoId;
-			//console.log(this.props.userInfo)
 			axios.post('/charge/' + userId, {
 				description: 'charge a customer',
 				amount: this.state.amount
 			}).then((data) => {
 				console.log(data);
-				// if(data.status === 200) {
-				// 	alert('great job')
-				// }
+				if (data.status === 200) {
+					alert('great job')
+				}
 			}).catch(err => console.log(err));
 		} else {
 			axios.post('/charge', {
@@ -95,9 +99,11 @@ class DonationInput extends Component {
 					alert('it worked!')
 					//clear state values
 					this.setState({
-						name:"",
-						email:"",
-						amount:""
+						firstName: "",
+						lastName: "",
+						email: "",
+						amount: "",
+						rememberMe: false
 					});
 					//probs take this out?
 					window.location.reload();
@@ -108,7 +114,6 @@ class DonationInput extends Component {
 			});
 		}
 	}
-
 	
 	render() {
 		return (
@@ -120,12 +125,20 @@ class DonationInput extends Component {
 				customAmount={this.state.customAmount}
 			/>
 
+			{this.props.userInfo.loggedIn ? (
+				<div></div>
+			) : (
+				<Input 
+					title = "First Name"
+					handleInput={this.handleNameInput}
+				/>
+			)}
 
 			{this.props.userInfo.loggedIn ? (
 				<div></div>
 			) : (
 				<Input 
-					title = "Name"
+					title = "Last Name"
 					handleInput={this.handleNameInput}
 				/>
 			)}
@@ -139,27 +152,23 @@ class DonationInput extends Component {
 				/>
 			)}
 
-			{this.props.userInfo.loggedIn && this.props.userInfo.hasCustomerAccount ? (
-				<div></div>
-			) : (
+			{this.props.userInfo.loggedIn && !this.props.userInfo.hasCustomerAccount ? (
 				<Checkbox
 					handleCheckbox = {this.handleCheckbox}
 				/>
+			) : (
+				<div></div>
 			)}
 			
-
-			<StripeProvider apiKey="pk_test_laDoJCqgOQpou2PvCdG07DE2
-">
+			<StripeProvider apiKey="pk_test_laDoJCqgOQpou2PvCdG07DE2">
 				<Elements>
-		
 				<StripeCheckout
 					allowRememberMe = {false}
-					name={this.state.name}
+					name={this.state.firstName}
 					email={this.state.email}
 					token={this.onToken}
 					stripeKey={'pk_test_laDoJCqgOQpou2PvCdG07DE2'}
 				/>
-				
 				</Elements>
 			</StripeProvider>
 			
