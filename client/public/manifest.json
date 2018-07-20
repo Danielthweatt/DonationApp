@@ -1,15 +1,16 @@
+
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Donation",
+  "name": "Donation App",
   "icons": [
     {
-      "src": "favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
+      "src": "https://i.kym-cdn.com/photos/images/original/000/957/777/4e9.jpg",
+      "type": "image/jpg",
+      "sizes": "192x192"
     }
   ],
   "start_url": "./index.html",
+  "background_color": "#3367D6",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "theme_color": "#3367D6"
 }
