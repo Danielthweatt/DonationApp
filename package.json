@@ -29,12 +29,17 @@
     "nodemon": "^1.17.5"
   },
   "dependencies": {
+<<<<<<< HEAD
     "@material/card": "^0.37.1",
     "@material/ripple": "^0.37.1",
+=======
+    "@material/button": "^0.37.1",
+>>>>>>> bfc1ff70fd8ec4a2419306f8c5581228ebc274a0
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.18.3",
     "connect-flash": "^0.1.1",
     "cors": "^2.8.4",
+    "dotenv": "^6.0.0",
     "express": "^4.16.3",
     "express-session": "^1.15.6",
     "if-env": "^1.0.4",

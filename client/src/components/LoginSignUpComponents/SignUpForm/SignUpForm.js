@@ -15,45 +15,45 @@ class SignUpForm extends Component {
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.handleEmailInput = this.handleEmailInput.bind(this);
 		this.handlePasswordInput = this.handlePasswordInput.bind(this); 
-		this.handlePasswordConfirmInput = this.handlePasswordInput.bind(this); 
+		this.handlePasswordConfirmInput = this.handlePasswordConfirmInput.bind(this); 
 	}
 
 	handleEmailInput = e => {
-		this.setState({email: e.target.value})
+		this.setState({email: e.target.value});
 	}
 
 	handlePasswordInput = e => {
-		//console.log(e.target.value)
-		this.setState({password: e.target.value})
+		this.setState({password: e.target.value});
 	}
 
 	handlePasswordConfirmInput = e => {
-		//console.log(e.target.value)
-		this.setState({confirmPassword: e.target.value})
+		this.setState({confirmPassword: e.target.value});
 	}
 
 	handleSubmit(event) {
 		event.preventDefault();
-		console.log('Sign-up handleSubmit, email: ');
-		console.log(this.state.email);
-		const signUpInfo = {
-			email: this.state.email,
-			password: this.state.password
-		};
-		axios.post('/user/signup', signUpInfo).then(response => {
-			console.log(response);
-			if (!response.data.errmsg) {
-				console.log('Successful signup');
-				this.setState({ //redirect to login page
-					redirectTo: '/'
-				});
-			} else {
-				console.log('username already taken');
-			}
-		}).catch(error => {
-			console.log('Signup error: ');
-			console.log(error);
-		});
+		if (this.state.password === this.state.confirmPassword) {
+			const signUpInfo = {
+				email: this.state.email,
+				password: this.state.password
+			};
+			axios.post('/user/signup', signUpInfo).then(response => {
+				if (!response.data.errmsg) {
+					this.setState({ //redirect to login page
+						redirectTo: '/'
+					});
+				} else {
+					// To be replaced
+					console.log('Username already taken');
+				}
+			}).catch(error => {
+				console.log('Signup error: ');
+				console.log(error);
+			});
+		} else {
+			// To be replaced
+			alert("Please re-enter the same password.");
+		}
 	}
 
 	render() {

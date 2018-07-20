@@ -1,0 +1,8 @@
+.process-card {
+    background: #f9f9f9;
+    padding: 2%;
+    box-shadow:0px 10px 20px 5px #c1c1c1;
+    border-radius: 3px;
+    border-top: 5px;
+    border-color: linear-gradient(to right, #ffb40f, #ff3e00);
+}

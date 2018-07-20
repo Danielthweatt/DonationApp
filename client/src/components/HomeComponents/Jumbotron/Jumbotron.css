@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .button-alternate {
     
         @include mdc-ripple-surface;
@@ -7,4 +8,32 @@
         @include mdc-states-focus-opacity(.3);
         @include mdc-states-press-opacity(5);
       
+=======
+.jumbotron {
+    position: relative;
+    background-image: url('../../../assets/images/hero.jpg');
+    background-size: cover;
+    background-position: bottom;
+    color:#ffffff;
+    padding: 15%;
+}
+
+
+.color-overlay {
+    position: absolute;
+    content:" ";
+    z-index: 1;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(to right, #ffb40f, #ff3e00);
+    /* -webkit-mask-image: linear-gradient(rgba(0, 0, 0, 1.0), rgba(0, 0, 0, .5)); */
+    opacity: 0.7;
+}
+
+.inner {
+    position: relative;
+    z-index: 2;
+>>>>>>> bfc1ff70fd8ec4a2419306f8c5581228ebc274a0
 }
