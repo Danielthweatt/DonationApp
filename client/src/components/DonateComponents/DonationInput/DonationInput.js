@@ -45,6 +45,21 @@ class DonationInput extends Component {
 
 	forgetMe = () => {}
 
+	chargeACustomer = () => {
+		alert('press ok to go thru with this donation');
+		//charge the customer instead of the card
+		let userId = this.props.userInfo.mongoId;
+		axios.post('/charge/' + userId, {
+			description: 'charge a customer',
+			amount: this.state.amount
+		}).then((data) => {
+			console.log(data);
+			if (data.status === 200) {
+				alert('great job')
+			}
+		}).catch(err => console.log(err));
+	}
+
 	handleCheckbox = () => {
 		let newRememberMeValue = !this.state.rememberMe;
 		this.setState({rememberMe: newRememberMeValue});
@@ -71,19 +86,6 @@ class DonationInput extends Component {
 						amount: "",
 						rememberMe: false
 					});
-				}
-			}).catch(err => console.log(err));
-		} else if (this.props.userInfo.loggedIn && this.props.userInfo.hasCustomerAccount) {
-			alert('press ok to go thru with this donation');
-			//charge the customer instead of the card
-			let userId = this.props.userInfo.mongoId;
-			axios.post('/charge/' + userId, {
-				description: 'charge a customer',
-				amount: this.state.amount
-			}).then((data) => {
-				console.log(data);
-				if (data.status === 200) {
-					alert('great job')
 				}
 			}).catch(err => console.log(err));
 		} else {
@@ -130,7 +132,7 @@ class DonationInput extends Component {
 			) : (
 				<Input 
 					title = "First Name"
-					handleInput={this.handleNameInput}
+					handleInput={this.handleFirstNameInput}
 				/>
 			)}
 
@@ -139,7 +141,7 @@ class DonationInput extends Component {
 			) : (
 				<Input 
 					title = "Last Name"
-					handleInput={this.handleNameInput}
+					handleInput={this.handleLastNameInput}
 				/>
 			)}
 
@@ -164,7 +166,7 @@ class DonationInput extends Component {
 				<Elements>
 				<StripeCheckout
 					allowRememberMe = {false}
-					name={this.state.firstName}
+					name={`${this.state.firstName} ${this.state.lastName}`}
 					email={this.state.email}
 					token={this.onToken}
 					stripeKey={'pk_test_laDoJCqgOQpou2PvCdG07DE2'}

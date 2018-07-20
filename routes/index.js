@@ -17,7 +17,12 @@ module.exports = function(app, passport, User){
 			description: 'test charge',
 			currency: 'usd',
 			receipt_email: req.body.email
-		}).then(charge => res.send(charge));
+		}).then(charge => {
+			console.log(charge);
+			res.send(charge);
+		}).catch(err => 
+			res.send(err)
+		);
 	
 	});
 
@@ -58,24 +63,24 @@ module.exports = function(app, passport, User){
 				res.json(err);
 			} else if (user) {
 				customer = user.customerId;
+				stripe.charges.create({
+					amount,
+					customer,
+					currency: 'usd'
+				}).then(charge => 
+					res.json(charge)
+				).catch(err => 
+					res.json(err)
+				);
 			} else {
 				res.json({ message: 'DB search error.' });
 			}
 		});
-		stripe.charges.create({
-			amount,
-			customer,
-			currency: 'usd'
-		}).then(charge => 
-			res.json(charge)
-		).catch(err => 
-			res.json(err)
-		);
 	});
 
 	//Sign-Up Route
 	app.post('/user/signup', (req, res) => {
-		const { email, password } = req.body;
+		const { firstName, lastName, email, password } = req.body;
 		User.findOne({ email: email }, (err, user) => {
 			if (err) {
 				console.log('User signup db search error: ', err);
@@ -87,6 +92,8 @@ module.exports = function(app, passport, User){
 			}
 			else {
 				const newUser = new User({
+					firstName: firstName,
+					lastName: lastName,
 					email: email,
 					password: password
 				});

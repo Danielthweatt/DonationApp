@@ -7,15 +7,27 @@ class SignUpForm extends Component {
 	constructor() {
 		super();
 		this.state = {
-			username: '',
+			firstName: '',
+			lastName: '',
+			email: '',
 			password: '',
 			confirmPassword: '',
 			redirectTo: null
 		};
 		this.handleSubmit = this.handleSubmit.bind(this);
+		this.handleFirstNameInput = this.handleFirstNameInput.bind(this);
+		this.handleLastNameInput = this.handleLastNameInput.bind(this);
 		this.handleEmailInput = this.handleEmailInput.bind(this);
 		this.handlePasswordInput = this.handlePasswordInput.bind(this); 
 		this.handlePasswordConfirmInput = this.handlePasswordConfirmInput.bind(this); 
+	}
+
+	handleFirstNameInput = e => {
+		this.setState({firstName: e.target.value});
+	}
+
+	handleLastNameInput = e => {
+		this.setState({lastName: e.target.value});
 	}
 
 	handleEmailInput = e => {
@@ -34,6 +46,8 @@ class SignUpForm extends Component {
 		event.preventDefault();
 		if (this.state.password === this.state.confirmPassword) {
 			const signUpInfo = {
+				firstName: this.state.firstName,
+				lastName: this.state.lastName,
 				email: this.state.email,
 				password: this.state.password
 			};
@@ -63,16 +77,24 @@ class SignUpForm extends Component {
 			return (
 				<form>
 					<div>
+						<label>First Name:</label>
+						<Input type="text" name="firstName" handleInput={this.handleFirstNameInput}/>
+					</div>
+					<div>
+						<label>Last Name:</label>
+						<Input type="text" name="lastName" handleInput={this.handleLastNameInput}/>
+					</div>
+					<div>
 						<label>Email:</label>
-						<Input title = "Name" name="email" handleInput={this.handleEmailInput}/>
+						<Input type="text" name="email" handleInput={this.handleEmailInput}/>
 					</div>
 					<div>
 						<label>Password:</label>
-						<Input title = "Name" type="password" name="password" handleInput={this.handlePasswordInput}/>
+						<Input type="password" name="password" handleInput={this.handlePasswordInput}/>
 					</div>
 					<div>
 						<label>Confirm Password:</label>
-						<Input title = "Name" type="password" name="confirmPassword" handleInput={this.handlePasswordConfirmInput}/>
+						<Input type="password" name="confirmPassword" handleInput={this.handlePasswordConfirmInput}/>
 					</div>
 					<div>
 						<input type="submit" onClick={this.handleSubmit}/>
