@@ -1,14 +1,12 @@
-<<<<<<< HEAD
-.button-alternate {
+/* .button-alternate {
     
         @include mdc-ripple-surface;
         @include mdc-ripple-radius-unbounded;
         @include mdc-states-base-color(black);
         @include mdc-states-hover-opacity(.1);
         @include mdc-states-focus-opacity(.3);
-        @include mdc-states-press-opacity(5);
+        @include mdc-states-press-opacity(5); */
       
-=======
 .jumbotron {
     position: relative;
     background-image: url('../../../assets/images/hero.jpg');
@@ -35,5 +33,4 @@
 .inner {
     position: relative;
     z-index: 2;
->>>>>>> bfc1ff70fd8ec4a2419306f8c5581228ebc274a0
 }
