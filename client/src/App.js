@@ -52,6 +52,7 @@ class App extends Component {
 
 	render() {
 		return (
+			<div>
 			<Router>
 				<Switch>
 					<Route exact path="/about" render= {() =>
@@ -66,8 +67,11 @@ class App extends Component {
 							}}/>} />
 					<Route exact path="/settings" render={() =>
 						<AccountSettings updateUser={this.updateUser}
-						userInfo={{loggedIn: this.state.loggedIn}}
-						/>}/>
+							userInfo={{
+								loggedIn: this.state.loggedIn,
+								hasCustomerAccount: this.state.hasCustomerAccount,
+								mongoId: this.state.id
+							}}/>}/>
 					<Route exact path="/login" render={() =>
 						<Login updateUser={this.updateUser} 
 							userInfo={{loggedIn: this.state.loggedIn}}/>} />
@@ -79,6 +83,7 @@ class App extends Component {
 							userInfo={{loggedIn: this.state.loggedIn}}/>} />
 				</Switch>
 			</Router>
+			</div>
 		);
 	}
 }

@@ -1,20 +1,17 @@
-//one form stuff in db as default values
-import React, { Component } from 'react'; 
-import axios from 'axios';
+import React,  { Component } from 'react'; 
+import Header from '../../components/Header/Header'; 
+import Wrapper from '../../components/Wrapper/Wrapper'; 
+import Footer from '../../components/Footer/Footer'; 
+import Settings from '../../components/Settings';
 
 class AccountSettings extends Component {
-    state = {
-        firstName: "",
-        lastName: "",
-        email: "",
-        cardOnFile: false,
-        donationHistory: []
-    }
-
     render() {
         return (
-            <div className="accountSettingsWrapper"><h1>fdskjaf;ksdjkfjsd;kljflei</h1>
-            </div>
+            <Wrapper>
+                <Header updateUser={this.props.updateUser} userInfo={this.props.userInfo} />
+                <Settings userInfo={this.props.userInfo}/>
+                <Footer />
+            </Wrapper>
         )
     }
 }
