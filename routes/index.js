@@ -33,7 +33,8 @@ module.exports = function(app, passport, User){
 			stripe.charges.create({
 				amount,
 				currency: 'usd',
-				customer: customer.id
+				customer: customer.id,
+				receipt_email: req.body.email
 			});
 			User.findOneAndUpdate({_id: id}, {
 				$set: {customerId : customer.id}
@@ -65,7 +66,8 @@ module.exports = function(app, passport, User){
 		stripe.charges.create({
 			amount,
 			customer,
-			currency: 'usd'
+			currency: 'usd',
+			receipt_email: req.body.email
 		}).then(charge => 
 			res.json(charge)
 		).catch(err => 
