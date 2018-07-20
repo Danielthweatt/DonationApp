@@ -30,9 +30,17 @@ class DonationInput extends Component {
 	}
 
 	handleMoneyButton = e => {
-		this.setState({
-			customAmount: '',
-			amount: e.target.value });
+		e.preventDefault();
+		if (this.props.userInfo.loggedIn && this.props.userInfo.hasCustomerAccount) {
+			this.setState({amount: e.target.value})
+			this.chargeACustomer(e.target.value);
+			}
+			else {
+				this.setState({
+				customAmount: '',
+				amount: e.target.value });
+			}
+		
 	}
 	
 	handleMoneyCustom = e => {
@@ -44,6 +52,23 @@ class DonationInput extends Component {
 	updatePaymentInfo = () => {}
 
 	forgetMe = () => {}
+
+	chargeACustomer(amount) {
+		alert('press ok to go thru with this donation')
+				//charge the customer instead of the card
+				let userId = this.props.userInfo.mongoId
+				//console.log(this.props.userInfo)
+				axios.post('/charge/' + userId, {
+						description: 'charge a customer',
+						// source: this.props.userInfo.customerId,
+						amount: amount
+					}).then((data) => {
+						console.log(data)
+						// if(data.status === 200) {
+						// 	alert('great job')
+						// }
+					}).catch(err => console.log(err))
+				};
 
 	handleCheckbox = () => {
 		let newRememberMeValue = !this.state.rememberMe;
@@ -160,14 +185,14 @@ class DonationInput extends Component {
 				<div></div>
 			)}
 			
-			<StripeProvider apiKey="pk_test_laDoJCqgOQpou2PvCdG07DE2">
+			<StripeProvider apiKey="pk_test_xwATFGfvWsyNnp1dDh2MOk8I">
 				<Elements>
 				<StripeCheckout
 					allowRememberMe = {false}
 					name={this.state.firstName}
 					email={this.state.email}
 					token={this.onToken}
-					stripeKey={'pk_test_laDoJCqgOQpou2PvCdG07DE2'}
+					stripeKey={'pk_test_xwATFGfvWsyNnp1dDh2MOk8I'}
 				/>
 				</Elements>
 			</StripeProvider>
