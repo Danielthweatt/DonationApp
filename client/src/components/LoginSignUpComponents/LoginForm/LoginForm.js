@@ -57,12 +57,10 @@ class LoginForm extends Component {
 				<div>
 					<form>
 						<div>
-							<label>Email:</label>
-							<Input title="Email" type="text" value={this.props.email} handleInput={this.handleEmailInput}/>
+							<Input title="Email" name="Email" type="text" value={this.props.email} handleInput={this.handleEmailInput}/>
 						</div>
 						<div>
-							<label>Password:</label>
-							<Input title="Password" type="password" value={this.props.password} handleInput={this.handlePasswordInput}/>
+							<Input title="Password" name="Password" type="password" value={this.props.password} handleInput={this.handlePasswordInput}/>
 						</div>
 						<div>
 							<input type="submit" onClick={this.handleSubmit}/>
