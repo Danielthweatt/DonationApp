@@ -53,7 +53,7 @@ class DonationInput extends Component {
 
 	chargeACustomer() {
 		//charge the customer instead of the card
-		let userId = this.props.userInfo.mongoId;
+		let userId = this.props.userInfo.userId;
 		let amount;
 		if (this.state.amount) {
 			amount = this.state.amount;
@@ -61,19 +61,21 @@ class DonationInput extends Component {
 			amount = this.state.customAmount;
 		}
 		axios.post('/charge/' + userId, {
-			description: 'charge a customer',
-			amount,
-		}).then((data) => {
-			if (data.status === 200) {
-				alert('great job');
+			amount
+		}).then(res => {
+			if (res.status === 200) { 
+				alert('Great job!');
 			} else {
-				alert('uh oh...');
+				alert('Something went wrong.');
 			}
-		}).catch(err => console.log(err));
+		}).catch(err => {
+			console.log(err);
+			alert('Something went wrong.');
+		});
 	}
 
 	onToken = (token) => {
-		let userId = this.props.userInfo.mongoId;
+		let userId = this.props.userInfo.userId;
 		let amount;
 		if (this.state.amount) {
 			amount = this.state.amount;
@@ -82,47 +84,46 @@ class DonationInput extends Component {
 		}
 		if (this.props.userInfo.loggedIn && this.state.rememberMe) {
 			axios.post('/charge/create/' + userId, {
-				description: 'save info charge',
+				description: 'charge',
+				email: this.props.userInfo.email,
+				source: token.id,
+				amount
+			}).then(res => {
+				if (res.status === 200) {
+					alert('Customer saved!');
+					this.setState({
+						rememberMe: false
+					});
+					this.props.updateUser({
+						hasCustomerAccount: true
+					});
+				} else {
+					alert('Something went wrong.');
+				}
+			}).catch(err => {
+				console.log(err);
+				alert('Something went wrong.');
+			});
+		} else {
+			axios.post('/charge', {
 				email: this.state.email,
 				source: token.id,
 				amount
-			}).then((data) => {
-				if (data.status === 200) {
-					alert('customer saved!');
-					this.setState({
-						firstName: "",
-						lastName: "",
-						email: "",
-						amount: "",
-						rememberMe: false
-					});
-				}
-			}).catch(err => console.log(err));
-		} else {
-			axios.post('/charge', {
-				description: 'example charge',
-				email: this.state.email,
-				source: token.id,
-				amount,
-				mongoId: userId
-        	}).then((data) => {
-            	console.log(data.status)
-            	if (data.status === 200){
+        	}).then(res => {
+				if (res.status === 200) {
 					alert('it worked!');
-					//clear state values
 					this.setState({
-						firstName: "",
-						lastName: "",
-						email: "",
-						amount: "",
+						firstName: '',
+						lastName: '',
+						email: '',
 						rememberMe: false
 					});
-					//probs take this out?
-					window.location.reload();
-            	}
-        	})
-        	.catch((err) => {
-            	console.log(err);
+				} else {
+					alert('Something went wrong.');
+				}
+        	}).catch((err) => {
+				console.log(err);
+				alert('Something went wrong.');
 			});
 		}
 	}
@@ -188,17 +189,17 @@ class DonationInput extends Component {
 					<StripeProvider apiKey="pk_test_xwATFGfvWsyNnp1dDh2MOk8I">
 						<Elements>
 						<StripeCheckout
-						allowRememberMe = {false}
-						name={`${this.state.firstName} ${this.state.lastName}`}
-						email={this.state.email}
-						token={this.onToken}
-						stripeKey={'pk_test_xwATFGfvWsyNnp1dDh2MOk8I'}
-					/>
-					</Elements>
-				</StripeProvider>
-			)}
+							allowRememberMe = {false}
+							name={`${this.state.firstName} ${this.state.lastName}`}
+							email={this.state.email}
+							token={this.onToken}
+							stripeKey={'pk_test_xwATFGfvWsyNnp1dDh2MOk8I'}
+						/>
+						</Elements>
+					</StripeProvider>
+				)}
 
-		</form>
+			</form>
 		)
 	}
 };

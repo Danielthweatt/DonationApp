@@ -17,7 +17,8 @@ class App extends Component {
 		this.state = {
 			loggedIn: false,
 			hasCustomerAccount: false,
-			id: null
+			email: null,
+			userId: null
 		};
 		this.updateUser = this.updateUser.bind(this);
 		this.checkUser = this.checkUser.bind(this);
@@ -38,12 +39,15 @@ class App extends Component {
 			  	this.setState({
 					loggedIn: true,
 					hasCustomerAccount: response.data.hasCustomerAccount,
-					id: response.data.user._id
+					email: response.data.email,
+					userId: response.data.user._id
 			  	});
 			} else {
 			  	this.setState({
 					loggedIn: false,
-					id: null
+					hasCustomerAccount: false,
+					email: null,
+					userId: null
 			  	});
 			}
 		});
@@ -62,7 +66,8 @@ class App extends Component {
 								userInfo={{
 									loggedIn: this.state.loggedIn,
 									hasCustomerAccount: this.state.hasCustomerAccount,
-									mongoId: this.state.id
+									email: this.state.email,
+									userId: this.state.userId
 								}}/>} />
 						<Route exact path="/login" render={() =>
 							<Login updateUser={this.updateUser} 

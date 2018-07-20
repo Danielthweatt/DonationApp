@@ -33,12 +33,12 @@ class LoginForm extends Component {
 		};
         axios.post('/user/signin', signInInfo).then(response => {
             if (response.status === 200) {
-                // update App.js state
                 this.props.updateUser({
-                    loggedIn: true,
-                    id: response.data.id
+					loggedIn: true,
+					userId: response.data.id,
+					email: response.data.email,
+					hasCustomerAccount: response.data.hasCustomerAccount
                 });
-                // update the state to redirect to home
                 this.setState({
                     redirectTo: '/'
                 });
