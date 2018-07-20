@@ -4,6 +4,7 @@ import Home from './pages/Home';
 import Login from './pages/Login'; 
 import SignUp from './pages/SignUp'; 
 import Donations from './pages/Donations';
+import AccountSettings from './pages/AccountSettings'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import axios from 'axios';
 import './App.css';
@@ -56,30 +57,36 @@ class App extends Component {
 	render() {
 		return (
 			<div>
-				<Router>
-					<Switch>
-						<Route exact path="/about" render= {() =>
-							<About updateUser={this.updateUser} 
-								userInfo={{loggedIn: this.state.loggedIn}}/>} />
-						<Route exact path="/donations" render= {() => 
-							<Donations updateUser={this.updateUser} 
-								userInfo={{
-									loggedIn: this.state.loggedIn,
-									hasCustomerAccount: this.state.hasCustomerAccount,
-									email: this.state.email,
-									userId: this.state.userId
-								}}/>} />
-						<Route exact path="/login" render={() =>
-							<Login updateUser={this.updateUser} 
-								userInfo={{loggedIn: this.state.loggedIn}}/>} />
-						<Route exact path="/signup" render= {() =>
-							<SignUp updateUser={this.updateUser} 
-								userInfo={{loggedIn: this.state.loggedIn}}/>} />
-						<Route exact path="*" render= {() =>
-							<Home updateUser={this.updateUser} 
-								userInfo={{loggedIn: this.state.loggedIn}}/>} />
-					</Switch>
-				</Router>
+			<Router>
+				<Switch>
+					<Route exact path="/about" render= {() =>
+						<About updateUser={this.updateUser} 
+							userInfo={{loggedIn: this.state.loggedIn}}/>} />
+					<Route exact path="/donations" render= {() => 
+						<Donations updateUser={this.updateUser} 
+							userInfo={{
+								loggedIn: this.state.loggedIn,
+								hasCustomerAccount: this.state.hasCustomerAccount,
+								mongoId: this.state.id
+							}}/>} />
+					<Route exact path="/settings" render={() =>
+						<AccountSettings updateUser={this.updateUser}
+							userInfo={{
+								loggedIn: this.state.loggedIn,
+								hasCustomerAccount: this.state.hasCustomerAccount,
+								mongoId: this.state.id
+							}}/>}/>
+					<Route exact path="/login" render={() =>
+						<Login updateUser={this.updateUser} 
+							userInfo={{loggedIn: this.state.loggedIn}}/>} />
+					<Route exact path="/signup" render= {() =>
+						<SignUp updateUser={this.updateUser} 
+							userInfo={{loggedIn: this.state.loggedIn}}/>} />
+					<Route exact path="*" render= {() =>
+						<Home updateUser={this.updateUser} 
+							userInfo={{loggedIn: this.state.loggedIn}}/>} />
+				</Switch>
+			</Router>
 			</div>
 		);
 	}

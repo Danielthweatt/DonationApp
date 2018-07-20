@@ -131,12 +131,13 @@ class DonationInput extends Component {
 	render() {
 		return (
 			<form className = "donation-input">
-				
+
 				<DonateOptions
 					handleMoneyButton={this.handleMoneyButton}
 					handleMoneyCustom={this.handleMoneyCustom}
 					customAmount={this.state.customAmount}
 					custom={this.state.custom}
+
 				/>
 
 				{this.props.userInfo.loggedIn ? (
@@ -150,6 +151,7 @@ class DonationInput extends Component {
 						handleInput={this.handleFirstNameInput}
 					/>
 				)}
+
 
 				{this.props.userInfo.loggedIn ? (
 					<div></div>
