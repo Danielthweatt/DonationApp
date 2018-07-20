@@ -14,6 +14,7 @@ class DonationInput extends Component {
 		email: '',
 		amount: '',
 		customAmount: '',
+		custom: false,
 		rememberMe: false
 	}
 	
@@ -30,29 +31,27 @@ class DonationInput extends Component {
 	}
 
 	handleMoneyButton = e => {
-		// if (this.props.userInfo.loggedIn && this.props.userInfo.hasCustomerAccount) {
-			// this.chargeACustomer(e.target.value);
-		// } else {
-			this.setState({
-				customAmount: '',
-				amount: e.target.value 
-			});
-		// }
+		this.setState({
+			customAmount: '',
+			amount: e.target.value,
+			custom: false
+		});
 	}
 	
 	handleMoneyCustom = e => {
 		this.setState({
 			customAmount: e.target.value,
-			amount: '' 
+			amount: '',
+			custom: true
 		});
 	}
 
-	updatePaymentInfo = () => {}
-
-	forgetMe = () => {}
+	handleCheckbox = () => {
+		let newRememberMeValue = !this.state.rememberMe;
+		this.setState({rememberMe: newRememberMeValue});
+	}
 
 	chargeACustomer() {
-		alert('press ok to go thru with this donation');
 		//charge the customer instead of the card
 		let userId = this.props.userInfo.mongoId;
 		let amount;
@@ -65,16 +64,12 @@ class DonationInput extends Component {
 			description: 'charge a customer',
 			amount,
 		}).then((data) => {
-			console.log(data)
-			if(data.status === 200) {
+			if (data.status === 200) {
 				alert('great job');
+			} else {
+				alert('uh oh...');
 			}
 		}).catch(err => console.log(err));
-	}
-
-	handleCheckbox = () => {
-		let newRememberMeValue = !this.state.rememberMe;
-		this.setState({rememberMe: newRememberMeValue});
 	}
 
 	onToken = (token) => {
@@ -93,7 +88,6 @@ class DonationInput extends Component {
 				amount
 			}).then((data) => {
 				if (data.status === 200) {
-					console.log(data);
 					alert('customer saved!');
 					this.setState({
 						firstName: "",
@@ -114,7 +108,7 @@ class DonationInput extends Component {
         	}).then((data) => {
             	console.log(data.status)
             	if (data.status === 200){
-					alert('it worked!')
+					alert('it worked!');
 					//clear state values
 					this.setState({
 						firstName: "",
@@ -141,6 +135,7 @@ class DonationInput extends Component {
 					handleMoneyButton={this.handleMoneyButton}
 					handleMoneyCustom={this.handleMoneyCustom}
 					customAmount={this.state.customAmount}
+					custom={this.state.custom}
 				/>
 
 				{this.props.userInfo.loggedIn ? (
