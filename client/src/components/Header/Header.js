@@ -18,7 +18,8 @@ class Header extends Component {
 				this.props.updateUser({
 					loggedIn: false,
 					hasCustomerAccount: false,
-					id: null
+					email: null,
+					userId: null
 				});
 			}
 		}).catch(err => {

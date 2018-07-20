@@ -18,7 +18,8 @@ class App extends Component {
 		this.state = {
 			loggedIn: false,
 			hasCustomerAccount: false,
-			id: null
+			email: null,
+			userId: null
 		};
 		this.updateUser = this.updateUser.bind(this);
 		this.checkUser = this.checkUser.bind(this);
@@ -39,12 +40,15 @@ class App extends Component {
 			  	this.setState({
 					loggedIn: true,
 					hasCustomerAccount: response.data.hasCustomerAccount,
-					id: response.data.user._id
+					email: response.data.email,
+					userId: response.data.user._id
 			  	});
 			} else {
 			  	this.setState({
 					loggedIn: false,
-					id: null
+					hasCustomerAccount: false,
+					email: null,
+					userId: null
 			  	});
 			}
 		});

@@ -11,7 +11,7 @@ class Donations extends Component {
 		return (
 			<Wrapper>
 				<Header updateUser={this.props.updateUser} userInfo={this.props.userInfo} />
-				<DonationInput userInfo={this.props.userInfo} />
+				<DonationInput updateUser={this.props.updateUser} userInfo={this.props.userInfo} />
 				<DonationImpact />
 				<Footer />
 			</Wrapper>
