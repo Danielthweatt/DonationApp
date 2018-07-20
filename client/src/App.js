@@ -51,29 +51,31 @@ class App extends Component {
 
 	render() {
 		return (
-			<Router>
-				<Switch>
-					<Route exact path="/about" render= {() =>
-						<About updateUser={this.updateUser} 
-							userInfo={{loggedIn: this.state.loggedIn}}/>} />
-					<Route exact path="/donations" render= {() => 
-						<Donations updateUser={this.updateUser} 
-							userInfo={{
-								loggedIn: this.state.loggedIn,
-								hasCustomerAccount: this.state.hasCustomerAccount,
-								mongoId: this.state.id
-							}}/>} />
-					<Route exact path="/login" render={() =>
-						<Login updateUser={this.updateUser} 
-							userInfo={{loggedIn: this.state.loggedIn}}/>} />
-					<Route exact path="/signup" render= {() =>
-						<SignUp updateUser={this.updateUser} 
-							userInfo={{loggedIn: this.state.loggedIn}}/>} />
-					<Route exact path="*" render= {() =>
-						<Home updateUser={this.updateUser} 
-							userInfo={{loggedIn: this.state.loggedIn}}/>} />
-				</Switch>
-			</Router>
+			<div>
+				<Router>
+					<Switch>
+						<Route exact path="/about" render= {() =>
+							<About updateUser={this.updateUser} 
+								userInfo={{loggedIn: this.state.loggedIn}}/>} />
+						<Route exact path="/donations" render= {() => 
+							<Donations updateUser={this.updateUser} 
+								userInfo={{
+									loggedIn: this.state.loggedIn,
+									hasCustomerAccount: this.state.hasCustomerAccount,
+									mongoId: this.state.id
+								}}/>} />
+						<Route exact path="/login" render={() =>
+							<Login updateUser={this.updateUser} 
+								userInfo={{loggedIn: this.state.loggedIn}}/>} />
+						<Route exact path="/signup" render= {() =>
+							<SignUp updateUser={this.updateUser} 
+								userInfo={{loggedIn: this.state.loggedIn}}/>} />
+						<Route exact path="*" render= {() =>
+							<Home updateUser={this.updateUser} 
+								userInfo={{loggedIn: this.state.loggedIn}}/>} />
+					</Switch>
+				</Router>
+			</div>
 		);
 	}
 }

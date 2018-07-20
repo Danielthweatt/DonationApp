@@ -17,7 +17,12 @@ module.exports = function(app, passport, User){
 			description: 'test charge',
 			currency: 'usd',
 			receipt_email: req.body.email
-		}).then(charge => res.send(charge));
+		}).then(charge => {
+			console.log(charge);
+			res.send(charge);
+		}).catch(err => 
+			res.send(err)
+		);
 	
 	});
 
@@ -38,12 +43,12 @@ module.exports = function(app, passport, User){
 			});
 			User.findOneAndUpdate({_id: id}, {
 				$set: {customerId : customer.id}
-			}, (err, data) => {
+			}, (err, user) => {
 				if (err) {
-					res.json(err);
+					res.json.status(422).json(err);
 				} 
 				else {
-					res.json(data);
+					res.json(user);
 				}
 			});
 		});
@@ -53,24 +58,22 @@ module.exports = function(app, passport, User){
 	//charge a customer with a saved card
 	app.post('/charge/:id', (req,res) => {
 		let amount = (req.body.amount) * 100;
-		let customer;
 		User.findById({ _id: req.params.id }, (err, user) => {
 			if (err) {
-				res.json(err);
+				res.json.status(422).json(err);
 			} else if (user) {
-				customer = user.customerId;
 				stripe.charges.create({
 					amount,
-					customer,
+					customer: user.customerId,
 					currency: 'usd',
-					receipt_email: req.body.email
+					receipt_email: user.email
 				}).then(charge => 
 					res.json(charge)
 				).catch(err => 
 					res.json(err)
 				);
 			} else {
-				res.json({ message: 'DB search error.' });
+				res.status(500).json({ message: 'DB search error.' });
 			}
 		});
 	
@@ -78,7 +81,7 @@ module.exports = function(app, passport, User){
 
 	//Sign-Up Route
 	app.post('/user/signup', (req, res) => {
-		const { email, password } = req.body;
+		const { firstName, lastName, email, password } = req.body;
 		User.findOne({ email: email }, (err, user) => {
 			if (err) {
 				console.log('User signup db search error: ', err);
@@ -90,6 +93,8 @@ module.exports = function(app, passport, User){
 			}
 			else {
 				const newUser = new User({
+					firstName: firstName,
+					lastName: lastName,
 					email: email,
 					password: password
 				});
