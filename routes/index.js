@@ -7,12 +7,11 @@ const stripe = require('stripe')(keySecret);
 
 module.exports = function(app, passport, User){
 
-	// Charge Route for no customer creation
+	//Standard Charge Route
 	app.post('/charge', (req, res) => {
 		//get to dollar amount by *100
-		let amount = (req.body.amount) * 100;
 		stripe.charges.create({
-			amount,
+			amount: req.body.amount * 100,
 			source: req.body.source,
 			description: 'test charge',
 			currency: 'usd',
@@ -21,62 +20,63 @@ module.exports = function(app, passport, User){
 			console.log(charge);
 			res.send(charge);
 		}).catch(err => 
-			res.send(err)
+			res.status(500).send(err)
 		);
 	
 	});
 
-	//charge route first time logged in to save info
+	//Charge and Save User Payment Info Route
 	app.post('/charge/create/:id', (req, res) => {
-		let id = req.params.id;
-		let amount = (req.body.amount) * 100;
 		stripe.customers.create({
 			email: req.body.email,
 			//source is the token linked to their card
 			source: req.body.source
 		}).then((customer) => {
 			stripe.charges.create({
-				amount,
+				amount: req.body.amount * 100,
 				currency: 'usd',
 				customer: customer.id,
 				receipt_email: req.body.email
-			});
-			User.findOneAndUpdate({_id: id}, {
-				$set: {customerId : customer.id}
-			}, (err, user) => {
-				if (err) {
-					res.json.status(422).json(err);
-				} 
-				else {
-					res.json(user);
-				}
-			});
-		});
+			}).then(() => {
+				User.findOneAndUpdate({_id: req.params.id}, {
+					$set: {customerId : customer.id}
+				}, (err, user) => {
+					if (err) {
+						res.status(422).send(err);
+					} 
+					else {
+						res.send(user);
+					}
+				});
+			}).catch(err => 
+				res.status(500).send(err)
+			);
+		}).catch(err => 
+			res.status(500).send(err)
+		);
 	});
 
 
-	//charge a customer with a saved card
-	app.post('/charge/:id', (req,res) => {
-		let amount = (req.body.amount) * 100;
+	//Charge a Customer With a Saved Card Route
+	app.post('/charge/:id', (req, res) => {
 		User.findById({ _id: req.params.id }, (err, user) => {
 			if (err) {
-				res.json.status(422).json(err);
+				res.status(422).send(err);
 			} else if (user) {
 				stripe.charges.create({
-					amount,
+					amount: req.body.amount * 100,
 					customer: user.customerId,
 					currency: 'usd',
 					receipt_email: user.email
 				}).then(charge => 
-					res.json(charge)
+					res.send(charge)
 				).catch(err => 
-					res.json(err)
+					res.status(500).send(err)
 				);
 			} else {
-				res.status(500).json({ message: 'DB search error.' });
+				res.status(422).send({ message: 'DB search error.' });
 			}
 		});
-	
 	});
 
 	//Sign-Up Route
@@ -107,16 +107,18 @@ module.exports = function(app, passport, User){
 	});
 
 	//Sign-In Route
-	app.post(
-		'/user/signin', 
-		passport.authenticate('local'),
-		(req, res) => {
-			var userInfo = {
-				id: req.user._id
-			};
-			res.send(userInfo);
+	app.post('/user/signin', passport.authenticate('local'), (req, res) => {
+		let hasCustomerAccount = false;
+		if (req.user.customerId) {
+			hasCustomerAccount = true;
 		}
-	);
+		const userInfo = {
+			id: req.user._id,
+			email: req.user.email,
+			hasCustomerAccount
+		};
+		res.send(userInfo);
+	});
 
 	//Check to see if signed-in Route
 	app.get('/user', (req, res) => {
