@@ -5,7 +5,7 @@ import './PillarSection.css'
 class PillarSection extends React.Component {
     render() {
         return (
-            <div className="process-card mb-4">
+            <div className="process-card mb-4" >
                 <center>
                     <h2>Our Process</h2>
                     <hr></hr>

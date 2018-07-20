@@ -5,7 +5,7 @@ import './Jumbotron.css'
 class Jumbotron extends React.Component {
     render () {
         return (
-            <div className="jumbotron jumbotron-fluid">
+            <div className="jumbotron jumbotron-fluid" style={{zIndex: -1}}>
                 {/* This empty div for color gradient overlay on top of image */}
                 <div className="color-overlay"></div>
                 <div className="inner">
