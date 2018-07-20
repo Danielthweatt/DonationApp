@@ -1,5 +1,6 @@
 import React from 'react'; 
 import './Header.css'; 
+// import Button from '@material/react-button/dist'; // /index.js is implied
 
 const Header = () => (
 	<nav className="navbar navbar-expand-lg navbar-light bg-light">
