@@ -143,6 +143,8 @@ class DonationInput extends Component {
 				) : (
 					<Input 
 						title = "First Name"
+						type="text"
+						value={this.props.firstName}
 						handleInput={this.handleFirstNameInput}
 					/>
 				)}
@@ -152,6 +154,8 @@ class DonationInput extends Component {
 				) : (
 					<Input 
 						title = "Last Name"
+						type="text"
+						value={this.props.lastName}
 						handleInput={this.handleLastNameInput}
 					/>
 				)}
@@ -161,6 +165,8 @@ class DonationInput extends Component {
 				) : (
 					<Input 
 						title = "Email"
+						type="text"
+						value={this.props.email}
 						handleInput={this.handleEmailInput}
 					/>
 				)}

@@ -78,23 +78,23 @@ class SignUpForm extends Component {
 				<form>
 					<div>
 						<label>First Name:</label>
-						<Input type="text" name="firstName" handleInput={this.handleFirstNameInput}/>
+						<Input title="First Name" type="text" value={this.props.firstName} handleInput={this.handleFirstNameInput}/>
 					</div>
 					<div>
 						<label>Last Name:</label>
-						<Input type="text" name="lastName" handleInput={this.handleLastNameInput}/>
+						<Input title="Last Name" type="text" value={this.props.lastName} handleInput={this.handleLastNameInput}/>
 					</div>
 					<div>
 						<label>Email:</label>
-						<Input type="text" name="email" handleInput={this.handleEmailInput}/>
+						<Input title="Email" type="text" value={this.props.email} handleInput={this.handleEmailInput}/>
 					</div>
 					<div>
 						<label>Password:</label>
-						<Input type="password" name="password" handleInput={this.handlePasswordInput}/>
+						<Input title="Password" type="password" value={this.props.password} handleInput={this.handlePasswordInput}/>
 					</div>
 					<div>
 						<label>Confirm Password:</label>
-						<Input type="password" name="confirmPassword" handleInput={this.handlePasswordConfirmInput}/>
+						<Input title="Confirm Password" type="password" value={this.props.confirmPassword} handleInput={this.handlePasswordConfirmInput}/>
 					</div>
 					<div>
 						<input type="submit" onClick={this.handleSubmit}/>
