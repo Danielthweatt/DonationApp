@@ -43,6 +43,9 @@ class Header extends Component {
 							<a className="nav-link" href="/donations">Donations</a>
 						</li>
 						<li className="nav-item">
+							<a className="nav-link" href="/settings">Account Settings</a>
+						</li>
+						<li className="nav-item">
 							{this.props.userInfo.loggedIn ? (
 								<button className="nav-link disabled" onClick={this.logout}>Logout</button>
 							) : (

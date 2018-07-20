@@ -155,7 +155,7 @@ class DonationInput extends Component {
 			) : (
 				<Input 
 					title = "First Name"
-					handleInput={this.handleNameInput}
+					handleInput={this.handleFirstNameInput}
 				/>
 			)}
 
@@ -164,7 +164,7 @@ class DonationInput extends Component {
 			) : (
 				<Input 
 					title = "Last Name"
-					handleInput={this.handleNameInput}
+					handleInput={this.handleLastNameInput}
 				/>
 			)}
 
