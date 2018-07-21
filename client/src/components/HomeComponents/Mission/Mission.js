@@ -4,9 +4,14 @@ class Mission extends React.Component {
 	render () {
 		return (
 			<div className="card text-center">
-				<div className="card-header">
+				<center>
+                    <h2>Our Process</h2>
+                    <hr></hr>
+                </center>
+                <br></br>
+				{/* <div className="card-header">
                     MISSION!
-				</div>
+				</div> */}
 				<div className="card-body">
 					<h5 className="card-title">Special title treatment</h5>
 					<p className="card-text">With supporting text below as a natural lead-in to additional content.</p>

@@ -29,9 +29,9 @@
     "nodemon": "^1.17.5"
   },
   "dependencies": {
+    "@material/button": "^0.37.1",
     "@material/card": "^0.37.1",
     "@material/ripple": "^0.37.1",
-    "@material/button": "^0.37.1",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.18.3",
     "connect-flash": "^0.1.1",
