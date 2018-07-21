@@ -10,7 +10,7 @@ class DonateOptions extends Component {
 				<button onClick={this.props.handleMoneyButton} value="5"> $5 </button>
   				<button onClick={this.props.handleMoneyButton} value="10"> $10 </button>
   				<button onClick={this.props.handleMoneyButton} value="20"> $20 </button>
-				<button onClick={this.props.handleMoneyCustom} value=''> Custom Payment </button>
+				<button onClick={this.props.handleMoneyCustom} value='0'> Custom Payment </button>
 				{this.props.custom ? (
 					<div>
 						<label for="custom-payment">Amount:</label>
