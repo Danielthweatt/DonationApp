@@ -17,8 +17,9 @@ class About extends Component {
 				
 					<Team />
 
-					<Footer />
+					
 				</Wrapper>
+				<Footer />
 			</div>
 		
 		);

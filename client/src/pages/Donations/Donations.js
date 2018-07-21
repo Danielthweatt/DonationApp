@@ -14,8 +14,9 @@ class Donations extends Component {
 				<Wrapper>
 					<DonationInput updateUser={this.props.updateUser} userInfo={this.props.userInfo} />
 					<DonationImpact />
-					<Footer />
+					
 				</Wrapper>
+				<Footer />
 			</div>
 		);
 	}

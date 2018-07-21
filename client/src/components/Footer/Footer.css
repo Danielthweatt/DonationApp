@@ -1,10 +1,10 @@
 #myFooter {
-    background: linear-gradient(to right, #5E5D5C, #33658A); 
+    background: linear-gradient(to right,  #33658A, #3B3D40); 
     /* background:  #33658A;  */
     content: ""; 
     color: white;
     padding-top: 15px;
-    margin-top: 10px; 
+    margin-top: 50px; 
 }
 
 /* #map-container {
@@ -19,7 +19,7 @@
 }
 
 #myFooter .footer-copyright {
-    background: linear-gradient(to right, #5E5D5C, #33658A);  
+    /* background: linear-gradient(to right, #5E5D5C, #33658A);   */
     padding-top: 3px;   
     padding-bottom: 3px;
     text-align: center;
