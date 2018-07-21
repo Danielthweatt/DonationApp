@@ -170,6 +170,19 @@ module.exports = function(app, passport, User){
 	//update customer card info
 	app.get('/settings/:id', (req,res) => {
 		let id = req.params.id;
+		User.findById({_id: id}, (err, user) => {
+			if (err) {
+				res.send(err);
+			} else {
+				let customerId = user.customerId
+				stripe.customers.del(customerId, (err, confirmation) => {
+					if(err) console.log(err)
+					else{
+						res.send(confirmation)
+					}
+				})
+				} 
+		});
 	});
 
 	//React App
