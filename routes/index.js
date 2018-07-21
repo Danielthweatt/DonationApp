@@ -115,7 +115,9 @@ module.exports = function(app, passport, User){
 		const userInfo = {
 			id: req.user._id,
 			email: req.user.email,
-			hasCustomerAccount
+			hasCustomerAccount,
+			firstName: req.user.firstName,
+			lastName: req.user.lastName
 		};
 		res.send(userInfo);
 	});
@@ -123,25 +125,35 @@ module.exports = function(app, passport, User){
 	//Check to see if signed-in Route
 	app.get('/user', (req, res) => {
 		if (req.user) {
-			User.findById({_id: req.user._id}, (err, data) => {
+			User.findById({_id: req.user._id}, (err, user) => {
 				if (err) {
-					res.json(err);
+					res.send(err);
 				} else {
-					if (data.customerId) {
-						res.json({
-							user: req.user,
-							hasCustomerAccount: true
+					if (user.customerId) {
+						res.send({
+							user: {
+								userId: user._id,
+								email: user.email,
+								firstName: user.firstName,
+								lastName: user.lastName,
+								hasCustomerAccount: true
+							}
 						});
 					} else {
-						res.json({
-							user: req.user,
-							hasCustomerAccount: false
+						res.send({
+							user: {
+								userId: user._id,
+								email: user.email,
+								firstName: user.firstName,
+								lastName: user.lastName,
+								hasCustomerAccount: false
+							}
 						});
 					}
 				}
 			});
 		} else {
-			res.json({ user: null });
+			res.send({ user: null });
 		}
 	});
 
