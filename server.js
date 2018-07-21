@@ -5,10 +5,9 @@ const bodyParser = require('body-parser');
 const passport = require('passport');
 const User = require('./models').User;
 const mongoose = require('mongoose');
+const redirectToHTTPS = require('express-http-to-https').redirectToHTTPS;
 const app = express();
 const PORT = process.env.PORT || 3001;
-
-var redirectToHTTPS = require('express-http-to-https').redirectToHTTPS;
  
 // Don't redirect if the hostname is `localhost:port` or the route is `/insecure`
 app.use(redirectToHTTPS([/localhost:(\d{4})/], [/\/insecure/], 301));
@@ -17,35 +16,17 @@ app.use(redirectToHTTPS([/localhost:(\d{4})/], [/\/insecure/], 301));
 if (process.env.NODE_ENV === 'production') {
 	app.use(express.static('client/build'));
 }
-
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(session({secret: 'keyboard cat', resave: false, saveUninitialized:false}));
-app.use( (req, res, next) => {
-	console.log('req.session', req.session);
-	return next();
-});
 app.use(passport.initialize());
-app.use( (req, res, next) => {
-	console.log('req.session', req.session);
-	return next();
-});
 app.use(passport.session());
-app.use( (req, res, next) => {
-	console.log('req.user', req.user);
-	return next();
-});
 
 // Configure Passport
 require('./config/passport/passport.js')(passport, User);
 
-// Configure Routes (to do: make routes a export a function that returns a router)
+// Configure Routes
 require('./routes')(app, passport, User);
-
-
-
-// Use routes (once router is exported (see above))
-//app.use(routes);
 
 // Connection to MongoDB
 mongoose.Promise = Promise;

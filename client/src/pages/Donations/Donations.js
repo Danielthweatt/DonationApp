@@ -10,8 +10,8 @@ class Donations extends Component {
 	render() {
 		return (
 			<Wrapper>
-				<Header />
-				<DonationInput userInfo={this.props.userInfo} />
+				<Header updateUser={this.props.updateUser} userInfo={this.props.userInfo} />
+				<DonationInput updateUser={this.props.updateUser} userInfo={this.props.userInfo} />
 				<DonationImpact />
 				<Footer />
 			</Wrapper>
