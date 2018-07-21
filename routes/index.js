@@ -167,6 +167,11 @@ module.exports = function(app, passport, User){
 		}
 	});
 
+	//update customer card info
+	app.get('/settings/:id', (req,res) => {
+		let id = req.params.id;
+	});
+
 	//React App
 	// app.get('*', function(req, res) {
 	// 	res.sendFile(path.join(__dirname, '../client/build/index.html'));
