@@ -107,7 +107,10 @@ module.exports = function(app, passport, User){
 	});
 
 	//Sign-In Route
-	app.post('/user/signin', passport.authenticate('local'), (req, res) => {
+	app.post('/user/signin', passport.authenticate('local', {
+		failureRedirect: '/user/signin/failure',
+		failureFlash: true
+	}), (req, res) => {
 		let hasCustomerAccount = false;
 		if (req.user.customerId) {
 			hasCustomerAccount = true;
@@ -120,6 +123,11 @@ module.exports = function(app, passport, User){
 			lastName: req.user.lastName
 		};
 		res.send(userInfo);
+	});
+
+	app.get('/user/signin/failure', (req, res) => {
+		let message = req.flash('error')[0];
+		res.send({message});
 	});
 
 	//Check to see if signed-in Route
