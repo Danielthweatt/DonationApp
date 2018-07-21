@@ -4,7 +4,6 @@ import './Header.css';
 import Wrapper from '../Wrapper';
 // import Button from '@material/react-button/dist'; // /index.js is implied
 import { Link } from 'react-router-dom';
-//import Link
 
 
 class Header extends Component {
@@ -49,11 +48,15 @@ class Header extends Component {
 						<li className="nav-item">
 							<Link to="/donations" className="nav-link">Donations</Link>
 						</li>
+						{this.props.userInfo.loggedIn ? (
+							<li className="nav-item">
+								<Link to="/settings" className="nav-link" href="/settings">Settings</Link>
+							</li>
+						) : ( 
+							<div></div>
+						)}
 						<li className="nav-item">
-							<Link to="/settings" className="nav-link" href="/settings">Settings</Link>
-						</li>
-						<li className="nav-item">
-							{this.props.userInfo.loggedIn ? (
+							{this.props.userInfo.loggedIn ? (	
 								<button className="nav-link disabled" onClick={this.logout}>Logout</button>
 							) : (
 								<Link to="/login" className="nav-link disabled">Login</Link>
