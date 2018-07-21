@@ -11,7 +11,7 @@ class Jumbotron extends React.Component {
                 <div className="inner">
                     <center>
                         <h1 className="display-4">Love Foundation</h1>
-                        <p className="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
+                        <p className="lead">Making sure the Earth exists for the next generation.</p>
                     </center>
                 </div>
                 {/* <hr className="my-4"></hr>

@@ -31,7 +31,7 @@ class Header extends Component {
 
 	render() {
 		return (
-			<nav className="navbar navbar-expand-lg">
+			<nav className={this.props.page != "home"? "navbar navbar-expand-lg navbar-gradient" : "navbar navbar-expand-lg"}>
 				<Wrapper>
 				<a className="navbar-brand" href="/">Love Foundation</a>
 				<button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">

@@ -12,10 +12,8 @@ class Home extends React.Component {
 	render () {
 		return (
 			<div>
-
-					< Header updateUser={this.props.updateUser} userInfo={this.props.userInfo} />
-
-					< Jumbotron />
+				< Header page="home" updateUser={this.props.updateUser} userInfo={this.props.userInfo} />
+				< Jumbotron />
 				< Wrapper >
 					< PillarSection />
 					< Mission />
