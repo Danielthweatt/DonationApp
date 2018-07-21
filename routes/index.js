@@ -88,7 +88,7 @@ module.exports = function(app, passport, User){
 				res.json(err);
 			} else if (user) {
 				res.json({
-					error: `Sorry, there is already a user with the username: ${email}`
+					error: `Sorry, there is already a user with the email: ${email}`
 				});
 			}
 			else {

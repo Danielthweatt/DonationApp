@@ -84,13 +84,13 @@ class SignUpForm extends Component {
 			};
 			axios.post('/user/signup', signUpInfo).then(response => {
 				if (!response.data.errmsg) {
-					this.setState({ //redirect to login page
+					this.setState({
 						redirectTo: '/'
 					});
 				} else {
 					this.setState({
 						message: true,
-						messageContent: 'Username already taken.'
+						messageContent: 'Email address already taken.'
 					});
 				}
 			}).catch(error => {

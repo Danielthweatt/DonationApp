@@ -113,7 +113,7 @@ class DonationInput extends Component {
 					this.setState({
 						rememberMe: false,
 						message: true,
-						messageContent: 'Donation complete and payment information saved. To updated or delete payment information, see settings page.'
+						messageContent: 'Donation complete and payment information saved. To update or delete payment information, see settings page.'
 					});
 					this.props.updateUser({
 						hasCustomerAccount: true
