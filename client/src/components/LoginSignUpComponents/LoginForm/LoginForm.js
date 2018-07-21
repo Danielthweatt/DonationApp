@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import axios from 'axios';
-import Input from '../../Input'; 
-import { userInfo } from 'os';
+import Input from '../../Input';
 
 class LoginForm extends Component {
 	constructor() {
         super();
         this.state = {
-            username: '',
+            email: '',
             password: '',
             redirectTo: null
         };
@@ -34,12 +33,12 @@ class LoginForm extends Component {
 		};
         axios.post('/user/signin', signInInfo).then(response => {
             if (response.status === 200) {
-                // update App.js state
                 this.props.updateUser({
-                    loggedIn: true,
-                    id: response.data.id
+					loggedIn: true,
+					userId: response.data.id,
+					email: response.data.email,
+					hasCustomerAccount: response.data.hasCustomerAccount
                 });
-                // update the state to redirect to home
                 this.setState({
                     redirectTo: '/'
                 });
@@ -58,12 +57,10 @@ class LoginForm extends Component {
 				<div>
 					<form>
 						<div>
-							<label>Email:</label>
-							<Input title = "Name" type="text" name="email" handleInput={this.handleEmailInput}/>
+							<Input title="Email" name="Email" type="text" value={this.props.email} handleInput={this.handleEmailInput}/>
 						</div>
 						<div>
-							<label>Password:</label>
-							<Input title = "Name" type="password" name="password" handleInput={this.handlePasswordInput}/>
+							<Input title="Password" name="Password" type="password" value={this.props.password} handleInput={this.handlePasswordInput}/>
 						</div>
 						<div>
 							<input type="submit" onClick={this.handleSubmit}/>

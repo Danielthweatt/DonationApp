@@ -9,161 +9,199 @@ import Checkbox from "../Checkbox";
 class DonationInput extends Component {
 
 	state = {
-		name:"",
-		email:"",
-		amount:"",
-		checked: false,
-		rememberMe: false,
-		customAmount: ""
+		firstName: '',
+		lastName: '',
+		email: '',
+		amount: '',
+		customAmount: '',
+		custom: false,
+		rememberMe: false
+	}
+	
+	handleFirstNameInput = e => {
+		this.setState({firstName: e.target.value});
 	}
 
-	
-	handleNameInput = e => {
-		this.setState({name: e.target.value});
+	handleLastNameInput = e => {
+		this.setState({lastName: e.target.value});
 	}
 
 	handleEmailInput = e => {
 		this.setState({email: e.target.value});
 	}
 
-
-
 	handleMoneyButton = e => {
 		this.setState({
 			customAmount: '',
-			amount: e.target.value });
+			amount: e.target.value,
+			custom: false
+		});
 	}
-	
 	
 	handleMoneyCustom = e => {
 		this.setState({
 			customAmount: e.target.value,
-			amount: e.target.value });
+			amount: '',
+			custom: true
+		});
 	}
 
-	updatePaymentInfo = () => {}
+	handleCheckbox = () => {
+		let newRememberMeValue = !this.state.rememberMe;
+		this.setState({rememberMe: newRememberMeValue});
+	}
 
-	forgetMe = () => {}
-
-	handleCheckbox = e => {
-		this.setState({rememberMe: true});
+	chargeACustomer() {
+		//charge the customer instead of the card
+		let userId = this.props.userInfo.userId;
+		let amount;
+		if (this.state.amount) {
+			amount = this.state.amount;
+		} else {
+			amount = this.state.customAmount;
+		}
+		axios.post('/charge/' + userId, {
+			amount
+		}).then(res => {
+			if (res.status === 200) { 
+				alert('Great job!');
+			} else {
+				alert('Something went wrong.');
+			}
+		}).catch(err => {
+			console.log(err);
+			alert('Something went wrong.');
+		});
 	}
 
 	onToken = (token) => {
+		let userId = this.props.userInfo.userId;
+		let amount;
+		if (this.state.amount) {
+			amount = this.state.amount;
+		} else {
+			amount = this.state.customAmount;
+		}
 		if (this.props.userInfo.loggedIn && this.state.rememberMe) {
-			let userId = this.props.userInfo.mongoId;
 			axios.post('/charge/create/' + userId, {
-				description:'save info charge',
-				email: this.state.email,
+				description: 'charge',
+				email: this.props.userInfo.email,
 				source: token.id,
-				amount: this.state.amount,
-				mongoId: this.props.userInfo.mongoId
-			}).then((data) => {
-				if(data.status === 200) {
-					alert('customer saved!');
+				amount
+			}).then(res => {
+				if (res.status === 200) {
+					alert('Customer saved!');
 					this.setState({
-						name:"",
-						email:"",
-						amount:""
+						rememberMe: false
 					});
+					this.props.updateUser({
+						hasCustomerAccount: true
+					});
+				} else {
+					alert('Something went wrong.');
 				}
-			}).catch(err => console.log(err));
-		} else if (this.props.userInfo.loggedIn && this.props.userInfo.hasCustomerAccount) {
-			alert('press ok to go thru with this donation');
-			//charge the customer instead of the card
-			let userId = this.props.userInfo.mongoId;
-			//console.log(this.props.userInfo)
-			axios.post('/charge/' + userId, {
-				description: 'charge a customer',
-				amount: this.state.amount
-			}).then((data) => {
-				console.log(data);
-				// if(data.status === 200) {
-				// 	alert('great job')
-				// }
-			}).catch(err => console.log(err));
+			}).catch(err => {
+				console.log(err);
+				alert('Something went wrong.');
+			});
 		} else {
 			axios.post('/charge', {
-				description: 'example charge',
 				email: this.state.email,
 				source: token.id,
-				amount: this.state.amount,
-				mongoId: this.props.userInfo.mongoId
-        	}).then((data) => {
-            	console.log(data.status)
-            	if (data.status === 200){
-					alert('it worked!')
-					//clear state values
+				amount
+        	}).then(res => {
+				if (res.status === 200) {
+					alert('it worked!');
 					this.setState({
-						name:"",
-						email:"",
-						amount:""
+						firstName: '',
+						lastName: '',
+						email: '',
+						rememberMe: false
 					});
-					//probs take this out?
-					window.location.reload();
-            	}
-        	})
-        	.catch((err) => {
-            	console.log(err);
+				} else {
+					alert('Something went wrong.');
+				}
+        	}).catch((err) => {
+				console.log(err);
+				alert('Something went wrong.');
 			});
 		}
 	}
-
 	
 	render() {
 		return (
-			<div className = "donation-input">
-				
-			<DonateOptions
-				handleMoneyButton={this.handleMoneyButton}
-				handleMoneyCustom={this.handleMoneyCustom}
-				customAmount={this.state.customAmount}
-			/>
+			<form className = "donation-input">
 
+				<DonateOptions
+					handleMoneyButton={this.handleMoneyButton}
+					handleMoneyCustom={this.handleMoneyCustom}
+					customAmount={this.state.customAmount}
+					custom={this.state.custom}
 
-			{this.props.userInfo.loggedIn ? (
-				<div></div>
-			) : (
-				<Input 
-					title = "Name"
-					handleInput={this.handleNameInput}
 				/>
-			)}
 
-			{this.props.userInfo.loggedIn ? (
-				<div></div>
-			) : (
-				<Input 
-					title = "Email"
-					handleInput={this.handleEmailInput}
-				/>
-			)}
+				{this.props.userInfo.loggedIn ? (
+					<div></div>
+				) : (
+					<Input 
+						title = "First Name"
+						name = "First Name"
+						type="text"
+						value={this.props.firstName}
+						handleInput={this.handleFirstNameInput}
+					/>
+				)}
 
-			{this.props.userInfo.loggedIn && this.props.userInfo.hasCustomerAccount ? (
-				<div></div>
-			) : (
-				<Checkbox
-					handleCheckbox = {this.handleCheckbox}
-				/>
-			)}
+
+				{this.props.userInfo.loggedIn ? (
+					<div></div>
+				) : (
+					<Input 
+						title = "Last Name"
+						name = "Last Name"
+						type="text"
+						value={this.props.lastName}
+						handleInput={this.handleLastNameInput}
+					/>
+				)}
+
+				{this.props.userInfo.loggedIn ? (
+					<div></div>
+				) : (
+					<Input 
+						title = "Email"
+						name = "Email"
+						type="text"
+						value={this.props.email}
+						handleInput={this.handleEmailInput}
+					/>
+				)}
+
+				{this.props.userInfo.loggedIn && !this.props.userInfo.hasCustomerAccount ? (
+					<Checkbox
+						handleCheckbox = {this.handleCheckbox}
+					/>
+				) : (
+					<div></div>
+				)}
 			
+				{this.props.userInfo.loggedIn && this.props.userInfo.hasCustomerAccount ? (
+					<button onClick={this.chargeACustomer}>Donate</button>
+				) : (
+					<StripeProvider apiKey="pk_test_xwATFGfvWsyNnp1dDh2MOk8I">
+						<Elements>
+						<StripeCheckout
+							allowRememberMe = {false}
+							name={`${this.state.firstName} ${this.state.lastName}`}
+							email={this.state.email}
+							token={this.onToken}
+							stripeKey={'pk_test_xwATFGfvWsyNnp1dDh2MOk8I'}
+						/>
+						</Elements>
+					</StripeProvider>
+				)}
 
-			<StripeProvider apiKey="pk_test_laDoJCqgOQpou2PvCdG07DE2
-">
-				<Elements>
-		
-				<StripeCheckout
-					allowRememberMe = {false}
-					name={this.state.name}
-					email={this.state.email}
-					token={this.onToken}
-					stripeKey={'pk_test_laDoJCqgOQpou2PvCdG07DE2'}
-				/>
-				
-				</Elements>
-			</StripeProvider>
-			
-		</div>
+			</form>
 		)
 	}
 };
