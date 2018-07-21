@@ -5,6 +5,7 @@ import {Elements, StripeProvider} from 'react-stripe-elements';
 import StripeCheckout from 'react-stripe-checkout';
 import DonateOptions from '../DonateOptions'; 
 import Checkbox from "../Checkbox";
+import './DonationInput.css'; 
 
 class DonationInput extends Component {
 
@@ -130,7 +131,7 @@ class DonationInput extends Component {
 	
 	render() {
 		return (
-			<form className = "donation-input">
+			<div className = "donation-input-card">
 
 				<DonateOptions
 					handleMoneyButton={this.handleMoneyButton}
@@ -200,8 +201,8 @@ class DonationInput extends Component {
 						</Elements>
 					</StripeProvider>
 				)}
-
-			</form>
+				</div>
+			
 		)
 	}
 };

@@ -1,6 +1,6 @@
 import React from 'react';
 // import Button from '@material/react-button/dist'; // /index.js is implied
-import './Jumbotron.css'
+import './Jumbotron.css';
 
 class Jumbotron extends React.Component {
     render () {
@@ -20,9 +20,9 @@ class Jumbotron extends React.Component {
                         Learn more
                     </Button>
                 </p> */}
-            </div>
-        )
-    }
-};
+			</div>
+		);
+	}
+}
 
 export default Jumbotron;
