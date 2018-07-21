@@ -21,7 +21,7 @@
   "bugs": {
     "url": "https://github.com/Danielthweatt/DonationApp/issues"
   },
-  "homepage": "https://github.com/Danielthweatt/DonationApp#readme",
+  "homepage": "https://github.com/Danielthweatt/DonationApp",
   "devDependencies": {
     "eslint": "^5.0.1",
     "eslint-plugin-react": "^7.10.0",
