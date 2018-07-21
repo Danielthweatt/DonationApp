@@ -31,6 +31,8 @@
     top: 50%;
     min-height: 100%;
     object-fit: cover;
+    /* min-width: 100%; */
+    /* padding: 25%; */
     background: linear-gradient(to right, #ff3e00, #d62562);
     -webkit-transform: translate(-50%,-50%);
         -ms-transform: translate(-50%,-50%);
