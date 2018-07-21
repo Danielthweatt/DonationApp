@@ -1,9 +1,6 @@
 {
   "name": "donationapp",
   "version": "1.0.0",
-  "engines": {
-    "node": "8.9.4"
-  },
   "description": "This is a template for an app that accepts donations for a non-profit that implements it.",
   "main": "server.js",
   "scripts": {
