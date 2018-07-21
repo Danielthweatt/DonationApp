@@ -17,7 +17,8 @@ class DonationInput extends Component {
 			amount: '',
 			customAmount: '',
 			custom: false,
-			rememberMe: false
+			rememberMe: false, 
+			buttonClicked: 0
 		};
 		this.handleFirstNameInput = this.handleFirstNameInput.bind(this);
 		this.handleLastNameInput = this.handleLastNameInput.bind(this);
@@ -45,12 +46,14 @@ class DonationInput extends Component {
 		this.setState({
 			customAmount: '',
 			amount: e.target.value,
-			custom: false
+			custom: false,
+			buttonClicked: e.target.value
 		});
 	}
 	
 	handleMoneyCustom = e => {
 		this.setState({
+			buttonClicked: e.target.value,
 			customAmount: e.target.value,
 			amount: '',
 			custom: true
@@ -143,6 +146,7 @@ class DonationInput extends Component {
 			<div className = "donation-input-card">
 
 				<DonateOptions
+					buttonClicked={this.state.buttonClicked}
 					handleMoneyButton={this.handleMoneyButton}
 					handleMoneyCustom={this.handleMoneyCustom}
 					customAmount={this.state.customAmount}

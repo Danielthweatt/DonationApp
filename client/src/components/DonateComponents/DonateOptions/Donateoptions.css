@@ -1,3 +1,36 @@
 .btn-group {
     display: flex; 
 }
+
+.donation-button-clicked:active{
+    outline: none; 
+}
+
+.donation-button-clicked:focus{
+    outline: none; 
+    border: none; 
+}
+
+.donation-button-clicked {
+    height: 10vw; 
+    width: 10vw; 
+    border-radius: 50%; 
+    font-family: 'Roboto Condensed', sans-serif;
+    font-size: 150%; 
+    color: #f9f9f9; 
+    background: linear-gradient(to right, #2B89FE,  #3d6487);
+    /* border-image: linear-gradient(to right,#ff3e00, #d62562) 30; */
+    overflow: hidden; 
+
+}
+
+.donation-button {
+    height: 10vw; 
+    width: 10vw; 
+    border-radius: 50%; 
+    font-family: 'Roboto Condensed', sans-serif;
+    font-size: 150%; 
+    background: white;
+    /* border-image: linear-gradient(to right,#ff3e00, #d62562) 30; */
+    overflow: hidden; 
+}
