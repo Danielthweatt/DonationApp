@@ -1,5 +1,5 @@
 const keys = {
-	SECRET_KEY: 'sk_test_dBFKZCbJIsFNMhXnuhW7vCkr'
+	SECRET_KEY: 'sk_test_AKVA7CFMVqdEG0ZnhF7uiLz7'
 };
 
 module.exports = keys;

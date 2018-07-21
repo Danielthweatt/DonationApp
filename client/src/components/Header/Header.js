@@ -1,7 +1,11 @@
 import React, { Component } from 'react'; 
 import axios from 'axios';
 import './Header.css'; 
+import Wrapper from '../Wrapper';
 // import Button from '@material/react-button/dist'; // /index.js is implied
+import { Link } from 'react-router-dom';
+//import Link
+
 
 class Header extends Component {
 	constructor() {
@@ -16,7 +20,8 @@ class Header extends Component {
 				this.props.updateUser({
 					loggedIn: false,
 					hasCustomerAccount: false,
-					id: null
+					email: null,
+					userId: null
 				});
 			}
 		}).catch(err => {
@@ -26,8 +31,9 @@ class Header extends Component {
 
 	render() {
 		return (
-			<nav className="navbar navbar-expand-lg navbar-light bg-light">
-				<a className="navbar-brand" href="/">Navbar</a>
+			<nav className="navbar navbar-expand-lg">
+				<Wrapper>
+				<a className="navbar-brand" href="/">Love Foundation</a>
 				<button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 					<span className="navbar-toggler-icon"></span>
 				</button>
@@ -35,23 +41,27 @@ class Header extends Component {
 				<div className="collapse navbar-collapse" id="navbarSupportedContent">
 					<ul className="navbar-nav mr-auto">
 						<li className="nav-item active">
-							<a className="nav-link" href="/">Home <span className="sr-only">(current)</span></a>
+							<Link to="/" className="nav-link" >Home <span className="sr-only">(current)</span></Link>
 						</li>
 						<li className="nav-item">
-							<a className="nav-link" href="/about">About</a>
+							<Link to="/about" className="nav-link">About</Link>
 						</li>
 						<li className="nav-item">
-							<a className="nav-link" href="/donations">Donations</a>
+							<Link to="/donations" className="nav-link">Donations</Link>
+						</li>
+						<li className="nav-item">
+							<Link to="/settings" className="nav-link" href="/settings">Settings</Link>
 						</li>
 						<li className="nav-item">
 							{this.props.userInfo.loggedIn ? (
 								<button className="nav-link disabled" onClick={this.logout}>Logout</button>
 							) : (
-								<a className="nav-link disabled" href="/login">Login</a>
+								<Link to="/login" className="nav-link disabled">Login</Link>
 							)}
 						</li>
 					</ul>
 				</div>
+				</ Wrapper>
 			</nav>
 		);
 	}

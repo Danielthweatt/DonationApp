@@ -4,6 +4,7 @@ import Home from './pages/Home';
 import Login from './pages/Login'; 
 import SignUp from './pages/SignUp'; 
 import Donations from './pages/Donations';
+import AccountSettings from './pages/AccountSettings'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import axios from 'axios';
 import './App.css';
@@ -14,11 +15,11 @@ import './App.css';
 class App extends Component {
 	constructor(){
 		super();
-		// To do: update state (customer account and id properties) here and in other components
 		this.state = {
 			loggedIn: false,
 			hasCustomerAccount: false,
-			id: null
+			email: null,
+			userId: null
 		};
 		this.updateUser = this.updateUser.bind(this);
 		this.checkUser = this.checkUser.bind(this);
@@ -39,12 +40,15 @@ class App extends Component {
 			  	this.setState({
 					loggedIn: true,
 					hasCustomerAccount: response.data.hasCustomerAccount,
-					id: response.data.user._id
+					email: response.data.email,
+					userId: response.data.user._id
 			  	});
 			} else {
 			  	this.setState({
 					loggedIn: false,
-					id: null
+					hasCustomerAccount: false,
+					email: null,
+					userId: null
 			  	});
 			}
 		});
@@ -52,6 +56,7 @@ class App extends Component {
 
 	render() {
 		return (
+			<div>
 			<Router>
 				<Switch>
 					<Route exact path="/about" render= {() =>
@@ -62,8 +67,15 @@ class App extends Component {
 							userInfo={{
 								loggedIn: this.state.loggedIn,
 								hasCustomerAccount: this.state.hasCustomerAccount,
-								mongoId: this.state.id
+								mongoId: this.state.userId
 							}}/>} />
+					<Route exact path="/settings" render={() =>
+						<AccountSettings updateUser={this.updateUser}
+							userInfo={{
+								loggedIn: this.state.loggedIn,
+								hasCustomerAccount: this.state.hasCustomerAccount,
+								mongoId: this.state.userId
+							}}/>}/>
 					<Route exact path="/login" render={() =>
 						<Login updateUser={this.updateUser} 
 							userInfo={{loggedIn: this.state.loggedIn}}/>} />
@@ -75,6 +87,7 @@ class App extends Component {
 							userInfo={{loggedIn: this.state.loggedIn}}/>} />
 				</Switch>
 			</Router>
+			</div>
 		);
 	}
 }

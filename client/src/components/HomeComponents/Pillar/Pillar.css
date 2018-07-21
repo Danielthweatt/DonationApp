@@ -15,31 +15,29 @@
             transform: translate(-50%,-50%);
 } */
 
-.pillar-image {
-    width: 20vw;
-    height: 20vw;
+.card-top {
+    width: 15vw;
+    height: 15vw;
     content: " ";
     border-radius: 50%;
-
-}
-
-/* .thumbnail {
     position: relative;
-    width: 200px;
-    height: 200px;
     overflow: hidden;
+    margin: auto;
 }
-  .thumbnail img {
+
+.card-top > img {
     position: absolute;
     left: 50%;
     top: 50%;
-    height: 100%;
-    width: auto;
+    min-height: 100%;
+    object-fit: cover;
+    background: linear-gradient(to right, #ff3e00, #d62562);
     -webkit-transform: translate(-50%,-50%);
         -ms-transform: translate(-50%,-50%);
             transform: translate(-50%,-50%);
 }
-  .thumbnail img.portrait {
-    width: 100%;
-    height: auto;
-} */
+
+.card-body {
+    text-align: center;
+    margin-top: 1em;
+}

@@ -12,9 +12,9 @@ class Home extends React.Component {
 	render () {
 		return (
 			<div>
-				< Wrapper >
+
 					< Header updateUser={this.props.updateUser} userInfo={this.props.userInfo} />
-				</ Wrapper >
+
 					< Jumbotron />
 				< Wrapper >
 					< PillarSection />
