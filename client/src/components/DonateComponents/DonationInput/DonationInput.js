@@ -107,7 +107,8 @@ class DonationInput extends Component {
 			axios.post('/charge/create/' + userId, {
 				email: this.props.userInfo.email,
 				source: token.id,
-				amount
+				amount,
+				stripeKey: "pk_test_xwATFGfvWsyNnp1dDh2MOk8I"
 			}).then(res => {
 				if (res.status === 200) {
 					this.setState({
@@ -185,7 +186,6 @@ class DonationInput extends Component {
 					/>
 				)}
 
-
 				{this.props.userInfo.loggedIn ? (
 					<div></div>
 				) : (
@@ -241,6 +241,7 @@ class DonationInput extends Component {
 								this.state.customAmount * 100
 							)}
 							token={this.onToken}
+							amount={this.state.amount * 100}
 							stripeKey={'pk_test_xwATFGfvWsyNnp1dDh2MOk8I'}
 						/>
 						</Elements>

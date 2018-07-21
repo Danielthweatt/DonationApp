@@ -175,6 +175,46 @@ module.exports = function(app, passport, User){
 		}
 	});
 
+	//update customer card info
+	app.put('/settings/:id', (req,res) => {
+		let id = req.params.id;
+		User.findById({_id: id}, (err, user) => {
+			if (err) {
+				res.send(err);
+			} else {
+				console.log(user)
+				let customerId = user.customerId
+				//delete the customer
+				stripe.customers.update(customerId, {
+					source: req.body.source
+				}, (err, confirmation) => {
+					if(err) console.log(err)
+					else{
+						res.send(confirmation)
+					}
+				})} 
+		});
+	});
+	// app.post('/settings/create/:id', (req, res) => {
+	// 	stripe.customers.create({
+	// 		email: req.body.email,
+	// 		//source is the token linked to their card
+	// 		source: req.body.source
+	// 	}).then(customer => {
+	// 		console.log(customer)
+	// 		User.findOneAndUpdate({_id: req.params.id}, {
+	// 			$set: {customerId : customer.id}
+	// 		}, (err, user) => {
+	// 			if (err) {
+	// 				res.status(422).send(err);
+	// 			} 
+	// 			else {
+	// 				res.send(user);
+	// 			}
+	// 		})
+	// 	}).catch(err => res.json(err))
+	// })
+
 	//React App
 	// app.get('*', function(req, res) {
 	// 	res.sendFile(path.join(__dirname, '../client/build/index.html'));
