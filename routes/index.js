@@ -175,6 +175,11 @@ module.exports = function(app, passport, User){
 		}
 	});
 
+	//Forgot Password Route
+	app.post('/forgot', (req, res) => 
+		res.send(req.body)
+	);
+
 	//update customer card info
 	app.put('/settings/:id', (req,res) => {
 		let id = req.params.id;
@@ -182,17 +187,17 @@ module.exports = function(app, passport, User){
 			if (err) {
 				res.send(err);
 			} else {
-				console.log(user)
-				let customerId = user.customerId
+				console.log(user);
+				let customerId = user.customerId;
 				//delete the customer
 				stripe.customers.update(customerId, {
 					source: req.body.source
 				}, (err, confirmation) => {
-					if(err) console.log(err)
+					if(err) console.log(err);
 					else{
-						res.send(confirmation)
+						res.send(confirmation);
 					}
-				})} 
+				});} 
 		});
 	});
 	// app.post('/settings/create/:id', (req, res) => {

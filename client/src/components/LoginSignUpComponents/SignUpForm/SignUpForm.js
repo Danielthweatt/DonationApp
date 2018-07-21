@@ -111,24 +111,12 @@ class SignUpForm extends Component {
 			return (
 				<div>
 					<form>
-						<div>
-							<Input title="First Name" name="First Name" type="text" value={this.props.firstName} handleInput={this.handleFirstNameInput}/>
-						</div>
-						<div>
-							<Input title="Last Name" name="Last Name" type="text" value={this.props.lastName} handleInput={this.handleLastNameInput}/>
-						</div>
-						<div>
-							<Input title="Email" name="Email" type="text" value={this.props.email} handleInput={this.handleEmailInput}/>
-						</div>
-						<div>
-							<Input title="Password" name="Password" type="password" value={this.props.password} handleInput={this.handlePasswordInput}/>
-						</div>
-						<div>
-							<Input title="Confirm Password" name="Confirm Password" type="password" value={this.props.confirmPassword} handleInput={this.handlePasswordConfirmInput}/>
-						</div>
-						<div>
-							<input type="submit" onClick={this.handleSubmit}/>
-						</div>
+						<Input title="First Name" name="First Name" type="text" value={this.state.firstName} handleInput={this.handleFirstNameInput}/>
+						<Input title="Last Name" name="Last Name" type="text" value={this.state.lastName} handleInput={this.handleLastNameInput}/>
+						<Input title="Email" name="Email" type="text" value={this.state.email} handleInput={this.handleEmailInput}/>
+						<Input title="Password" name="Password" type="password" value={this.state.password} handleInput={this.handlePasswordInput}/>
+						<Input title="Confirm Password" name="Confirm Password" type="password" value={this.state.confirmPassword} handleInput={this.handlePasswordConfirmInput}/>
+						<input type="submit" onClick={this.handleSubmit}/>
 					</form>
 					{this.state.message ? (
 						<p>{this.state.messageContent}</p>

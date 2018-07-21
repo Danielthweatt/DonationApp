@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import axios from 'axios';
 import Input from '../../Input';
-import { Link } from 'react-router-dom';
 
 class LoginForm extends Component {
 	constructor() {
@@ -88,15 +87,9 @@ class LoginForm extends Component {
 			return (
 				<div>
 					<form>
-						<div>
-							<Input title="Email" name="Email" type="text" value={this.props.email} handleInput={this.handleEmailInput}/>
-						</div>
-						<div>
-							<Input title="Password" name="Password" type="password" value={this.props.password} handleInput={this.handlePasswordInput}/>
-						</div>
-						<div>
-							<input type="submit" onClick={this.handleSubmit}/>
-						</div>
+						<Input title="Email" name="Email" type="text" value={this.state.email} handleInput={this.handleEmailInput}/>
+						<Input title="Password" name="Password" type="password" value={this.state.password} handleInput={this.handlePasswordInput}/>
+						<input type="submit" onClick={this.handleSubmit}/>
 					</form>
 					{this.state.message ? (
 						<p>{this.state.messageContent}</p>
