@@ -156,8 +156,8 @@ module.exports = function(app, passport, User){
 	});
 
 	//React App
-	// app.get('*', function(req, res) {
-	// 	res.sendFile(path.join(__dirname, '../client/build/index.html'));
-	// });
+	app.get('*', function(req, res) {
+		res.sendFile(path.join(__dirname, '../client/build/index.html'));
+	});
 
 };
