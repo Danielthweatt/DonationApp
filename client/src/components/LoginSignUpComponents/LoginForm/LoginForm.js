@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import axios from 'axios';
 import Input from '../../Input';
+import { Link } from 'react-router-dom';
 
 class LoginForm extends Component {
 	constructor() {
@@ -37,7 +38,9 @@ class LoginForm extends Component {
 					loggedIn: true,
 					userId: response.data.id,
 					email: response.data.email,
-					hasCustomerAccount: response.data.hasCustomerAccount
+					hasCustomerAccount: response.data.hasCustomerAccount,
+					firstName: response.data.firstName,
+					lastName: response.data.lastName
                 });
                 this.setState({
                     redirectTo: '/'
@@ -66,7 +69,7 @@ class LoginForm extends Component {
 							<input type="submit" onClick={this.handleSubmit}/>
 						</div>
 					</form>
-					<a href="/signup">Sign Up</a>
+					<Link to="/signup">Sign Up</Link>
 				</div>
 			)
 		}
