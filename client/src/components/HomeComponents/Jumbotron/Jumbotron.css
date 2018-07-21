@@ -25,4 +25,18 @@
 .inner {
     position: relative;
     z-index: 2;
+    font-family: 'Roboto Condensed', sans-serif;
+    text-align: center;
 }
+
+/* .inner > h1 {
+    font-weight: bolder;
+    font-size: 5em;
+    font-kerning: none;
+}
+
+.lead-text {
+    font-weight: 300;
+    font-style: italic;
+    font-kerning: none;
+} */

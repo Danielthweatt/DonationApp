@@ -246,3 +246,16 @@
 
 .button-alternate:not(:disabled) {
   background-color: #2b89fe; }
+
+body {
+  font-family: 'Roboto-Condensed', sans-serif; }
+
+h1 {
+  font-weight: bolder;
+  font-size: 5em;
+  font-kerning: none; }
+
+.lead-text {
+  font-weight: 300;
+  font-style: italic;
+  font-kerning: none; }

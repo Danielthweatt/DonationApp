@@ -9,10 +9,8 @@ class Jumbotron extends React.Component {
                 {/* This empty div for color gradient overlay on top of image */}
                 <div className="color-overlay"></div>
                 <div className="inner">
-                    <center>
-                        <h1 className="display-4">Love Foundation</h1>
-                        <p className="lead">Making sure the Earth exists for the next generation.</p>
-                    </center>
+                    <h1>Love Foundation</h1>
+                    <p className="lead lead-text">Making sure the Earth exists for the next generation.</p>
                 </div>
                 {/* <hr className="my-4"></hr>
                 <p className="lead">
