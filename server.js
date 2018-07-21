@@ -31,7 +31,7 @@ require('./config/passport/passport.js')(passport, User);
 require('./routes')(app, passport, User);
 
 // Connection to MongoDB
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost/donation_app'
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost/donation_app';
 mongoose.Promise = Promise;
 mongoose.connect(MONGODB_URI);
 
