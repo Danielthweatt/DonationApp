@@ -10,9 +10,7 @@
     color: #f9f9f9 ;
 }
 
-.navbar {
-    /* background: linear-gradient(to right, #ffb40f, #ff3e00); */
-    /* background: linear-gradient(to right,#ffb40f, #ff3e00); */
-    content: " "; 
+.navbar-gradient {
+    background: linear-gradient(to right, #ffb40f, #ff3e00);
+    margin-bottom: 2em;
 }
-

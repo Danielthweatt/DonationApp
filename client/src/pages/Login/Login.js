@@ -9,11 +9,13 @@ class Login extends Component {
 
 	render (){
 		return (
-			<Wrapper>
+			<div>
 				<Header updateUser={this.props.updateUser} userInfo={this.props.userInfo} />
-				<LoginForm updateUser={this.props.updateUser} />
-				<Footer />
-			</Wrapper>
+				<Wrapper>
+					<LoginForm updateUser={this.props.updateUser} />
+					<Footer />
+				</Wrapper>
+			</div>
 		
 		);
 	}
