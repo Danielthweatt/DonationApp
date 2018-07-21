@@ -5,12 +5,12 @@ const bodyParser = require('body-parser');
 const passport = require('passport');
 const User = require('./models').User;
 const mongoose = require('mongoose');
-//const redirectToHTTPS = require('express-http-to-https').redirectToHTTPS;
+const redirectToHTTPS = require('express-http-to-https').redirectToHTTPS;
 const app = express();
 const PORT = process.env.PORT || 3001;
  
 // Don't redirect if the hostname is `localhost:port` or the route is `/insecure`
-//app.use(redirectToHTTPS([/localhost:(\d{4})/], [/\/insecure/], 301));
+app.use(redirectToHTTPS([/localhost:(\d{4})/], [/\/insecure/], 301));
 
 // Middleware
 if (process.env.NODE_ENV === 'production') {
