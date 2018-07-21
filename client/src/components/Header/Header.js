@@ -61,6 +61,7 @@ class Header extends Component {
 						</li>
 					</ul>
 				</div>
+				
 				</ Wrapper>
 			</nav>
 		);

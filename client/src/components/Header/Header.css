@@ -12,4 +12,7 @@
 
 .navbar {
     /* background: linear-gradient(to right, #ffb40f, #ff3e00); */
+    /* background: linear-gradient(to right,#ffb40f, #ff3e00); */
+    content: " "; 
 }
+
