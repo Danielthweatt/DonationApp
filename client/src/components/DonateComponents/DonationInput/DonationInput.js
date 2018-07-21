@@ -210,6 +210,11 @@ class DonationInput extends Component {
 							) : (	
 								this.state.email
 							)}
+							amount={this.state.amount ? (
+								this.state.amount * 100
+							) : (
+								this.state.customAmount * 100
+							)}
 							token={this.onToken}
 							stripeKey={'pk_test_xwATFGfvWsyNnp1dDh2MOk8I'}
 						/>
