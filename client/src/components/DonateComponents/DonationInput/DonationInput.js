@@ -84,7 +84,6 @@ class DonationInput extends Component {
 		}
 		if (this.props.userInfo.loggedIn && this.state.rememberMe) {
 			axios.post('/charge/create/' + userId, {
-				description: 'charge',
 				email: this.props.userInfo.email,
 				source: token.id,
 				amount
