@@ -83,16 +83,16 @@ class SignUpForm extends Component {
 				password: this.state.password
 			};
 			axios.post('/user/signup', signUpInfo).then(response => {
-				if (!response.data.errmsg) {
+				if (response.data.error) {
 					this.setState({
-						redirectTo: '/'
+						message: true,
+						messageContent: response.data.error
 					});
 				} else {
 					this.setState({
-						message: true,
-						messageContent: 'Email address already taken.'
+						redirectTo: '/'
 					});
-				}
+				} 
 			}).catch(error => {
 				this.setState({
 					message: true,
