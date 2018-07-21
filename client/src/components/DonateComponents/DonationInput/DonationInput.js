@@ -130,7 +130,7 @@ class DonationInput extends Component {
 	
 	render() {
 		return (
-			<form className = "donation-input">
+			<div className = "donation-input">
 
 				<DonateOptions
 					handleMoneyButton={this.handleMoneyButton}
@@ -195,13 +195,14 @@ class DonationInput extends Component {
 							name={`${this.state.firstName} ${this.state.lastName}`}
 							email={this.state.email}
 							token={this.onToken}
+							amount={this.state.amount * 100}
 							stripeKey={'pk_test_xwATFGfvWsyNnp1dDh2MOk8I'}
 						/>
 						</Elements>
 					</StripeProvider>
 				)}
 
-			</form>
+			</div>
 		)
 	}
 };
