@@ -30,7 +30,22 @@ class Settings extends Component {
         
         console.log(this.props.userInfo)
         return (
+            <div>
             <h1>the settings</h1>
+                <form>
+                    <label>
+                        Name:
+                        <input type="text" name="name" placeholder="fdjask"/>
+                    </label>
+                    <br/>
+                    <label>
+                        Email:
+                        <input type="text" name="email" placeholder={this.props.userInfo.email} />
+                    </label>
+                    <br/>
+                    <input type="submit" value="Submit" />
+                </form>
+            </div>
         )
     }
 }
