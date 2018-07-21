@@ -6,7 +6,7 @@ class Pillar extends React.Component {
     render() {
         return (
             <div className="card">
-                <div className="pillar-image">
+                <div className="card-top">
                     <img className="card-img-top" src={this.props.imageURL} alt="Card image cap"/>
                 </div>
                 <div className="card-body">

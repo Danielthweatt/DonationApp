@@ -5,3 +5,11 @@
 .navbar-collapse{
     background-color: chartreuse; 
 } */
+
+.navbar-brand, .navbar-light, .nav-link, .active{
+    color: #f9f9f9 ;
+}
+
+.navbar {
+    /* background: linear-gradient(to right, #ffb40f, #ff3e00); */
+}

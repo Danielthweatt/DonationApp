@@ -1,6 +1,7 @@
 import React, { Component } from 'react'; 
 import axios from 'axios';
 import './Header.css'; 
+import Wrapper from '../Wrapper';
 // import Button from '@material/react-button/dist'; // /index.js is implied
 
 class Header extends Component {
@@ -26,8 +27,9 @@ class Header extends Component {
 
 	render() {
 		return (
-			<nav className="navbar navbar-expand-lg navbar-light bg-light">
-				<a className="navbar-brand" href="/">Navbar</a>
+			<nav className="navbar navbar-expand-lg">
+				<Wrapper>
+				<a className="navbar-brand" href="/">Love Foundation</a>
 				<button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 					<span className="navbar-toggler-icon"></span>
 				</button>
@@ -52,6 +54,7 @@ class Header extends Component {
 						</li>
 					</ul>
 				</div>
+				</ Wrapper>
 			</nav>
 		);
 	}

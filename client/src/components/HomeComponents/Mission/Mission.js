@@ -5,7 +5,7 @@ class Mission extends React.Component {
 		return (
 			<div className="card text-center">
 				<center>
-                    <h2>Our Process</h2>
+                    <h2>Our Mission</h2>
                     <hr></hr>
                 </center>
                 <br></br>
