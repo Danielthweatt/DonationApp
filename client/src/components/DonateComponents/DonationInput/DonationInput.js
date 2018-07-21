@@ -7,15 +7,25 @@ import DonateOptions from '../DonateOptions';
 import Checkbox from "../Checkbox";
 
 class DonationInput extends Component {
-
-	state = {
-		firstName: '',
-		lastName: '',
-		email: '',
-		amount: '',
-		customAmount: '',
-		custom: false,
-		rememberMe: false
+	constructor() {
+		super();
+		this.state = {
+			firstName: '',
+			lastName: '',
+			email: '',
+			amount: '',
+			customAmount: '',
+			custom: false,
+			rememberMe: false
+		};
+		this.handleFirstNameInput = this.handleFirstNameInput.bind(this);
+		this.handleLastNameInput = this.handleLastNameInput.bind(this);
+		this.handleEmailInput = this.handleEmailInput.bind(this);
+		this.handleMoneyButton = this.handleMoneyButton.bind(this);
+		this.handleMoneyCustom = this.handleMoneyCustom.bind(this);
+		this.handleCheckbox = this.handleCheckbox.bind(this);
+		this.chargeACustomer = this.chargeACustomer.bind(this);
+		this.onToken = this.onToken.bind(this);
 	}
 	
 	handleFirstNameInput = e => {
@@ -84,7 +94,6 @@ class DonationInput extends Component {
 		}
 		if (this.props.userInfo.loggedIn && this.state.rememberMe) {
 			axios.post('/charge/create/' + userId, {
-				description: 'charge',
 				email: this.props.userInfo.email,
 				source: token.id,
 				amount
@@ -111,7 +120,7 @@ class DonationInput extends Component {
 				amount
         	}).then(res => {
 				if (res.status === 200) {
-					alert('it worked!');
+					alert('It worked!');
 					this.setState({
 						firstName: '',
 						lastName: '',
@@ -137,7 +146,6 @@ class DonationInput extends Component {
 					handleMoneyCustom={this.handleMoneyCustom}
 					customAmount={this.state.customAmount}
 					custom={this.state.custom}
-
 				/>
 
 				{this.props.userInfo.loggedIn ? (
@@ -192,8 +200,16 @@ class DonationInput extends Component {
 						<Elements>
 						<StripeCheckout
 							allowRememberMe = {false}
-							name={`${this.state.firstName} ${this.state.lastName}`}
-							email={this.state.email}
+							name={this.props.userInfo.loggedIn ? (
+								`${this.props.userInfo.firstName} ${this.props.userInfo.lastName}`
+							) : (
+								`${this.state.firstName} ${this.state.lastName}`
+							)}
+							email={this.props.userInfo.loggedIn ? (
+								this.props.userInfo.email	
+							) : (	
+								this.state.email
+							)}
 							token={this.onToken}
 							amount={this.state.amount * 100}
 							stripeKey={'pk_test_xwATFGfvWsyNnp1dDh2MOk8I'}
