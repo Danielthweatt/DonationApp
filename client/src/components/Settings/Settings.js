@@ -15,28 +15,37 @@ class Settings extends Component {
         userId: "",
     }
 
-    updateCardInfo = e => {
-        e.preventDefault();
+    componentDidMount(){
+        this.setState({userId: this.props.userInfo.userId})
+    }
+
+    onToken = (token) => {
         //delete customer from stripe and then make a new customer
-        //BUT save their info for later (no charge at this moment)
-        if (this.props.userInfo.loggedIn && this.props.userInfo.hasCustomerAccount){
-            console.log(this.props.userInfo.userId)
-            axios.get('/settings/' + this.props.userInfo.userId,{
-            }).then(res => {
-                console.log(res)
-                // this.setState({
-                //     customerId: res.data.customerId,
-                //     userId: res.data.id
-                // })
-
+        //this.deleteCustomer();
+        axios.put('/settings/' + this.state.userId,{
+            email: this.props.userInfo.email,
+            data: token.id,
+            stripeKey: "pk_test_xwATFGfvWsyNnp1dDh2MOk8I"
+        }).then(res => {
+            console.log(res)
             }).catch(err => {
-                console.log(err)
-            })
-
-        }
-        else{
-            alert('u have not saved any cc info')
-        }
+            console.log(err)
+                })
+        //BUT save their info for later (no charge at this moment)
+        //if (this.props.userInfo.loggedIn && this.props.userInfo.hasCustomerAccount){
+            //console.log(this.props.userInfo.userId)
+          
+            // axios.post('/settings/create/' + this.state.userId, {
+            //     email: this.props.userInfo.email,
+            //     source: token.id,
+            // }).then(results => {
+            //     console.log(results)
+            //     alert('customer saved')
+            // })
+        // }
+        // else{
+        //     alert('u have not saved any cc info')
+        // }
     }
     
     render() {
@@ -59,13 +68,19 @@ class Settings extends Component {
                 </label>
             <button>Update</button>
             </form>
-            <form>
-              <label>
-                    cc:
-                    <input type="text" name="ccInfo" placeholder=" xxxx xxxx xxxx xxxx " />
-                </label>
-                <button onClick={this.updateCardInfo}>change my info</button>
-            </form>
+
+                <StripeProvider apiKey="pk_test_xwATFGfvWsyNnp1dDh2MOk8I">
+                    <Elements>
+                        <StripeCheckout
+                            email={this.props.userInfo.email}
+                            label ="Update Info"
+                            token={this.onToken}
+                            stripeKey={'pk_test_xwATFGfvWsyNnp1dDh2MOk8I'}
+                            allowRememberMe = {false}
+                        />
+                    </Elements>
+                </StripeProvider>
+           
             </div>
         )
     }
