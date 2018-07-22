@@ -31,7 +31,9 @@
   "dependencies": {
     "@material/button": "^0.37.1",
     "@material/card": "^0.37.1",
+    "@material/form-field": "^0.37.1",
     "@material/ripple": "^0.37.1",
+    "@material/textfield": "^0.37.1",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.18.3",
     "cors": "^2.8.4",
