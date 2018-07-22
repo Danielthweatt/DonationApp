@@ -16,7 +16,8 @@ class DonationInput extends Component {
 			amount: '',
 			customAmount: '',
 			custom: false,
-			rememberMe: false
+			rememberMe: false,
+			subscriptionstarted: false
 		};
 		this.handleFirstNameInput = this.handleFirstNameInput.bind(this);
 		this.handleLastNameInput = this.handleLastNameInput.bind(this);
@@ -114,6 +115,20 @@ class DonationInput extends Component {
 				console.log(err);
 				alert('Something went wrong.');
 			});
+		} else if (this.props.userInfo.loggedIn && this.state.subscriptionstarted){
+			//post route to start subscription
+			axios.post('/charge/subscription/' + userId, {
+				email: this.props.userInfo.email,
+				source: token.id,
+				amount,
+				stripeKey: "pk_test_xwATFGfvWsyNnp1dDh2MOk8I"
+		}).then(res => {
+			if (res.status === 200) {
+				alert('subscription saved!');
+			} else {
+				alert('Something went wrong.');
+			}})
+
 		} else {
 			axios.post('/charge', {
 				email: this.state.email,
