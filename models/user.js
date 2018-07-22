@@ -12,7 +12,7 @@ const userSchema = new Schema({
 	password: String,
 	customerId: String,
 	passwordResetToken: String,
-	passwordResetTokenExpiration: Date,
+	passwordResetTokenExpiration: String,
 	dateCreated: { 
 		type: Date,
 		default: Date.now

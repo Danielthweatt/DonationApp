@@ -4,6 +4,9 @@ const keyPublishable = 'pk_test_xwATFGfvWsyNnp1dDh2MOk8I';
 const secret = require('../config/config.js');
 const keySecret = secret.SECRET_KEY;
 const stripe = require('stripe')(keySecret);
+const waterfall = require('async-waterfall');
+const crypto = require('crypto');
+const nodemailer = require('nodemailer');
 
 module.exports = function(app, passport, User){
 
@@ -176,9 +179,75 @@ module.exports = function(app, passport, User){
 	});
 
 	//Forgot Password Route
-	app.post('/forgot', (req, res) => 
-		res.send(req.body)
-	);
+	app.post('/forgot', (req, res) => {
+		waterfall([
+			function(done){
+				crypto.randomBytes(20, function(err, buf){
+					const token = buf.toString('hex');
+					done(err, token);
+				});
+			},
+			function(token, done){
+				User.findOneAndUpdate({ 
+					email: req.body.email
+				}, {
+					$set: {
+						resetPasswordToken: token,
+						resetPasswordExpires: Date.now() + 3600000
+					}
+				}, (err, user) => { 
+					if (err) {
+						res.status(422).send(err);
+					} else if (!user) {
+						res.send('Could not find a user account with that email address.');
+					} else {
+						done(null, token, user);
+					}
+				});
+			},
+			function(token, user, done){
+				const mailer = nodemailer.createTransport({
+					service: 'gmail',
+					auth: {
+						user: 'octopiedhelp@gmail.com',
+						pass: 'Octopied35'
+					}
+				});
+				const mailOptions = {
+					to: user.dataValues.email,
+					from: 'passwordreset@octopied.com',
+					subject: 'Octopied Password Reset',
+					text: 'You are receiving this because you (or someone else) have requested the reset of the password for your Octopied account.\n\n' +
+                    'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
+                    'http://' + req.headers.host + '/reset/' + token + '\n\n' +
+                    'If you did not request this, please ignore this email and your password will remain unchanged.\n'
+				};
+				mailer.sendMail(mailOptions, function(err, res){
+					if (!err) {
+						res.send('An e-mail has been sent to ' + user.email + ' with further instructions');
+					}
+					done(err, 'done');
+				});
+			}
+		], function(err){
+			res.status(500).send(err);
+		});
+	});
+
+	//Reset Password Page
+	app.get('/reset/:token', function(req, res){
+		User.findOne({
+			resetPasswordToken: req.params.token 
+		}, (err, user) => {
+			if (err) {
+				res.status(422).send(err);
+			} else if (!user) {
+				res.send('Password reset token is invalid.');
+			} else {
+				console.log(user.resetPasswordExpires);
+			}
+		});
+	});
 
 	//update customer card info
 	app.put('/settings/:id', (req,res) => {

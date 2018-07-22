@@ -31,10 +31,10 @@ class ForgotPasswordForm extends Component {
 		} else {
 			axios.post('/forgot', {
 				email: this.state.email
-			}).then(res =>
+			}).then(res => 
 				this.setState({
 					message: true,
-					messageContent: res.email
+					messageContent: res.data
 				})
 			).catch(err => {
 				this.setState({

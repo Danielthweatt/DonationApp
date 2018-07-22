@@ -50,7 +50,7 @@ class LoginForm extends Component {
 			};
         	axios.post('/user/signin', signInInfo).then(response => {
 				if (response.status === 200) {
-					if (response.data.message === 'Incorrect email.' || response.data.message === 'Incorrect password.') {
+					if (response.data.message) {
 						this.setState({
 							message: true,
 							messageContent: response.data.message
