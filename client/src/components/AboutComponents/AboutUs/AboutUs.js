@@ -1,7 +1,8 @@
 import React from 'react'; 
+import './AboutUs.css'; 
 
 const AboutUs = () => (
-	<div className="card">
+	<div className="card" id="about">
 		<div className="row no-gutters">
 			<div className="col-auto">
 				<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSpq5dUAQ7RFh1JQISWijgyZ5UKRnIkbm3ZxY_ZVsI1cEwMCzgaDQ" className="img-fluid" alt=""></img>
@@ -14,7 +15,7 @@ const AboutUs = () => (
 			</div>
 		</div>
 		<div className="card-footer w-100 text-muted">
-	This is how we love
+			<h3>This is how we love</h3>
 		</div>
 	</div>
 );

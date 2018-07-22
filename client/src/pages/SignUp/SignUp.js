@@ -13,8 +13,9 @@ class SignUp extends Component {
 				<Header updateUser={this.props.updateUser} userInfo={this.props.userInfo} />
 				<Wrapper>
 					<SignUpForm />
-					<Footer />
+				
 				</Wrapper>
+				<Footer />
 			</div>
 		
 		);

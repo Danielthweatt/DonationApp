@@ -1,8 +1,9 @@
 import React from 'react'; 
+import './Team.css'; 
 
 const Team = () => (
 	<div className="card-deck">
-		<div className="card">
+		<div className="card team-card-deck">
 			<img className="card-img-top" src="https://photos.smugmug.com/Anything-Goes-Summer-Stock/Summer-Stock-Headshots/i-NZTtwxC/0/593bc18b/S/DSC_3548-S.jpg" alt="Card image cap"></img>
 			<div className="card-body">
 				<h5 className="card-title">Robert Queeney</h5>

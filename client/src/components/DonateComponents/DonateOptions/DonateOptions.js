@@ -2,33 +2,9 @@
 import React,  { Component } from 'react'; 
 import Donate from '../Donate/Donate'; 
 import './DonateOptions.css'; 
-// import '@material/button/mdc-button';
-// import Button from '@material/react-button/dist'; 
+// Why wont this work? https://react-mdc.github.io/#/ripple
+// import Ripple from 'react-material-ripple'; 
 
-// const Button = React.createClass({
-// 	getInitialState: function() {
-// 	  return {
-// 			className: 'donation-button'
-// 	  };
-	  
-// 	},
-	
-// 	handleClick: function() {
-// 	  this.setState({
-// 			className: 'donation-button-clicked'
-// 	  });
-// 	},
-
-// 	render : function() {
-// 		return (
-// 		  <div>
-// 				<button 
-// 			  onClick={this.handleClick} 
-// 			  style={{backgroundColor:this.state.bgColor}}>Button</button>
-// 		  </div>
-// 		);
-// 	  }
-// });
 
 class DonateOptions extends Component {
 
@@ -39,7 +15,9 @@ class DonateOptions extends Component {
 
 			<div className="row">
 				<div className="col-3">
+					{/* <Ripple.Meta color="accent"> */}
 					<button className={this.props.buttonClicked === '5' ? 'donation-button-clicked': 'donation-button'} onClick={this.props.handleMoneyButton} value="5"> $5 </button>
+					{/* </Ripple.Meta> */}
 				</div>
 				<div className="col-3">
   				<button className={this.props.buttonClicked === '10' ? 'donation-button-clicked': 'donation-button'} onClick={this.props.handleMoneyButton} value="10"> $10 </button>

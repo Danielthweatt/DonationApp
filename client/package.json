@@ -6,6 +6,7 @@
   "dependencies": {
     "@material/card": "^0.37.0",
     "@material/react-button": "^0.3.0",
+    "@material/textfield": "^0.37.1",
     "axios": "^0.18.0",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
