@@ -2,18 +2,6 @@
     background: transparent;
     border: none;
 }
-/* 
-.card-img-top {
-    border-radius: 50%;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    height: 100%;
-    width: auto;
-    -webkit-transform: translate(-50%,-50%);
-        -ms-transform: translate(-50%,-50%);
-            transform: translate(-50%,-50%);
-} */
 
 .card-top {
     width: 12vw;
@@ -40,7 +28,7 @@
             transform: translate(-50%,-50%);
 }
 
-.card-body {
+.pillar-card-body-styling {
     text-align: center;
     margin-top: 1em;
 }

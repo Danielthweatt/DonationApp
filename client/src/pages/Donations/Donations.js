@@ -10,7 +10,7 @@ class Donations extends Component {
 	render() {
 		return (
 			<div>
-				<Header updateUser={this.props.updateUser} userInfo={this.props.userInfo} />
+				<Header page="donations" updateUser={this.props.updateUser} userInfo={this.props.userInfo} />
 				<Wrapper>
 					<DonationInput updateUser={this.props.updateUser} userInfo={this.props.userInfo} />
 					<DonationImpact />

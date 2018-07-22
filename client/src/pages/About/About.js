@@ -11,7 +11,7 @@ class About extends Component {
 	render (){
 		return (
 			<div>
-				<Header updateUser={this.props.updateUser} userInfo={this.props.userInfo} />
+				<Header page="about" updateUser={this.props.updateUser} userInfo={this.props.userInfo} />
 				<Wrapper>			
 					<AboutUs />
 				

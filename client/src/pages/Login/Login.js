@@ -11,7 +11,7 @@ class Login extends Component {
 	render (){
 		return (
 			<div>
-				<Header updateUser={this.props.updateUser} userInfo={this.props.userInfo} />
+				<Header page="login" updateUser={this.props.updateUser} userInfo={this.props.userInfo} />
 				<Wrapper>
 					<LoginForm updateUser={this.props.updateUser} />
 

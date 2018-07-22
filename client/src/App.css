@@ -1074,11 +1074,17 @@
     transform: translateX(calc(0 - 0%)) translateY(-50%) scale(0.923); } }
 
 body {
-  font-family: 'Roboto-Condensed', sans-serif; }
+  font-family: 'Roboto Condensed', sans-serif;
+  color: #3B3D40; }
 
 h1 {
   font-weight: bolder;
-  font-size: 5em;
+  font-size: 5.5em;
+  font-kerning: none; }
+
+h2 {
+  font-weight: bolder;
+  font-size: 3.5em;
   font-kerning: none; }
 
 .lead-text {

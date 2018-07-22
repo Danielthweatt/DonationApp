@@ -8,7 +8,7 @@ class AccountSettings extends Component {
 	render() {
 		return (
 			<div>
-				<Header updateUser={this.props.updateUser} userInfo={this.props.userInfo} />
+				<Header page="settings" updateUser={this.props.updateUser} userInfo={this.props.userInfo} />
 				<Wrapper>
 					<Settings userInfo={this.props.userInfo}/>
                    
