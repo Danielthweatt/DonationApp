@@ -9,3 +9,32 @@
         border-image: linear-gradient(to right,#ff3e00, #d62562) 10;
         margin-top: 5px;
     }
+
+    .card {
+        background: transparent;
+        border: none;
+    }
+
+    .card-img-top {
+        width: 12vw;
+        height: 12vw;
+        content: " ";
+        border-radius: 50%;
+        position: relative;
+        overflow: hidden;
+        margin: auto;
+        /* padding: 30%; */
+    }
+
+    .card-img-top > img {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        min-height: 101%;
+        object-fit: cover;
+        /* min-width: 100%; */
+        /* padding: 25%; */
+            -webkit-transform: translate(-50%,-50%);
+            -ms-transform: translate(-50%,-50%);
+                transform: translate(-50%,-50%);
+    }
