@@ -137,10 +137,10 @@ module.exports = function(app, passport, User){
 		User.findOne({ email: email }, (err, user) => {
 			if (err) {
 				console.log('User signup db search error: ', err);
-				res.json(err);
+				res.status(422).send(err);
 			} else if (user) {
-				res.json({
-					error: `Sorry, there is already a user with the username: ${email}`
+				res.send({
+					error: `Sorry, there is already a user with the email: ${email}`
 				});
 			}
 			else {
@@ -151,15 +151,18 @@ module.exports = function(app, passport, User){
 					password: password
 				});
 				newUser.save((err, savedUser) => {
-					if (err) return res.json(err);
-					res.json(savedUser);
+					if (err) return res.status(422).send(err);
+					res.send(savedUser);
 				});
 			}
 		});
 	});
 
 	//Sign-In Route
-	app.post('/user/signin', passport.authenticate('local'), (req, res) => {
+	app.post('/user/signin', passport.authenticate('local', {
+		failureRedirect: '/user/signin/failure',
+		failureFlash: true
+	}), (req, res) => {
 		let hasCustomerAccount = false;
 		if (req.user.customerId) {
 			hasCustomerAccount = true;
@@ -172,6 +175,11 @@ module.exports = function(app, passport, User){
 			lastName: req.user.lastName
 		};
 		res.send(userInfo);
+	});
+
+	app.get('/user/signin/failure', (req, res) => {
+		let message = req.flash('error')[0];
+		res.send({message});
 	});
 
 	//Check to see if signed-in Route

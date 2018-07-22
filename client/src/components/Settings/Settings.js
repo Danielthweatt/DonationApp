@@ -80,7 +80,6 @@ class Settings extends Component {
                         />
                     </Elements>
                 </StripeProvider>
-           
             </div>
         )
     }

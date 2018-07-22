@@ -17,7 +17,9 @@ class DonationInput extends Component {
 			customAmount: '',
 			custom: false,
 			rememberMe: false,
-			subscriptionstarted: false
+			subscriptionstarted: false,
+			message: false,
+			messageContent: ''
 		};
 		this.handleFirstNameInput = this.handleFirstNameInput.bind(this);
 		this.handleLastNameInput = this.handleLastNameInput.bind(this);
@@ -75,13 +77,22 @@ class DonationInput extends Component {
 			amount
 		}).then(res => {
 			if (res.status === 200) { 
-				alert('Great job!');
+				this.setState({
+					message: true,
+					messageContent: 'Donation complete.'
+				});
 			} else {
-				alert('Something went wrong.');
+				this.setState({
+					message: true,
+					messageContent: 'Something went wrong.'
+				});
 			}
 		}).catch(err => {
 			console.log(err);
-			alert('Something went wrong.');
+			this.setState({
+				message: true,
+				messageContent: 'Something went wrong.'
+			});
 		});
 	}
 
@@ -101,19 +112,26 @@ class DonationInput extends Component {
 				stripeKey: "pk_test_xwATFGfvWsyNnp1dDh2MOk8I"
 			}).then(res => {
 				if (res.status === 200) {
-					alert('Customer saved!');
 					this.setState({
-						rememberMe: false
+						rememberMe: false,
+						message: true,
+						messageContent: 'Donation complete and payment information saved. To update or delete payment information, see settings page.'
 					});
 					this.props.updateUser({
 						hasCustomerAccount: true
 					});
 				} else {
-					alert('Something went wrong.');
+					this.setState({
+						message: true,
+						messageContent: 'Something went wrong.'
+					});
 				}
 			}).catch(err => {
 				console.log(err);
-				alert('Something went wrong.');
+				this.setState({
+					message: true,
+					messageContent: 'Something went wrong.'
+				});
 			});
 		} else if (this.props.userInfo.loggedIn && this.state.subscriptionstarted){
 			//post route to start subscription
@@ -136,19 +154,26 @@ class DonationInput extends Component {
 				amount
         	}).then(res => {
 				if (res.status === 200) {
-					alert('It worked!');
 					this.setState({
 						firstName: '',
 						lastName: '',
 						email: '',
-						rememberMe: false
+						rememberMe: false,
+						message: true,
+						messageContent: 'Donation complete.'
 					});
 				} else {
-					alert('Something went wrong.');
+					this.setState({
+						message: true,
+						messageContent: 'Something went wrong.'
+					});
 				}
         	}).catch((err) => {
 				console.log(err);
-				alert('Something went wrong.');
+				this.setState({
+					message: true,
+					messageContent: 'Something went wrong.'
+				});
 			});
 		}
 	}
@@ -225,12 +250,23 @@ class DonationInput extends Component {
 							) : (	
 								this.state.email
 							)}
+							amount={this.state.amount ? (
+								this.state.amount * 100
+							) : (
+								this.state.customAmount * 100
+							)}
 							token={this.onToken}
 							amount={this.state.amount * 100}
 							stripeKey={'pk_test_xwATFGfvWsyNnp1dDh2MOk8I'}
 						/>
 						</Elements>
 					</StripeProvider>
+				)}
+
+				{this.state.message ? (
+					<p>{this.state.messageContent}</p>
+				) : (
+					<div></div>
 				)}
 
 			</div>
