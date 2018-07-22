@@ -22,7 +22,6 @@ module.exports = function(app, passport, User){
 		}).catch(err => 
 			res.status(500).send(err)
 		);
-	
 	});
 
 	//Charge and Save User Payment Info Route
@@ -37,7 +36,9 @@ module.exports = function(app, passport, User){
 				currency: 'usd',
 				customer: customer.id,
 				receipt_email: req.body.email
-			}).then(() => {
+		})
+		
+		.then(() => {
 				User.findOneAndUpdate({_id: req.params.id}, {
 					$set: {customerId : customer.id}
 				}, (err, user) => {
@@ -51,11 +52,62 @@ module.exports = function(app, passport, User){
 			}).catch(err => 
 				res.status(500).send(err)
 			);
-		}).catch(err => 
+		}).catch(err =>
 			res.status(500).send(err)
 		);
+	
 	});
 
+	app.post('/charge/subscription/:id', (req,res) => {
+		console.log('here is the user/mongo id', req.params.id)
+		stripe.customers.create({
+			email: req.body.email,
+			//source is the token linked to their card
+			source: req.body.source
+		}).then((customer) => {
+			stripe.charges.create({
+				amount: req.body.amount * 100,
+				currency: 'usd',
+				customer: customer.id,
+				receipt_email: req.body.email
+		}).then((customer) => {
+			stripe.products.create({
+				name: 'Love Member',
+				type: 'service' 
+			}, function(err, product) {
+				// asynchronously called
+				if (err) console.log(err)
+				else {
+			stripe.plans.create({
+				nickname: 'Standard Monthly',
+				product: product.id, 
+				amount: req.body.amount * 100,
+				currency: 'usd',
+				interval: 'month',
+				usage_type: 'licensed',
+				}, function(err, plan) {
+					// asynchronously called
+					if (err) console.log(err)
+			
+					else {
+						stripe.subscriptions.create({
+							customer: customer,
+							items: [
+								{
+									plan: plan.id,
+									quantity: 1,
+								}
+							]
+						}, function(err, subscription) {
+							// asynchronously called
+							console.log('testies', customer.id); 
+						
+							})}
+				});
+			}})
+		})
+	})
+	})
 
 	//Charge a Customer With a Saved Card Route
 	app.post('/charge/:id', (req, res) => {
