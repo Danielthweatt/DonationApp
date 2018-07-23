@@ -30,7 +30,7 @@ class Settings extends Component {
             console.log(res)
             }).catch(err => {
             console.log(err)
-                })
+            })
         //BUT save their info for later (no charge at this moment)
         //if (this.props.userInfo.loggedIn && this.props.userInfo.hasCustomerAccount){
             //console.log(this.props.userInfo.userId)
