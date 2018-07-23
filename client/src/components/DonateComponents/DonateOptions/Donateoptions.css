@@ -28,6 +28,7 @@
     height: 10vw; 
     width: 10vw; 
     border-radius: 50%; 
+    border: 5px solid #3d6487; 
     font-family: 'Roboto Condensed', sans-serif;
     font-size: 150%; 
     background: white;

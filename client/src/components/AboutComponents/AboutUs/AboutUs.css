@@ -1,4 +1,33 @@
 
 .card{
-width: 18rem; 
+/* width: 18rem;  */
+/* margin-bottom: 25px;  */
+}
+
+.img-fluid{
+  
+        width: 13vw;
+        height: 13vw;
+        content: " ";
+        border-radius: 50%;
+        /* border: 5px solid #3d6487;  */
+        position: relative;
+        overflow: hidden;
+        margin: auto;
+        /* padding: 30%; */
+    
+
+}
+
+.img-fluid > img {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    min-height: 101%;
+    object-fit: cover;
+    /* min-width: 100%; */
+    /* padding: 25%; */
+        -webkit-transform: translate(-50%,-50%);
+        -ms-transform: translate(-50%,-50%);
+            transform: translate(-50%,-50%);
 }
