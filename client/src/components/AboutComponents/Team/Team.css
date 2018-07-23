@@ -14,29 +14,48 @@
         margin-top: 15px; 
     }
 
-    .our-team{
+    .our-team {
         text-align: center; 
     }
 
+    .team-card {
+        height: 100%;
+    }
 
-    .card {
+
+    .team-card-deck {
         background: transparent;
         border: none;
     }
 
-    .card-img-top {
+    .team-circle-gradient-styling {
+        width: 11.5vw;
+        height: 11.5vw;
+        /* calculating padding = (height - 10vw) / 2 */
+        padding: .75vw;
+        content: " ";
+        border-radius: 50%;
+        background: linear-gradient(to right,#D65562, #6834FF);
+        position: relative;
+        /* overflow: hidden; */
+        margin: auto;
+    }
+
+    .team-circle-thumbnail-styling {
         width: 10vw;
         height: 10vw;
         content: " ";
         border-radius: 50%;
-        border: 3px solid #3d6487; 
+        /* border: 3px solid #3d6487;  */
         position: relative;
+        /* left: 50%; */
+        /* top: 15%; */
         overflow: hidden;
         margin: auto;
         /* padding: 30%; */
     }
 
-    .card-img-top > img {
+    .team-circle-thumbnail-styling > img {
         position: absolute;
         left: 50%;
         top: 50%;

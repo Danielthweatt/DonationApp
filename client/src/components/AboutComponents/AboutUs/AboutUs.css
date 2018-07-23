@@ -4,10 +4,10 @@
 /* margin-bottom: 25px;  */
 }
 
-.img-fluid{
+.about-logo-img-styling {
   
-        width: 13vw;
-        height: 13vw;
+        width: 20vw;
+        height: 20vw;
         content: " ";
         border-radius: 50%;
         /* border: 5px solid #3d6487;  */
@@ -19,7 +19,7 @@
 
 }
 
-.img-fluid > img {
+.about-logo-img-styling > img {
     position: absolute;
     left: 50%;
     top: 50%;
