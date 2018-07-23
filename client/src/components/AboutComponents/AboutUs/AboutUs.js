@@ -9,14 +9,12 @@ const AboutUs = () => (
 			</div>
 			<div className="col">
 				<div className="card-block px-2">
-					<h4 className="card-title">Something about Love</h4>
+					<h2 className="card-title">About Us</h2>
 					<p className="card-text">Infuse your life with action. Don't wait for it to happen. Make it happen. Make your own future.</p>
 				</div>
 			</div>
 		</div>
-		<div className="card-footer w-100 text-muted">
-			<h3>This is how we love</h3>
-		</div>
+
 	</div>
 );
 

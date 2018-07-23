@@ -1,4 +1,4 @@
-.card-deck {
+/* .card-deck {
     
         background: #f9f9f9;
         padding: 2%;
@@ -8,7 +8,16 @@
         border-top-style: solid;
         border-image: linear-gradient(to right,#ff3e00, #d62562) 10;
         margin-top: 5px;
+    } */
+
+    .team-wrapper{
+        margin-top: 15px; 
     }
+
+    .our-team{
+        text-align: center; 
+    }
+
 
     .card {
         background: transparent;
@@ -16,10 +25,11 @@
     }
 
     .card-img-top {
-        width: 12vw;
-        height: 12vw;
+        width: 10vw;
+        height: 10vw;
         content: " ";
         border-radius: 50%;
+        border: 3px solid #3d6487; 
         position: relative;
         overflow: hidden;
         margin: auto;
@@ -37,4 +47,15 @@
             -webkit-transform: translate(-50%,-50%);
             -ms-transform: translate(-50%,-50%);
                 transform: translate(-50%,-50%);
+    }
+
+    .team-card{
+        background: #f9f9f9;
+        padding: 2%;
+        box-shadow:0px 5px 10px 2px rgba(0,0,0,0.2);
+        border-radius: 3px;
+        border-top: 10px;
+        border-top-style: solid;
+        border-image: linear-gradient(to right,#D65562, #6834FF) 10;
+        margin-top: 5px;
     }
