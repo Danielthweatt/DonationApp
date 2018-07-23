@@ -1,6 +1,10 @@
 {
   "name": "donationapp",
   "version": "1.0.0",
+  "engines": {
+    "node": "8.9.4",
+    "npm": "5.6.0"
+  },
   "description": "This is a template for an app that accepts donations for a non-profit that implements it.",
   "main": "server.js",
   "scripts": {
@@ -21,7 +25,7 @@
   "bugs": {
     "url": "https://github.com/Danielthweatt/DonationApp/issues"
   },
-  "homepage": "https://github.com/Danielthweatt/DonationApp#readme",
+  "homepage": "https://github.com/Danielthweatt/DonationApp",
   "devDependencies": {
     "eslint": "^5.0.1",
     "eslint-plugin-react": "^7.10.0",
@@ -39,6 +43,7 @@
     "@react-mdc/textfield": "^0.1.11",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.18.3",
+    "connect-flash": "^0.1.1",
     "cors": "^2.8.4",
     "dotenv": "^6.0.0",
     "express": "^4.16.3",

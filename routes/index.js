@@ -1,6 +1,6 @@
 //Dependencies
 const path = require('path');
-const keyPublishable = 'pk_test_xwATFGfvWsyNnp1dDh2MOk8I';
+const keyPublishable = 'pk_test_laDoJCqgOQpou2PvCdG07DE2';
 const secret = require('../config/config.js');
 const keySecret = secret.SECRET_KEY;
 const stripe = require('stripe')(keySecret);
@@ -13,16 +13,15 @@ module.exports = function(app, passport, User){
 		stripe.charges.create({
 			amount: req.body.amount * 100,
 			source: req.body.source,
-			description: 'test charge',
+			//description: 'test charge',
 			currency: 'usd',
-			receipt_email: req.body.email
+			//receipt_email: req.body.email
 		}).then(charge => {
 			console.log(charge);
 			res.send(charge);
 		}).catch(err => 
 			res.status(500).send(err)
 		);
-	
 	});
 
 	//Charge and Save User Payment Info Route
@@ -37,25 +36,80 @@ module.exports = function(app, passport, User){
 				currency: 'usd',
 				customer: customer.id,
 				receipt_email: req.body.email
-			}).then(() => {
-				User.findOneAndUpdate({_id: req.params.id}, {
-					$set: {customerId : customer.id}
-				}, (err, user) => {
-					if (err) {
-						res.status(422).send(err);
-					} 
-					else {
-						res.send(user);
-					}
-				});
-			}).catch(err => 
-				res.status(500).send(err)
-			);
-		}).catch(err => 
+			})
+		
+				.then(() => {
+					User.findOneAndUpdate({_id: req.params.id}, {
+						$set: {customerId : customer.id}
+					}, (err, user) => {
+						if (err) {
+							res.status(422).send(err);
+						} 
+						else {
+							res.send(user);
+						}
+					});
+				}).catch(err => 
+					res.status(500).send(err)
+				);
+		}).catch(err =>
 			res.status(500).send(err)
 		);
+	
 	});
 
+	app.post('/charge/subscription/:id', (req,res) => {
+		console.log('here is the user/mongo id', req.params.id);
+		stripe.customers.create({
+			email: req.body.email,
+			//source is the token linked to their card
+			source: req.body.source
+		}).then((customer) => {
+			console.log('find it', customer.id); 
+			stripe.charges.create({
+				amount: req.body.amount * 100,
+				currency: 'usd',
+				customer: customer.id,
+				receipt_email: req.body.email
+			}).then(() => {
+				stripe.products.create({
+					name: 'Love Member',
+					type: 'service' 
+				}, function(err, product) {
+				// asynchronously called
+					if (err) console.log(err);
+					else {
+						stripe.plans.create({
+							nickname: 'Standard Monthly',
+							product: product.id, 
+							amount: req.body.amount * 100,
+							currency: 'usd',
+							interval: 'month',
+							usage_type: 'licensed',
+						}, function(err, plan) {
+							// asynchronously called
+							if (err) console.log(err);
+			
+							else {
+								console.log('testies', customer.id); 
+								stripe.subscriptions.create({
+									customer: customer.id,
+									items: [
+										{
+											plan: plan.id,
+										}
+									]
+								}, function(err, subscription) {
+									// asynchronously called
+									if (err) console.log(err);
+								
+						
+								});}
+						});
+					}});
+			});
+		});
+	});
 
 	//Charge a Customer With a Saved Card Route
 	app.post('/charge/:id', (req, res) => {
@@ -85,10 +139,10 @@ module.exports = function(app, passport, User){
 		User.findOne({ email: email }, (err, user) => {
 			if (err) {
 				console.log('User signup db search error: ', err);
-				res.json(err);
+				res.status(422).send(err);
 			} else if (user) {
-				res.json({
-					error: `Sorry, there is already a user with the username: ${email}`
+				res.send({
+					error: `Sorry, there is already a user with the email: ${email}`
 				});
 			}
 			else {
@@ -99,15 +153,18 @@ module.exports = function(app, passport, User){
 					password: password
 				});
 				newUser.save((err, savedUser) => {
-					if (err) return res.json(err);
-					res.json(savedUser);
+					if (err) return res.status(422).send(err);
+					res.send(savedUser);
 				});
 			}
 		});
 	});
 
 	//Sign-In Route
-	app.post('/user/signin', passport.authenticate('local'), (req, res) => {
+	app.post('/user/signin', passport.authenticate('local', {
+		failureRedirect: '/user/signin/failure',
+		failureFlash: true
+	}), (req, res) => {
 		let hasCustomerAccount = false;
 		if (req.user.customerId) {
 			hasCustomerAccount = true;
@@ -120,6 +177,11 @@ module.exports = function(app, passport, User){
 			lastName: req.user.lastName
 		};
 		res.send(userInfo);
+	});
+
+	app.get('/user/signin/failure', (req, res) => {
+		let message = req.flash('error')[0];
+		res.send({message});
 	});
 
 	//Check to see if signed-in Route
@@ -166,6 +228,74 @@ module.exports = function(app, passport, User){
 			res.send({ message: 'No user to log out' });
 		}
 	});
+
+	//update customer card info
+	app.put('/settings/:id', (req,res) => {
+		let id = req.params.id;
+		User.findById({_id: id}, (err, user) => {
+			if (err) {
+				res.send(err);
+			} else {
+				//console.log(user)
+				//console.log('the req body',req.body)
+				let customerId = user.customerId
+				//update the customer card
+				stripe.customers.update(customerId, {
+					source: req.body.data
+				}, (err, confirmation) => {
+					if(err) console.log(err)
+					else{
+						res.send(confirmation);
+					}
+				});} 
+		});
+	});
+
+	//delete a customer and delete cust id from db
+	app.put('/settings/delete/:id', (req,res) => {
+		console.log(req.params.id)
+		let id = req.params.id;
+		User.findById({_id: id}, (err, user) => {
+			if(err) console.log(err)
+			else {
+				//console.log(user.customerId)
+				stripe.customers.del(
+					user.customerId,
+					(err, confirmation) => {
+						if (err) console.log(err)
+						else {
+							console.log(confirmation)
+						}
+					}
+				  );
+			}
+		})
+		.then(() => {
+			//console.log('here')
+			User.findOneAndUpdate({_id: id}, {
+				$set: 
+				{
+					customerId : "",
+				}}, {new: true}, (err, user) => {
+						if (err) {
+							res.status(422).send(err);
+						} 
+						else {
+							console.log(user)
+							res.send({user:{
+								userId: user._id,
+								firstName: user.firstName,
+								lastName: user.lastName,
+								email: user.email,
+								customerId: user.customerId,
+								hasCustomerAccount: false,
+							}})
+						}
+					})
+			})
+		.catch(err => console.log(err))
+	})
+	
 
 	//React App
 	// app.get('*', function(req, res) {

@@ -31,7 +31,7 @@
     .team-circle-gradient-styling {
         width: 11.5vw;
         height: 11.5vw;
-        /* calculating padding = (height - 10vw) / 2 */
+        /* CALCULATION NOTE: padding = (height - 10vw) / 2 */
         padding: .75vw;
         content: " ";
         border-radius: 50%;

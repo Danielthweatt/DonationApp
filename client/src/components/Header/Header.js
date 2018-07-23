@@ -72,7 +72,7 @@ class Header extends Component {
 							{this.props.userInfo.loggedIn ? (	
 								<button className="nav-link disabled" onClick={this.logout}>Logout</button>
 							) : (
-								<Link to="/login" className="nav-link">Login</Link>
+								<Link to="/login" className="nav-link disabled">Login</Link>
 							)}
 						</li>
 					</ul>
