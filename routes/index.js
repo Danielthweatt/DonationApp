@@ -13,9 +13,9 @@ module.exports = function(app, passport, User){
 		stripe.charges.create({
 			amount: req.body.amount * 100,
 			source: req.body.source,
-			description: 'test charge',
+			//description: 'test charge',
 			currency: 'usd',
-			receipt_email: req.body.email
+			//receipt_email: req.body.email
 		}).then(charge => {
 			console.log(charge);
 			res.send(charge);
@@ -236,13 +236,14 @@ module.exports = function(app, passport, User){
 			if (err) {
 				res.send(err);
 			} else {
-				console.log(user);
-				let customerId = user.customerId;
-				//delete the customer
+				//console.log(user)
+				//console.log('the req body',req.body)
+				let customerId = user.customerId
+				//update the customer card
 				stripe.customers.update(customerId, {
-					source: req.body.source
-				}, (err, confirmation) => { 
-					if(err) console.log(err);
+					source: req.body.data
+				}, (err, confirmation) => {
+					if(err) console.log(err)
 					else{
 						res.send(confirmation);
 					}
