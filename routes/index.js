@@ -1,6 +1,6 @@
 //Dependencies
 const path = require('path');
-const keyPublishable = 'pk_test_xwATFGfvWsyNnp1dDh2MOk8I';
+const keyPublishable = 'pk_test_laDoJCqgOQpou2PvCdG07DE2';
 const secret = require('../config/config.js');
 const keySecret = secret.SECRET_KEY;
 const stripe = require('stripe')(keySecret);
@@ -36,22 +36,22 @@ module.exports = function(app, passport, User){
 				currency: 'usd',
 				customer: customer.id,
 				receipt_email: req.body.email
-		})
+			})
 		
-		.then(() => {
-				User.findOneAndUpdate({_id: req.params.id}, {
-					$set: {customerId : customer.id}
-				}, (err, user) => {
-					if (err) {
-						res.status(422).send(err);
-					} 
-					else {
-						res.send(user);
-					}
-				});
-			}).catch(err => 
-				res.status(500).send(err)
-			);
+				.then(() => {
+					User.findOneAndUpdate({_id: req.params.id}, {
+						$set: {customerId : customer.id}
+					}, (err, user) => {
+						if (err) {
+							res.status(422).send(err);
+						} 
+						else {
+							res.send(user);
+						}
+					});
+				}).catch(err => 
+					res.status(500).send(err)
+				);
 		}).catch(err =>
 			res.status(500).send(err)
 		);
@@ -59,55 +59,57 @@ module.exports = function(app, passport, User){
 	});
 
 	app.post('/charge/subscription/:id', (req,res) => {
-		console.log('here is the user/mongo id', req.params.id)
+		console.log('here is the user/mongo id', req.params.id);
 		stripe.customers.create({
 			email: req.body.email,
 			//source is the token linked to their card
 			source: req.body.source
 		}).then((customer) => {
+			console.log('find it', customer.id); 
 			stripe.charges.create({
 				amount: req.body.amount * 100,
 				currency: 'usd',
 				customer: customer.id,
 				receipt_email: req.body.email
-		}).then((customer) => {
-			stripe.products.create({
-				name: 'Love Member',
-				type: 'service' 
-			}, function(err, product) {
+			}).then(() => {
+				stripe.products.create({
+					name: 'Love Member',
+					type: 'service' 
+				}, function(err, product) {
 				// asynchronously called
-				if (err) console.log(err)
-				else {
-			stripe.plans.create({
-				nickname: 'Standard Monthly',
-				product: product.id, 
-				amount: req.body.amount * 100,
-				currency: 'usd',
-				interval: 'month',
-				usage_type: 'licensed',
-				}, function(err, plan) {
-					// asynchronously called
-					if (err) console.log(err)
-			
+					if (err) console.log(err);
 					else {
-						stripe.subscriptions.create({
-							customer: customer,
-							items: [
-								{
-									plan: plan.id,
-									quantity: 1,
-								}
-							]
-						}, function(err, subscription) {
+						stripe.plans.create({
+							nickname: 'Standard Monthly',
+							product: product.id, 
+							amount: req.body.amount * 100,
+							currency: 'usd',
+							interval: 'month',
+							usage_type: 'licensed',
+						}, function(err, plan) {
 							// asynchronously called
-							console.log('testies', customer.id); 
+							if (err) console.log(err);
+			
+							else {
+								console.log('testies', customer.id); 
+								stripe.subscriptions.create({
+									customer: customer.id,
+									items: [
+										{
+											plan: plan.id,
+										}
+									]
+								}, function(err, subscription) {
+									// asynchronously called
+									if (err) console.log(err);
+								
 						
-							})}
-				});
-			}})
-		})
-	})
-	})
+								});}
+						});
+					}});
+			});
+		});
+	});
 
 	//Charge a Customer With a Saved Card Route
 	app.post('/charge/:id', (req, res) => {
@@ -243,9 +245,9 @@ module.exports = function(app, passport, User){
 				}, (err, confirmation) => {
 					if(err) console.log(err)
 					else{
-						res.send(confirmation)
+						res.send(confirmation);
 					}
-				})} 
+				});} 
 		});
 	});
 

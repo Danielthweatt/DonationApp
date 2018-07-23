@@ -31,7 +31,7 @@ class Settings extends Component {
         axios.put('/settings/' + this.state.userId,{
             email: this.state.email,
             data: token.id,
-            stripeKey: "pk_test_xwATFGfvWsyNnp1dDh2MOk8I"
+            stripeKey: "pk_test_laDoJCqgOQpou2PvCdG07DE2"
         }).then(res => {
             console.log(res)
             this.setState({
@@ -76,13 +76,13 @@ class Settings extends Component {
             <button>Update</button>
             </form>
 
-                <StripeProvider apiKey="pk_test_xwATFGfvWsyNnp1dDh2MOk8I">
+                <StripeProvider apiKey="pk_test_laDoJCqgOQpou2PvCdG07DE2">
                     <Elements>
                         <StripeCheckout
                             email={this.state.email}
                             label ="Update Info"
                             token={this.onToken}
-                            stripeKey={'pk_test_xwATFGfvWsyNnp1dDh2MOk8I'}
+                            stripeKey={'pk_test_laDoJCqgOQpou2PvCdG07DE2'}
                             allowRememberMe = {false}
                         />
                     </Elements>
