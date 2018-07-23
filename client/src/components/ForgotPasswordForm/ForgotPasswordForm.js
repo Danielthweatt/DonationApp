@@ -13,15 +13,28 @@ class ForgotPasswordForm extends Component {
 		confirmPassword: '',
 		message: false,
 		messageContent: '',
-		reset: false
+		resetOrForgot: ''
 	}
-	
+
 	componentDidMount(){
-		if (this.props.userInfo.reset) {
+		if (this.props.userInfo.resetOrForgot === 'reset') {
+			axios.get(`/reset/check/${window.location.pathname.slice(7)}`).then(res => { 
+				if (res.message) {
+					this.setState({
+						message: true,
+						messageContent: res.message,
+						resetOrForgot: 'reset fail'
+					});
+				} else {
+					this.setState({
+						resetOrForgot: 'reset success' 
+					});
+				}
+			}).catch();
+		} else {
 			this.setState({
-				reset: this.props.userInfo.reset
+				resetOrForgot: 'forgot'
 			});
-			axios.get(`/reset/check/${window.location.pathname.slice(7)}`).then().catch();
 		}
 	}
 
@@ -37,7 +50,7 @@ class ForgotPasswordForm extends Component {
 		this.setState({confirmPassword: e.target.value});
 	}
 
-	handleSubmit = event => {
+	handleEmailSubmit = event => {
 		event.preventDefault();
 		this.setState({
 			message: false,
@@ -70,17 +83,23 @@ class ForgotPasswordForm extends Component {
 	render() {
 		return (
 			<div>
-				{this.state.reset ? (
+				{this.state.resetOrForgot === 'forgot' ? (
+					<form>
+						<Input title="Email" name="Email" type="text" value={this.state.email} handleInput={this.handleEmailInput}/>
+						<input type="submit" onClick={this.handleEmailSubmit}/>
+					</form>
+				) : (
+					<div></div>
+				)}
+
+				{this.state.resetOrForgot === 'reset success' ? (
 					<form>
 						<Input title="Password" name="Password" type="password" value={this.state.password} handleInput={this.handlePasswordInput}/>
 						<Input title="Confirm Password" name="Confirm Password" type="password" value={this.state.confirmPassword} handleInput={this.handlePasswordConfirmInput}/>
 						<input type="submit" onClick={this.handleSubmit}/>
 					</form>
 				) : (
-					<form>
-						<Input title="Email" name="Email" type="text" value={this.state.email} handleInput={this.handleEmailInput}/>
-						<input type="submit" onClick={this.handleSubmit}/>
-					</form>
+					<div></div>
 				)}
 
 				{this.state.message ? (

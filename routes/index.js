@@ -242,7 +242,7 @@ module.exports = function(app, passport, User){
 			if (err) {
 				res.status(422).send(err);
 			} else if (!user) {
-				res.send('Password reset token invalid or expired.');
+				res.send({ message: 'Password reset token invalid or expired.' });
 			} else {
 				res.send(user._id);
 			}
