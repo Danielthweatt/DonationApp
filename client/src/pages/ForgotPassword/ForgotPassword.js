@@ -11,7 +11,7 @@ class Home extends React.Component {
 		return (
 			< Wrapper >
 				< Header updateUser={this.props.updateUser} userInfo={this.props.userInfo} />
-				< ForgotPasswordForm />
+				< ForgotPasswordForm userInfo={this.props.userInfo} />
 				< Footer />
 			</ Wrapper > 
 		);

@@ -9,12 +9,29 @@ class ForgotPasswordForm extends Component {
 
 	state = {
 		email: '',
+		password: '',
+		confirmPassword: '',
 		message: false,
-		messageContent: ''
-	}	
+		messageContent: '',
+		reset: false
+	}
+	
+	componentDidMount(){
+		this.setState({
+			reset: this.props.userInfo.reset
+		});
+	}
 
 	handleEmailInput = e => {
 		this.setState({email: e.target.value});
+	}
+
+	handlePasswordInput = e => {
+		this.setState({password: e.target.value});
+	}
+
+	handlePasswordConfirmInput = e => {
+		this.setState({confirmPassword: e.target.value});
 	}
 
 	handleSubmit = event => {
@@ -50,15 +67,38 @@ class ForgotPasswordForm extends Component {
 	render() {
 		return (
 			<div>
-				<form>
-					<Input title="Email" name="Email" type="text" value={this.state.email} handleInput={this.handleEmailInput}/>
-					<input type="submit" onClick={this.handleSubmit}/>
-				</form>
+				{this.state.reset ? (
+					<div></div>
+				) : (
+					<form>
+						<Input title="Email" name="Email" type="text" value={this.state.email} handleInput={this.handleEmailInput}/>
+						<input type="submit" onClick={this.handleSubmit}/>
+					</form>
+				)}
+
+				{this.state.reset === 'success' ? (
+					<form>
+						<Input title="Password" name="Password" type="password" value={this.state.password} handleInput={this.handlePasswordInput}/>
+						<Input title="Confirm Password" name="Confirm Password" type="password" value={this.state.confirmPassword} handleInput={this.handlePasswordConfirmInput}/>
+						<input type="submit" onClick={this.handleSubmit}/>
+					</form>
+				) : (
+					<div></div>
+				)}
+
+				{this.state.reset === 'fail' ? (
+					<p>Invalid or expired password reset token.</p>
+				) : (
+					<div></div>
+				)}
+
 				{this.state.message ? (
 					<p>{this.state.messageContent}</p>
 				) : (
 					<div></div>
 				)}
+
+				<Link to="/login">Login</Link> <br/>
 				<Link to="/signup">Sign Up</Link>
 			</div>
 		);

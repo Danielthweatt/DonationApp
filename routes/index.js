@@ -188,20 +188,17 @@ module.exports = function(app, passport, User){
 				});
 			},
 			function(token, done){
-				User.findOneAndUpdate({ 
-					email: req.body.email
-				}, {
-					$set: {
-						resetPasswordToken: token,
-						resetPasswordExpires: Date.now() + 3600000
-					}
-				}, (err, user) => { 
+				User.findOne({ email: req.body.email }, (err, user) => { 
 					if (err) {
 						res.status(422).send(err);
 					} else if (!user) {
 						res.send('Could not find a user account with that email address.');
 					} else {
-						done(null, token, user);
+						user.passwordResetToken = token;
+						user.passwordResetTokenExpiration = Date.now() + 3600000;
+						user.save(function(err){
+							done(err, token, user);
+						});
 					}
 				});
 			},
@@ -214,7 +211,7 @@ module.exports = function(app, passport, User){
 					}
 				});
 				const mailOptions = {
-					to: user.dataValues.email,
+					to: user.email,
 					from: 'passwordreset@octopied.com',
 					subject: 'Octopied Password Reset',
 					text: 'You are receiving this because you (or someone else) have requested the reset of the password for your Octopied account.\n\n' +
@@ -222,9 +219,9 @@ module.exports = function(app, passport, User){
                     'http://' + req.headers.host + '/reset/' + token + '\n\n' +
                     'If you did not request this, please ignore this email and your password will remain unchanged.\n'
 				};
-				mailer.sendMail(mailOptions, function(err, res){
+				mailer.sendMail(mailOptions, function(err){
 					if (!err) {
-						res.send('An e-mail has been sent to ' + user.email + ' with further instructions');
+						res.send('An e-mail has been sent to ' + user.email + ' with further instructions.');
 					}
 					done(err, 'done');
 				});
@@ -237,14 +234,17 @@ module.exports = function(app, passport, User){
 	//Reset Password Page
 	app.get('/reset/:token', function(req, res){
 		User.findOne({
-			resetPasswordToken: req.params.token 
+			passwordResetToken: req.params.token,
+			passwordResetTokenExpiration: {
+				$gt: Date.now()
+			} 
 		}, (err, user) => {
 			if (err) {
 				res.status(422).send(err);
 			} else if (!user) {
-				res.send('Password reset token is invalid.');
+				res.redirect('/reset/fail');
 			} else {
-				console.log(user.resetPasswordExpires);
+				res.redirect('/reset');
 			}
 		});
 	});
