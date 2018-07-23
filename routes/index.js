@@ -216,7 +216,7 @@ module.exports = function(app, passport, User){
 					subject: 'Octopied Password Reset',
 					text: 'You are receiving this because you (or someone else) have requested the reset of the password for your Octopied account.\n\n' +
                     'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
-                    'http://' + req.headers.host + '/reset/' + token + '\n\n' +
+                    'http://' + /* req.headers.host */ + 'localhost:3000/reset/' + token + '\n\n' +
                     'If you did not request this, please ignore this email and your password will remain unchanged.\n'
 				};
 				mailer.sendMail(mailOptions, function(err){
@@ -231,8 +231,8 @@ module.exports = function(app, passport, User){
 		});
 	});
 
-	//Reset Password Page
-	app.get('/reset/:token', function(req, res){
+	//Reset Password Token Check Route
+	app.get('/reset/check/:token', function(req, res){
 		User.findOne({
 			passwordResetToken: req.params.token,
 			passwordResetTokenExpiration: {
@@ -242,9 +242,9 @@ module.exports = function(app, passport, User){
 			if (err) {
 				res.status(422).send(err);
 			} else if (!user) {
-				res.redirect('/reset/fail');
+				res.send('Password reset token invalid or expired.');
 			} else {
-				res.redirect('/reset');
+				res.send(user._id);
 			}
 		});
 	});

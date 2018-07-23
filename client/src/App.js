@@ -101,17 +101,11 @@ class App extends Component {
 									loggedIn: this.state.loggedIn,
 									reset: false,
 								}}/>} />
-						<Route exact path="/reset" render={() =>
+						<Route path="/reset" render={() =>
 							<ForgotPassword updateUser={this.updateUser} 
 								userInfo={{
 									loggedIn: this.state.loggedIn,
-									reset: 'success'
-								}}/>} />
-						<Route exact path="/reset/fail" render={() =>
-							<ForgotPassword updateUser={this.updateUser} 
-								userInfo={{
-									loggedIn: this.state.loggedIn,
-									reset: 'fail'
+									reset: true
 								}}/>} />
 						<Route exact path="*" render= {() =>
 							<Home updateUser={this.updateUser} 

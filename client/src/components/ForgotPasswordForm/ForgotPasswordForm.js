@@ -17,9 +17,12 @@ class ForgotPasswordForm extends Component {
 	}
 	
 	componentDidMount(){
-		this.setState({
-			reset: this.props.userInfo.reset
-		});
+		if (this.props.userInfo.reset) {
+			this.setState({
+				reset: this.props.userInfo.reset
+			});
+			axios.get(`/reset/check/${window.location.pathname.slice(7)}`).then().catch();
+		}
 	}
 
 	handleEmailInput = e => {
@@ -68,28 +71,16 @@ class ForgotPasswordForm extends Component {
 		return (
 			<div>
 				{this.state.reset ? (
-					<div></div>
-				) : (
-					<form>
-						<Input title="Email" name="Email" type="text" value={this.state.email} handleInput={this.handleEmailInput}/>
-						<input type="submit" onClick={this.handleSubmit}/>
-					</form>
-				)}
-
-				{this.state.reset === 'success' ? (
 					<form>
 						<Input title="Password" name="Password" type="password" value={this.state.password} handleInput={this.handlePasswordInput}/>
 						<Input title="Confirm Password" name="Confirm Password" type="password" value={this.state.confirmPassword} handleInput={this.handlePasswordConfirmInput}/>
 						<input type="submit" onClick={this.handleSubmit}/>
 					</form>
 				) : (
-					<div></div>
-				)}
-
-				{this.state.reset === 'fail' ? (
-					<p>Invalid or expired password reset token.</p>
-				) : (
-					<div></div>
+					<form>
+						<Input title="Email" name="Email" type="text" value={this.state.email} handleInput={this.handleEmailInput}/>
+						<input type="submit" onClick={this.handleSubmit}/>
+					</form>
 				)}
 
 				{this.state.message ? (
