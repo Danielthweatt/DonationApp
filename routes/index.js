@@ -248,25 +248,52 @@ module.exports = function(app, passport, User){
 				})} 
 		});
 	});
-	// app.post('/settings/create/:id', (req, res) => {
-	// 	stripe.customers.create({
-	// 		email: req.body.email,
-	// 		//source is the token linked to their card
-	// 		source: req.body.source
-	// 	}).then(customer => {
-	// 		console.log(customer)
-	// 		User.findOneAndUpdate({_id: req.params.id}, {
-	// 			$set: {customerId : customer.id}
-	// 		}, (err, user) => {
-	// 			if (err) {
-	// 				res.status(422).send(err);
-	// 			} 
-	// 			else {
-	// 				res.send(user);
-	// 			}
-	// 		})
-	// 	}).catch(err => res.json(err))
-	// })
+
+	//delete a customer and delete cust id from db
+	app.put('/settings/delete/:id', (req,res) => {
+		console.log(req.params.id)
+		let id = req.params.id;
+		User.findById({_id: id}, (err, user) => {
+			if(err) console.log(err)
+			else {
+				//console.log(user.customerId)
+				stripe.customers.del(
+					user.customerId,
+					(err, confirmation) => {
+						if (err) console.log(err)
+						else {
+							console.log(confirmation)
+						}
+					}
+				  );
+			}
+		})
+		.then(() => {
+			//console.log('here')
+			User.findOneAndUpdate({_id: id}, {
+				$set: 
+				{
+					customerId : "",
+				}}, {new: true}, (err, user) => {
+						if (err) {
+							res.status(422).send(err);
+						} 
+						else {
+							console.log(user)
+							res.send({user:{
+								userId: user._id,
+								firstName: user.firstName,
+								lastName: user.lastName,
+								email: user.email,
+								customerId: user.customerId,
+								hasCustomerAccount: false,
+							}})
+						}
+					})
+			})
+		.catch(err => console.log(err))
+	})
+	
 
 	//React App
 	// app.get('*', function(req, res) {

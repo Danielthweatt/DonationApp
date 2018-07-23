@@ -4,48 +4,55 @@ import {Elements, StripeProvider} from 'react-stripe-elements';
 import StripeCheckout from 'react-stripe-checkout';
 
 class Settings extends Component {
-
-    state = {
-        firstName: "",
-        lastName: "",
-        email: "",
-        cardOnFile: false,
-        donationHistory: [],
-        customerId: "",
-        userId: "",
-    }
+    constructor(){
+        super();
+        this.state = {
+            firstName: "",
+            lastName: "",
+            email: "",
+            message: "",
+            customerId: "",
+            userId: "",
+        };
+        this.deleteCustomer = this.deleteCustomer.bind(this);
+}
 
     componentDidMount(){
-        this.setState({userId: this.props.userInfo.userId})
+        this.setState({
+            userId: this.props.userInfo.userId,
+            firstName: this.props.userInfo.firstName,
+            lastName: this.props.userInfo.lastName,
+            email: this.props.userInfo.email,
+        })
     }
 
+    //update card info
     onToken = (token) => {
-        //delete customer from stripe and then make a new customer
-        //this.deleteCustomer();
         axios.put('/settings/' + this.state.userId,{
-            email: this.props.userInfo.email,
+            email: this.state.email,
             data: token.id,
             stripeKey: "pk_test_xwATFGfvWsyNnp1dDh2MOk8I"
         }).then(res => {
             console.log(res)
+            this.setState({
+                message: 'Congratulations, your default payment method was updated.'
+            })
             }).catch(err => {
             console.log(err)
+                this.setState({
+                    message: 'Uh oh.. something has gone awry'
+                })
             })
-        //BUT save their info for later (no charge at this moment)
-        //if (this.props.userInfo.loggedIn && this.props.userInfo.hasCustomerAccount){
-            //console.log(this.props.userInfo.userId)
-          
-            // axios.post('/settings/create/' + this.state.userId, {
-            //     email: this.props.userInfo.email,
-            //     source: token.id,
-            // }).then(results => {
-            //     console.log(results)
-            //     alert('customer saved')
-            // })
-        // }
-        // else{
-        //     alert('u have not saved any cc info')
-        // }
+    }
+
+    //delete customers info
+    deleteCustomer(){
+        //console.log(this.state)
+        axios.put('/settings/delete/' + this.state.userId, {})
+        .then(res => {
+            console.log(res)
+            window.location.reload();
+        })
     }
     
     render() {
@@ -56,15 +63,15 @@ class Settings extends Component {
             <form>
                 <label>
                     First Name:
-                    <input type="text" name="firstName" placeholder={this.props.userInfo.firstName} />
+                    <input type="text" name="firstName" placeholder={this.state.firstName} />
                 </label>
                 <label>
                     Last Name:
-                    <input type="text" name="lastName" placeholder={this.props.userInfo.lastName} />
+                    <input type="text" name="lastName" placeholder={this.state.lastName} />
                 </label>
                 <label>
                     Email:
-                    <input type="text" name="email" placeholder={this.props.userInfo.email}/>
+                    <input type="text" name="email" placeholder={this.state.email}/>
                 </label>
             <button>Update</button>
             </form>
@@ -72,7 +79,7 @@ class Settings extends Component {
                 <StripeProvider apiKey="pk_test_xwATFGfvWsyNnp1dDh2MOk8I">
                     <Elements>
                         <StripeCheckout
-                            email={this.props.userInfo.email}
+                            email={this.state.email}
                             label ="Update Info"
                             token={this.onToken}
                             stripeKey={'pk_test_xwATFGfvWsyNnp1dDh2MOk8I'}
@@ -80,6 +87,16 @@ class Settings extends Component {
                         />
                     </Elements>
                 </StripeProvider>
+
+                <button onClick={this.deleteCustomer}>
+                    Delete My Payment Info
+                </button>
+
+                {this.state.message ? (
+                    <h4>{this.state.message}</h4>
+                ) : (
+                    <div/>
+                )}
             </div>
         )
     }
