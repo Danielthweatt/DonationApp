@@ -26,7 +26,7 @@
     .team-circle-gradient-styling {
         width: 11.5vw;
         height: 11.5vw;
-        /* CALCULATION NOTE: padding = (height - 10vw) / 2 */
+        /* CALCULATION NOTE: padding = (height - height of .team-circle-thumbnail-styling) / 2 */
         padding: .75vw;
         content: " ";
         border-radius: 50%;
@@ -83,3 +83,83 @@
         margin-left: 0 !important;
         margin-right: 0 !important;
     }
+
+@media (max-width: 575.98px) {
+        .team-circle-gradient-styling {
+        width: 34vw;
+        height: 34vw;
+        /* CALCULATION NOTE: padding = (height - height of .team-circle-thumbnail-styling) / 2 */
+        padding: 2vw;
+    }
+    .team-circle-thumbnail-styling {
+        width: 30vw;
+        height: 30vw;
+    }
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) { 
+        .team-circle-gradient-styling {
+        width: 17.5vw;
+        height: 17.5vw;
+        /* CALCULATION NOTE: padding = (height - height of .team-circle-thumbnail-styling) / 2 */
+        padding: 1.25vw;
+    }
+    .team-circle-thumbnail-styling {
+        width: 15vw;
+        height: 15vw;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+    .team-circle-gradient-styling {
+        width: 17vw;
+        height: 17vw;
+        /* CALCULATION NOTE: padding = (height - height of .team-circle-thumbnail-styling) / 2 */
+        padding: 1vw;
+    }
+    
+    .team-circle-thumbnail-styling {
+        width: 15vw;
+        height: 15vw;
+    }
+    
+}
+
+@media (min-width: 992px) and (max-width: 1199.98px) {
+        .team-circle-gradient-styling {
+        width: 15vw;
+        height: 15vw;
+        /* CALCULATION NOTE: padding = (height - height of .team-circle-thumbnail-styling) / 2 */
+        padding: 1vw;
+    }
+    .team-circle-thumbnail-styling {
+        width: 13vw;
+        height: 13vw;
+    }
+}
+
+@media (min-width: 1200px) and (max-width: 1699.98px) {
+    .team-circle-gradient-styling {
+        width: 10.5vw;
+        height: 10.5vw;
+        /* CALCULATION NOTE: padding = (height - height of .team-circle-thumbnail-styling) / 2 */
+        padding: .75vw;
+    }
+    .team-circle-thumbnail-styling {
+        width: 9vw;
+        height: 9vw;
+    }
+}
+
+@media (min-width: 1700px) {
+    .team-circle-gradient-styling {
+        width: 8vw;
+        height: 8vw;
+        /* CALCULATION NOTE: padding = (height - height of .team-circle-thumbnail-styling) / 2 */
+        padding: .5vw;
+    }
+    .team-circle-thumbnail-styling {
+        width: 7vw;
+        height: 7vw;
+    }
+}
