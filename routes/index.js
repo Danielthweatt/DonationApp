@@ -21,7 +21,7 @@ module.exports = function(app, passport, User){
 			receipt_email: req.body.email
 		}).then(charge => {
 			console.log(charge);
-			res.send(charge);
+			res.send('Success');
 		}).catch(err => 
 			res.status(500).send(err)
 		);
@@ -48,7 +48,7 @@ module.exports = function(app, passport, User){
 						res.status(422).send(err);
 					} 
 					else {
-						res.send(user);
+						res.send('Success');
 					}
 				});
 			}).catch(err => 
@@ -72,7 +72,7 @@ module.exports = function(app, passport, User){
 					currency: 'usd',
 					receipt_email: user.email
 				}).then(charge => 
-					res.send(charge)
+					res.send('Success')
 				).catch(err => 
 					res.status(500).send(err)
 				);
@@ -103,7 +103,7 @@ module.exports = function(app, passport, User){
 				});
 				newUser.save((err, savedUser) => {
 					if (err) return res.status(422).send(err);
-					res.send(savedUser);
+					res.send('Success');
 				});
 			}
 		});
@@ -244,7 +244,25 @@ module.exports = function(app, passport, User){
 			} else if (!user) {
 				res.send({ message: 'Password reset token invalid or expired.' });
 			} else {
-				res.send(user._id);
+				res.send({ userId: user._id});
+			}
+		});
+	});
+
+	//Reset Password Route
+	app.post('/reset/:userId', function(req, res){
+		User.findOneAndUpdate({
+			_id: req.params.userId
+		}, {
+			$set: {
+				password: req.body.password
+			}
+		}, (err, user) => {
+			if (err) {
+				res.status(422).send(err);
+			} 
+			else {
+				res.send('Success');
 			}
 		});
 	});
