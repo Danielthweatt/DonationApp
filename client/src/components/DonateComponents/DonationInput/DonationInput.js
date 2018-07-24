@@ -50,16 +50,16 @@ class DonationInput extends Component {
 	handleMoneyButton = e => {
 		this.setState({
 			customAmount: '',
-			amount: e.target.value,
+			amount: e.currentTarget.value,
 			custom: false,
-			buttonClicked: e.target.value
+			buttonClicked: e.currentTarget.value
 		});
 	}
 	
 	handleMoneyCustom = e => {
 		this.setState({
-			buttonClicked: e.target.value,
-			customAmount: e.target.value,
+			buttonClicked: e.currentTarget.value,
+			customAmount: e.currentTarget.value,
 			amount: '',
 			custom: true
 		});

@@ -1,11 +1,9 @@
 
 import React,  { Component } from 'react'; 
-import Donate from '../Donate/Donate'; 
 
 // Why wont this work? https://react-mdc.github.io/#/ripple
 // import Ripple from 'react-material-ripple'; 
 import Button from '@material-ui/core/Button';
-import Input from '../../Input'; 
 import './DonateOptions.css'; 
 import { withStyles } from '@material-ui/core/styles';
 
@@ -54,7 +52,7 @@ class DonateOptions extends Component {
   				<Button className={this.props.buttonClicked === '20' ? this.props.classes.donationButtonClicked: this.props.classes.donationButton} variant="fab" onClick={this.props.handleMoneyButton} value="20"> $20 </Button>
 				  </div>
 				  <div className="col-3">
-					<Button className={this.props.buttonClicked === '' ? this.props.classes.donationButtonClicked: this.props.classes.donationButton} variant="fab" onClick={this.props.handleMoneyCustom} value=''> Custom Payment </Button>
+					<Button className={this.props.buttonClicked === '' ? this.props.classes.donationButtonClicked: this.props.classes.donationButton} variant="fab" onClick={this.props.handleMoneyCustom} value=''> Custom Amount </Button>
 				</div>
 			{/* <div>
 				<button onClick={this.props.handleMoneyButton} value="5"> $5 </button>

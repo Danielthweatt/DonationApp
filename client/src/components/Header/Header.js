@@ -2,10 +2,17 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import './Header.css'; 
 import Wrapper from '../Wrapper';
+import Button from '@material-ui/core/Button';
 // import Button from '@material/react-button/dist'; // /index.js is implied
 import { Link } from 'react-router-dom';
+import { withStyles } from '@material-ui/core/styles';
 
-
+const styles = {
+	logoutButton: {
+		color: '#f9f9f9',
+		border: '1px solid #f9f9f9',
+	}
+}
 class Header extends Component {
 
 	constructor() {
@@ -70,9 +77,9 @@ class Header extends Component {
 						)}
 						<li className={this.props.page !== "login"? "nav-item" : "nav-item active"}>
 							{this.props.userInfo.loggedIn ? (	
-								<button className="nav-link disabled" onClick={this.logout}>Logout</button>
+								<Button className={this.props.classes.logoutButton + " nav-link"} variant="outlined" onClick={this.logout}>Logout</Button>
 							) : (
-								<Link to="/login" className="nav-link disabled">Login</Link>
+								<Link to="/login" className="nav-link">Login</Link>
 							)}
 						</li>
 					</ul>
@@ -84,4 +91,4 @@ class Header extends Component {
 	}
 }
 
-export default Header; 
+export default withStyles(styles)(Header); 
