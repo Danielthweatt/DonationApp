@@ -3,6 +3,7 @@ import axios from 'axios';
 import Input from '../../Input'; 
 import {Elements, StripeProvider} from 'react-stripe-elements';
 import StripeCheckout from 'react-stripe-checkout';
+import Donate from '../Donate/Donate'; 
 import DonateOptions from '../DonateOptions'; 
 import Checkbox from "../Checkbox";
 import './DonationInput.css'; 
@@ -192,7 +193,11 @@ class DonationInput extends Component {
 	render() {
 		return (
 			<div className = "donation-input-card">
-
+				<center>
+					<h2>Donate</h2>
+					<hr/>
+				</center>
+				<br/>
 				<DonateOptions
 					buttonClicked={this.state.buttonClicked}
 					handleMoneyButton={this.handleMoneyButton}
@@ -200,6 +205,23 @@ class DonationInput extends Component {
 					customAmount={this.state.customAmount}
 					custom={this.state.custom}
 				/>
+
+				{this.state.custom ? (
+					<div>
+						<Input 
+							title="Amount"
+							name="Amount"
+							id="custom-payment" 
+							onChange={this.state.handleMoneyCustom} 
+							value={this.state.customAmount} 
+							type="number" 
+							step="0.01" 
+							min="0.01" 
+							type={Donate}/>
+					</div>
+				) : (
+					<div></div>
+				)}
 
 				{this.props.userInfo.loggedIn ? (
 					<div></div>

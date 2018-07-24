@@ -1,10 +1,10 @@
 .donation-input-card {
     background: #f9f9f9;
-    padding: 2%;
+    padding: 7%;
     box-shadow:0px 5px 10px 2px rgba(0,0,0,0.2);
     border-radius: 3px;
     border-top: 10px;
     border-top-style: solid;
     border-image: linear-gradient(to right,#ff3e00, #d62562) 10;
-    margin-top: 5px; 
+    margin-bottom: 3em;
 }

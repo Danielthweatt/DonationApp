@@ -18,11 +18,6 @@
         text-align: center; 
     }
 
-    .team-card {
-        height: 100%;
-    }
-
-
     .team-card-deck {
         background: transparent;
         border: none;
@@ -35,7 +30,7 @@
         padding: .75vw;
         content: " ";
         border-radius: 50%;
-        background: linear-gradient(to right,#D65562, #6834FF);
+        background: linear-gradient(to right,#ff3e00, #d62562);
         position: relative;
         /* overflow: hidden; */
         margin: auto;
@@ -70,11 +65,21 @@
 
     .team-card{
         background: #f9f9f9;
-        padding: 2%;
+        padding: 2em .5em;
+        text-align: center;
         box-shadow:0px 5px 10px 2px rgba(0,0,0,0.2);
         border-radius: 3px;
         border-top: 10px;
         border-top-style: solid;
-        border-image: linear-gradient(to right,#D65562, #6834FF) 10;
-        margin-top: 5px;
+        border-image: linear-gradient(to right,#ff3e00, #d62562) 10;
+        margin: .7em auto;
+        height: 100%;
+        width: 100%;
+    }
+
+    .card-custom-styling {
+        height: 100%;
+        /* width: 100%; */
+        margin-left: 0 !important;
+        margin-right: 0 !important;
     }
