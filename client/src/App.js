@@ -84,7 +84,10 @@ class App extends Component {
 								userInfo={{
 									loggedIn: this.state.loggedIn,
 									hasCustomerAccount: this.state.hasCustomerAccount,
-									mongoId: this.state.userId
+									email: this.state.email,
+									firstName: this.state.firstName,
+									lastName: this.state.lastName,
+									userId: this.state.userId	
 								}}/>}/>
 						<Route exact path="/login" render={() =>
 							<Login updateUser={this.updateUser} 

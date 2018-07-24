@@ -29,6 +29,11 @@ class DonateOptions extends Component {
 				  <div className="col-3">
 					<Button className={this.props.buttonClicked === '' ? 'donation-button-clicked': 'donation-button'} onClick={this.props.handleMoneyCustom} value=''> Custom Payment </Button>
 				</div>
+			{/* <div>
+				<button onClick={this.props.handleMoneyButton} value="5"> $5 </button>
+  				<button onClick={this.props.handleMoneyButton} value="10"> $10 </button>
+  				<button onClick={this.props.handleMoneyButton} value="20"> $20 </button>
+				<button onClick={this.props.handleMoneyCustom} value='0'> Custom Payment </button> */}
 				{this.props.custom ? (
 					<div>
 						<label for="custom-payment">Amount:</label>

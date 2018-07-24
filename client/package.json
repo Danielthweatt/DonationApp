@@ -9,6 +9,7 @@
     "@material/react-button": "^0.3.0",
     "@material/textfield": "^0.37.1",
     "axios": "^0.18.0",
+    "mdbreact": "^4.6.0",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
     "react-router-dom": "^4.3.1",

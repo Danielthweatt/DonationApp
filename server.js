@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const passport = require('passport');
 const User = require('./models').User;
 const mongoose = require('mongoose');
+const flash = require('connect-flash');
 const redirectToHTTPS = require('express-http-to-https').redirectToHTTPS;
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -19,6 +20,7 @@ if (process.env.NODE_ENV === 'production') {
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(session({secret: 'keyboard cat', resave: false, saveUninitialized:false}));
+app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -29,8 +31,9 @@ require('./config/passport/passport.js')(passport, User);
 require('./routes')(app, passport, User);
 
 // Connection to MongoDB
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost/donation_app';
 mongoose.Promise = Promise;
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/donation_app');
+mongoose.connect(MONGODB_URI);
 
 // API server Start
 app.listen(PORT, function() {

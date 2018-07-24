@@ -40,7 +40,7 @@ class Header extends Component {
 
 	render() {
 		return (
-			<nav className={this.props.page != "home"? "navbar navbar-expand-lg navbar-gradient" : "navbar navbar-expand-lg"}>
+			<nav className={this.props.page !== "home"? "navbar navbar-expand-lg navbar-gradient" : "navbar navbar-expand-lg"}>
 				<Wrapper>
 				<a className="navbar-brand" href="/">Love Foundation</a>
 				<button className={this.state.navHamClicked ? "navbar-toggler change" : "navbar-toggler"} onClick={this.handleNavHamClick} type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -52,27 +52,27 @@ class Header extends Component {
 
 				<div className="collapse navbar-collapse" id="navbarSupportedContent">
 					<ul className="navbar-nav mr-auto">
-						<li className={this.props.page != "home"? "nav-item" : "nav-item active"}>
+						<li className={this.props.page !== "home"? "nav-item" : "nav-item active"}>
 							<Link to="/" className="nav-link" >Home <span className="sr-only">(current)</span></Link>
 						</li>
-						<li className={this.props.page != "about"? "nav-item" : "nav-item active"}>
+						<li className={this.props.page !== "about"? "nav-item" : "nav-item active"}>
 							<Link to="/about" className="nav-link">About</Link>
 						</li>
-						<li className={this.props.page != "donations"? "nav-item" : "nav-item active"}>
+						<li className={this.props.page !== "donations"? "nav-item" : "nav-item active"}>
 							<Link to="/donations" className="nav-link">Donations</Link>
 						</li>
 						{this.props.userInfo.loggedIn ? (
-							<li className={this.props.page != "settings"? "nav-item" : "nav-item active"}>
+							<li className={this.props.page !== "settings"? "nav-item" : "nav-item active"}>
 								<Link to="/settings" className="nav-link" href="/settings">Settings</Link>
 							</li>
 						) : ( 
 							<div></div>
 						)}
-						<li className={this.props.page != "login"? "nav-item" : "nav-item active"}>
+						<li className={this.props.page !== "login"? "nav-item" : "nav-item active"}>
 							{this.props.userInfo.loggedIn ? (	
 								<button className="nav-link disabled" onClick={this.logout}>Logout</button>
 							) : (
-								<Link to="/login" className="nav-link">Login</Link>
+								<Link to="/login" className="nav-link disabled">Login</Link>
 							)}
 						</li>
 					</ul>

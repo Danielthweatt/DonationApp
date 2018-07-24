@@ -5,7 +5,9 @@ const AboutUs = () => (
 	<div className="card" id="about">
 		<div className="row no-gutters">
 			<div className="col-auto">
-				<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSpq5dUAQ7RFh1JQISWijgyZ5UKRnIkbm3ZxY_ZVsI1cEwMCzgaDQ" className="img-fluid" alt=""></img>
+				<div className="about-logo-img-styling">
+					<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSpq5dUAQ7RFh1JQISWijgyZ5UKRnIkbm3ZxY_ZVsI1cEwMCzgaDQ" className="img-fluid" alt=""></img>
+				</div>
 			</div>
 			<div className="col">
 				<div className="card-block px-2">
