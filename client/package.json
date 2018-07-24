@@ -4,6 +4,7 @@
   "private": true,
   "proxy": "http://localhost:3001/",
   "dependencies": {
+    "@material-ui/core": "^1.4.1",
     "@material/card": "^0.37.0",
     "@material/react-button": "^0.3.0",
     "@material/textfield": "^0.37.1",
