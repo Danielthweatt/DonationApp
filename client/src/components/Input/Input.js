@@ -6,13 +6,13 @@ import TextField from '@material-ui/core/TextField';
 
 const Input = props => (
 	<div className="input-group">
-		<div className="input-group-prepend"> 
+		{/* <div className="input-group-prepend"> 
 			<span className="input-group-text">{props.title}</span>
-		</div>
+		</div> */}
 		{/* below is how we get the material design to work for the text areas
 		will need to change what it is referencing, since "Input is in all their .js in DonationInput" */}
 		 {/* <TextField.Input name= */}
-		<input name={props.name} type={props.type} value={props.value} onChange={props.handleInput} className="form-control" aria-label="Input field" />
+		<TextField  id="with-placeholder" label={props.title} placeholder={props.title} name={props.name} type={props.type} value={props.value} onChange={props.handleInput} className="form-control" aria-label="Input field" />
 	</div>
 );
 
