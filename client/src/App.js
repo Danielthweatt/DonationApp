@@ -105,7 +105,7 @@ class App extends Component {
 							<ForgotPassword updateUser={this.updateUser} 
 								userInfo={{
 									loggedIn: this.state.loggedIn,
-									resetOrForgot: 'success'
+									resetOrForgot: 'reset'
 								}}/>} />
 						<Route exact path="*" render= {() =>
 							<Home updateUser={this.updateUser} 

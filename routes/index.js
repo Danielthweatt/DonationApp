@@ -203,20 +203,26 @@ module.exports = function(app, passport, User){
 				});
 			},
 			function(token, user, done){
+				let host;
+				if (process.env.NODE_ENV === 'production') {
+					host = req.headers.host;
+				} else {
+					host = 'localhost:3000';
+				}
 				const mailer = nodemailer.createTransport({
 					service: 'gmail',
 					auth: {
-						user: 'octopiedhelp@gmail.com',
-						pass: 'Octopied35'
+						user: 'lovefoundation361@gmail.com',
+						pass: 'Romadacama'
 					}
 				});
 				const mailOptions = {
 					to: user.email,
-					from: 'passwordreset@octopied.com',
-					subject: 'Octopied Password Reset',
-					text: 'You are receiving this because you (or someone else) have requested the reset of the password for your Octopied account.\n\n' +
+					from: 'lovefoundation361@gmail.com',
+					subject: 'Love Foundation Password Reset',
+					text: 'You are receiving this because you (or someone else) have requested the reset of the password for your Love Foundation account.\n\n' +
                     'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
-                    'http://' + /* req.headers.host */ + 'localhost:3000/reset/' + token + '\n\n' +
+                    'http://' + host + '/reset/' + token + '\n\n' +
                     'If you did not request this, please ignore this email and your password will remain unchanged.\n'
 				};
 				mailer.sendMail(mailOptions, function(err){
@@ -251,18 +257,20 @@ module.exports = function(app, passport, User){
 
 	//Reset Password Route
 	app.post('/reset/:userId', function(req, res){
-		User.findOneAndUpdate({
-			_id: req.params.userId
-		}, {
-			$set: {
-				password: req.body.password
-			}
-		}, (err, user) => {
+		User.findOne({ _id: req.params.userId }, (err, user) => { 
 			if (err) {
 				res.status(422).send(err);
-			} 
-			else {
-				res.send('Success');
+			} else if (!user) {
+				res.status(422).send('Something went wrong.');
+			} else {
+				user.password = req.body.password;
+				user.save(function(err){
+					if (err) {
+						res.status(422).send(err);
+					} else {
+						res.send('Success');
+					}
+				});
 			}
 		});
 	});
@@ -308,8 +316,10 @@ module.exports = function(app, passport, User){
 	// })
 
 	//React App
-	// app.get('*', function(req, res) {
-	// 	res.sendFile(path.join(__dirname, '../client/build/index.html'));
-	// });
+	if (process.env.NODE_ENV === 'production') {
+		app.get('*', function(req, res) {
+			res.sendFile(path.join(__dirname, '../client/build/index.html'));
+		});
+	}
 
 };
