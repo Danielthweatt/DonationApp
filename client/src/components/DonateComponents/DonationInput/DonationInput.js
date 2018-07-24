@@ -17,6 +17,7 @@ class DonationInput extends Component {
 			customAmount: '',
 			custom: false,
 			rememberMe: false,
+			subscriptionStarted: false,
 			message: false,
 			messageContent: ''
 		};
@@ -26,6 +27,7 @@ class DonationInput extends Component {
 		this.handleMoneyButton = this.handleMoneyButton.bind(this);
 		this.handleMoneyCustom = this.handleMoneyCustom.bind(this);
 		this.handleCheckbox = this.handleCheckbox.bind(this);
+		this.handleSubscribe = this.handleSubscribe.bind(this);
 		this.chargeACustomer = this.chargeACustomer.bind(this);
 		this.onToken = this.onToken.bind(this);
 	}
@@ -61,6 +63,11 @@ class DonationInput extends Component {
 	handleCheckbox = () => {
 		let newRememberMeValue = !this.state.rememberMe;
 		this.setState({rememberMe: newRememberMeValue});
+	}
+
+	handleSubscribe = () => {
+		let newSubscriptionStarted = !this.state.subscriptionStarted;
+		this.setState({subscriptionStarted: newSubscriptionStarted});
 	}
 
 	chargeACustomer() {
@@ -103,12 +110,12 @@ class DonationInput extends Component {
 		} else {
 			amount = this.state.customAmount;
 		}
-		if (this.props.userInfo.loggedIn && this.state.rememberMe) {
+		if (this.props.userInfo.loggedIn && this.state.rememberMe && !this.state.handleSubscribe) {
 			axios.post('/charge/create/' + userId, {
 				email: this.props.userInfo.email,
 				source: token.id,
 				amount,
-				stripeKey: "pk_test_xwATFGfvWsyNnp1dDh2MOk8I"
+				stripeKey: "pk_test_laDoJCqgOQpou2PvCdG07DE2"
 			}).then(res => {
 				if (res.status === 200) {
 					this.setState({
@@ -132,6 +139,21 @@ class DonationInput extends Component {
 					messageContent: 'Something went wrong.'
 				});
 			});
+		} else if (this.props.userInfo.loggedIn && this.state.subscriptionStarted){
+			console.log('subscribe!!!');
+			//post route to start subscription
+			axios.post('/charge/subscription/' + userId, {
+				email: this.props.userInfo.email,
+				source: token.id,
+				amount,
+				stripeKey: "pk_test_laDoJCqgOQpou2PvCdG07DE2"
+		}).then(res => {
+			if (res.status === 200) {
+				alert('subscription saved!');
+			} else {
+				alert('Something went wrong.');
+			}})
+
 		} else {
 			axios.post('/charge', {
 				email: this.state.email,
@@ -213,6 +235,7 @@ class DonationInput extends Component {
 				{this.props.userInfo.loggedIn && !this.props.userInfo.hasCustomerAccount ? (
 					<Checkbox
 						handleCheckbox = {this.handleCheckbox}
+						handleSubscribe = {this.handleSubscribe}
 					/>
 				) : (
 					<div></div>
@@ -221,7 +244,7 @@ class DonationInput extends Component {
 				{this.props.userInfo.loggedIn && this.props.userInfo.hasCustomerAccount ? (
 					<button onClick={this.chargeACustomer}>Donate</button>
 				) : (
-					<StripeProvider apiKey="pk_test_xwATFGfvWsyNnp1dDh2MOk8I">
+					<StripeProvider apiKey="pk_test_laDoJCqgOQpou2PvCdG07DE2">
 						<Elements>
 						<StripeCheckout
 							allowRememberMe = {false}
@@ -242,7 +265,7 @@ class DonationInput extends Component {
 							)}
 							token={this.onToken}
 							amount={this.state.amount * 100}
-							stripeKey={'pk_test_xwATFGfvWsyNnp1dDh2MOk8I'}
+							stripeKey={'pk_test_laDoJCqgOQpou2PvCdG07DE2'}
 						/>
 						</Elements>
 					</StripeProvider>

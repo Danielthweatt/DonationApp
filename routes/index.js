@@ -1,6 +1,6 @@
 //Dependencies
 const path = require('path');
-const keyPublishable = 'pk_test_xwATFGfvWsyNnp1dDh2MOk8I';
+const keyPublishable = 'pk_test_laDoJCqgOQpou2PvCdG07DE2';
 const secret = require('../config/config.js');
 const keySecret = secret.SECRET_KEY;
 const stripe = require('stripe')(keySecret);
@@ -16,16 +16,15 @@ module.exports = function(app, passport, User){
 		stripe.charges.create({
 			amount: req.body.amount * 100,
 			source: req.body.source,
-			description: 'test charge',
+			//description: 'test charge',
 			currency: 'usd',
-			receipt_email: req.body.email
+			//receipt_email: req.body.email
 		}).then(charge => {
 			console.log(charge);
 			res.send('Success');
 		}).catch(err => 
 			res.status(500).send(err)
 		);
-	
 	});
 
 	//Charge and Save User Payment Info Route
@@ -57,8 +56,61 @@ module.exports = function(app, passport, User){
 		}).catch(err => 
 			res.status(500).send(err)
 		);
+	
 	});
 
+	app.post('/charge/subscription/:id', (req,res) => {
+		console.log('here is the user/mongo id', req.params.id);
+		stripe.customers.create({
+			email: req.body.email,
+			//source is the token linked to their card
+			source: req.body.source
+		}).then((customer) => {
+			console.log('find it', customer.id); 
+			stripe.charges.create({
+				amount: req.body.amount * 100,
+				currency: 'usd',
+				customer: customer.id,
+				receipt_email: req.body.email
+			}).then(() => {
+				stripe.products.create({
+					name: 'Love Member',
+					type: 'service' 
+				}, function(err, product) {
+				// asynchronously called
+					if (err) console.log(err);
+					else {
+						stripe.plans.create({
+							nickname: 'Standard Monthly',
+							product: product.id, 
+							amount: req.body.amount * 100,
+							currency: 'usd',
+							interval: 'month',
+							usage_type: 'licensed',
+						}, function(err, plan) {
+							// asynchronously called
+							if (err) console.log(err);
+			
+							else {
+								console.log('testies', customer.id); 
+								stripe.subscriptions.create({
+									customer: customer.id,
+									items: [
+										{
+											plan: plan.id,
+										}
+									]
+								}, function(err, subscription) {
+									// asynchronously called
+									if (err) console.log(err);
+								
+						
+								});}
+						});
+					}});
+			});
+		});
+	});
 
 	//Charge a Customer With a Saved Card Route
 	app.post('/charge/:id', (req, res) => {
@@ -282,11 +334,12 @@ module.exports = function(app, passport, User){
 			if (err) {
 				res.send(err);
 			} else {
-				console.log(user);
+				//console.log(user)
+				//console.log('the req body',req.body)
 				let customerId = user.customerId;
-				//delete the customer
+				//update the customer card
 				stripe.customers.update(customerId, {
-					source: req.body.source
+					source: req.body.data
 				}, (err, confirmation) => {
 					if(err) console.log(err);
 					else{
@@ -295,25 +348,52 @@ module.exports = function(app, passport, User){
 				});} 
 		});
 	});
-	// app.post('/settings/create/:id', (req, res) => {
-	// 	stripe.customers.create({
-	// 		email: req.body.email,
-	// 		//source is the token linked to their card
-	// 		source: req.body.source
-	// 	}).then(customer => {
-	// 		console.log(customer)
-	// 		User.findOneAndUpdate({_id: req.params.id}, {
-	// 			$set: {customerId : customer.id}
-	// 		}, (err, user) => {
-	// 			if (err) {
-	// 				res.status(422).send(err);
-	// 			} 
-	// 			else {
-	// 				res.send(user);
-	// 			}
-	// 		})
-	// 	}).catch(err => res.json(err))
-	// })
+
+	//delete a customer and delete cust id from db
+	app.put('/settings/delete/:id', (req,res) => {
+		console.log(req.params.id);
+		let id = req.params.id;
+		User.findById({_id: id}, (err, user) => {
+			if(err) console.log(err);
+			else {
+				//console.log(user.customerId)
+				stripe.customers.del(
+					user.customerId,
+					(err, confirmation) => {
+						if (err) console.log(err);
+						else {
+							console.log(confirmation);
+						}
+					}
+				  );
+			}
+		})
+			.then(() => {
+			//console.log('here')
+				User.findOneAndUpdate({_id: id}, {
+					$set: 
+				{
+					customerId : '',
+				}}, {new: true}, (err, user) => {
+					if (err) {
+						res.status(422).send(err);
+					} 
+					else {
+						console.log(user);
+						res.send({user:{
+							userId: user._id,
+							firstName: user.firstName,
+							lastName: user.lastName,
+							email: user.email,
+							customerId: user.customerId,
+							hasCustomerAccount: false,
+						}});
+					}
+				});
+			})
+			.catch(err => console.log(err));
+	});
+	
 
 	//React App
 	if (process.env.NODE_ENV === 'production') {
