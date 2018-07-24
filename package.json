@@ -33,6 +33,7 @@
     "nodemon": "^1.17.5"
   },
   "dependencies": {
+    "@material-ui/core": "^1.4.1",
     "@material/button": "^0.37.1",
     "@material/card": "^0.37.1",
     "@material/form-field": "^0.37.1",
