@@ -232,6 +232,7 @@ class DonationInput extends Component {
 							name="Amount"
 							id="custom-payment" 
 							onChange={this.state.handleMoneyCustom} 
+							onBlur={this.state.checkMoneyInput}
 							value={this.state.customAmount} 
 							type="number" 
 							step="0.01" 
