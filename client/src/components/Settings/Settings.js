@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import Input from '../../Input'; 
 import {Elements, StripeProvider} from 'react-stripe-elements';
 import StripeCheckout from 'react-stripe-checkout';
 
@@ -10,7 +11,10 @@ class Settings extends Component {
             firstName: "",
             lastName: "",
             email: "",
-            message: "",
+            password: '',
+            confirmPassword: '',
+            message: false,
+            messageContent: '',
             customerId: "",
             userId: "",
         };
@@ -26,6 +30,116 @@ class Settings extends Component {
         })
     }
 
+    handleFirstNameInput = e => {
+		this.setState({firstName: e.target.value});
+	}
+
+	handleLastNameInput = e => {
+		this.setState({lastName: e.target.value});
+	}
+
+	handleEmailInput = e => {
+		this.setState({email: e.target.value});
+    }
+
+    handlePasswordInput = e => {
+		this.setState({password: e.target.value});
+	}
+
+	handlePasswordConfirmInput = e => {
+		this.setState({confirmPassword: e.target.value});
+	}
+    
+    updateUserInfo = () => {
+        event.preventDefault();
+		this.setState({
+			message: false,
+			messageContent: ''
+		});
+		if (!this.state.firstName) {
+			this.setState({
+				message: true,
+				messageContent: 'Please enter your first name.'
+			});
+		} else if (!this.state.lastName) {
+			this.setState({
+				message: true,
+				messageContent: 'Please enter your last name.'
+			});
+		} else if (!this.state.email) {
+			this.setState({
+				message: true,
+				messageContent: 'Please enter your email.'
+			});
+		} else {
+            axios.put('/user/update' + this.state.userId, {
+                firstName: this.state.firstName,
+                lastName: this.state.lastName,
+                email: this.state.email
+            }).then(res => {
+			    if (res.status === 200) { 
+				    this.setState({
+					    message: true,
+					    messageContent: 'User information updated.'
+				    });
+			    } else {
+				    this.setState({
+					    message: true,
+					    messageContent: 'Something went wrong.'
+				    });
+			    }
+		    }).catch(err => {
+			    console.log(err);
+			    this.setState({
+				    message: true,
+				    messageContent: 'Something went wrong.'
+			    });
+            });
+        }
+    }
+
+    updateUserPassword = () => {
+        event.preventDefault();
+		this.setState({
+			message: false,
+			messageContent: ''
+		});
+        if (!this.state.password) {
+			this.setState({
+				message: true,
+				messageContent: 'Please enter a password.'
+			});
+		} else if (this.state.password !== this.state.confirmPassword) {
+			this.setState({
+				message: true,
+				messageContent: 'Please re-enter a matching password.'
+			});
+		} else {
+            axios.put('/user/update' + this.state.userId, {
+				password: this.state.password
+			}).then(res => {
+				if (res.status === 200) { 
+				    this.setState({
+					    message: true,
+					    messageContent: 'Password updated.'
+				    });
+			    } else {
+				    this.setState({
+					    message: true,
+					    messageContent: 'Something went wrong.'
+				    });
+			    }
+			}).catch(err => {
+				this.setState({
+					message: true,
+					messageContent: 'Something went wrong.'
+				});
+				console.log('Something went wrong: ');
+				console.log(err);
+			});
+        }
+    }
+
     //update card info
     onToken = (token) => {
         axios.put('/settings/' + this.state.userId,{
@@ -35,12 +149,14 @@ class Settings extends Component {
         }).then(res => {
             console.log(res)
             this.setState({
-                message: 'Congratulations, your default payment method was updated.'
+                message: true,
+                messageContent: 'Congratulations, your default payment method was updated.'
             })
             }).catch(err => {
             console.log(err)
                 this.setState({
-                    message: 'Uh oh.. something has gone awry'
+                    message: true,
+                    messageContent: 'Uh oh.. something has gone awry'
                 })
             })
     }
@@ -51,7 +167,9 @@ class Settings extends Component {
         axios.put('/settings/delete/' + this.state.userId, {})
         .then(res => {
             console.log(res)
-            window.location.reload();
+            this.props.updateUser({
+                hasCustomerAccount: false
+            });
         })
     }
     
@@ -59,21 +177,53 @@ class Settings extends Component {
         console.log(this.props.userInfo)
         return (
             <div>
-            <h1>the settings</h1>
+            <h1>User Info:</h1>
             <form>
-                <label>
-                    First Name:
-                    <input type="text" name="firstName" placeholder={this.state.firstName} />
-                </label>
-                <label>
-                    Last Name:
-                    <input type="text" name="lastName" placeholder={this.state.lastName} />
-                </label>
-                <label>
-                    Email:
-                    <input type="text" name="email" placeholder={this.state.email}/>
-                </label>
-            <button>Update</button>
+                <Input 
+                    title="First Name" 
+                    name="First Name" 
+                    type="text" 
+                    value={this.state.firstName} 
+                    handleInput={this.handleFirstNameInput} 
+                />
+
+                <Input 
+                    title="Last Name" 
+                    name="Last Name" 
+                    type="text" 
+                    value={this.state.lastName} 
+                    handleInput={this.handleLastNameInput} 
+                />
+
+                <Input 
+                    title="Email" 
+                    name="Email" 
+                    type="text" 
+                    value={this.state.email} 
+                    handleInput={this.handleEmailInput} 
+                />
+
+                <button onClick={this.updateUserInfo}>Update</button>
+            </form>
+
+            <form>
+                <Input 
+                    title="Password" 
+                    name="Password" 
+                    type="password" 
+                    value={this.state.password} 
+                    handleInput={this.handlePasswordInput} 
+                />
+
+                <Input 
+                    title="Confirm Password" 
+                    name="Confirm Password" 
+                    type="password" 
+                    value={this.state.confirmPassword} 
+                    handleInput={this.handlePasswordConfirmInput} 
+                />
+
+                <button onClick={this.updateUserPassword}>Update</button>
             </form>
 
                 <StripeProvider apiKey="pk_test_laDoJCqgOQpou2PvCdG07DE2">
@@ -93,10 +243,10 @@ class Settings extends Component {
                 </button>
 
                 {this.state.message ? (
-                    <h4>{this.state.message}</h4>
-                ) : (
-                    <div/>
-                )}
+					<p>{this.state.messageContent}</p>
+				) : (
+					<div></div>
+				)}
             </div>
         )
     }

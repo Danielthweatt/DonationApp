@@ -100,7 +100,7 @@ class ForgotPasswordForm extends Component {
 				messageContent: 'Please re-enter a matching password.'
 			});
 		} else {
-			axios.post('/reset/' + this.state.userId, {
+			axios.put('/reset/' + this.state.userId, {
 				password: this.state.password
 			}).then(res => 
 				this.setState({

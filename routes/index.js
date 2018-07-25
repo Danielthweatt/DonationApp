@@ -308,13 +308,15 @@ module.exports = function(app, passport, User){
 	});
 
 	//Reset Password Route
-	app.post('/reset/:userId', function(req, res){
+	app.put('/reset/:userId', function(req, res){
 		User.findOne({ _id: req.params.userId }, (err, user) => { 
 			if (err) {
 				res.status(422).send(err);
 			} else if (!user) {
 				res.status(422).send('Something went wrong.');
 			} else {
+				user.passwordResetToken = '';
+				user.passwordResetTokenExpiration = '';
 				user.password = req.body.password;
 				user.save(function(err){
 					if (err) {
@@ -325,6 +327,47 @@ module.exports = function(app, passport, User){
 				});
 			}
 		});
+	});
+
+	// Update User Info Route
+	app.put('/user/update/:userId', function(req, res){
+		if (req.body.password) {
+			User.findOne({ _id: req.params.userId }, (err, user) => { 
+				if (err) {
+					res.status(422).send(err);
+				} else if (!user) {
+					res.status(422).send('Something went wrong.');
+				} else {
+					user.password = req.body.password;
+					user.save(function(err){
+						if (err) {
+							res.status(422).send(err);
+						} else {
+							res.send('Success');
+						}
+					});
+				}
+			});
+		} else {
+			User.findOne({ _id: req.params.userId }, (err, user) => { 
+				if (err) {
+					res.status(422).send(err);
+				} else if (!user) {
+					res.status(422).send('Something went wrong.');
+				} else {
+					user.firstName = req.body.firstName;
+					user.lastName = req.body.lastName;
+					user.email = req.body.email;
+					user.save(function(err){
+						if (err) {
+							res.status(422).send(err);
+						} else {
+							res.send('Success');
+						}
+					});
+				}
+			});
+		}
 	});
 
 	//update customer card info
