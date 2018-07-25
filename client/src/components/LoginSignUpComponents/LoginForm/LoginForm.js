@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import axios from 'axios';
-import Input from '../../Input'; 
-import { userInfo } from 'os';
+import Input from '../../Input';
 
 class LoginForm extends Component {
 	constructor() {
         super();
         this.state = {
-            username: '',
+            email: '',
             password: '',
-            redirectTo: null
+			redirectTo: null,
+			message: false,
+			messageContent: ''
         };
         this.handleSubmit = this.handleSubmit.bind(this);
 		this.handleEmailInput = this.handleEmailInput.bind(this);
@@ -27,27 +28,56 @@ class LoginForm extends Component {
 	}
 
 	handleSubmit(event) {
-        event.preventDefault();
-		const signInInfo = {
-			email: this.state.email,
-			password: this.state.password
-		};
-        axios.post('/user/signin', signInInfo).then(response => {
-            if (response.status === 200) {
-                // update App.js state
-                this.props.updateUser({
-                    loggedIn: true,
-                    id: response.data.id
-                });
-                // update the state to redirect to home
-                this.setState({
-                    redirectTo: '/'
-                });
-            }
-        }).catch(error => {
-            console.log('Login error: ');
-            console.log(error);    
-        })
+		event.preventDefault();
+		this.setState({
+			message: false,
+			messageContent: ''
+		});
+		if (!this.state.email) {
+			this.setState({
+				message: true,
+				messageContent: 'Please enter your email address.'
+			});
+		} else if (!this.state.password) {
+			this.setState({
+				message: true,
+				messageContent: 'Please enter your password.'
+			});
+		} else {
+			const signInInfo = {
+				email: this.state.email,
+				password: this.state.password
+			};
+        	axios.post('/user/signin', signInInfo).then(response => {
+				if (response.status === 200) {
+					if (response.data.message) {
+						this.setState({
+							message: true,
+							messageContent: response.data.message
+						});
+					} else {
+                		this.props.updateUser({
+							loggedIn: true,
+							userId: response.data.id,
+							email: response.data.email,
+							hasCustomerAccount: response.data.hasCustomerAccount,
+							firstName: response.data.firstName,
+							lastName: response.data.lastName
+                		});
+                		this.setState({
+                    		redirectTo: '/'
+						});
+					}
+            	}
+        	}).catch(err => {
+				this.setState({
+					message: true,
+					messageContent: 'Login error.'
+				});
+            	console.log('Login error:');
+            	console.log(err);    
+			});
+		}
     }
 
 	render() {
@@ -57,19 +87,17 @@ class LoginForm extends Component {
 			return (
 				<div>
 					<form>
-						<div>
-							<label>Email:</label>
-							<Input title = "Name" type="text" name="email" handleInput={this.handleEmailInput}/>
-						</div>
-						<div>
-							<label>Password:</label>
-							<Input title = "Name" type="password" name="password" handleInput={this.handlePasswordInput}/>
-						</div>
-						<div>
-							<input type="submit" onClick={this.handleSubmit}/>
-						</div>
+						<Input title="Email" name="Email" type="text" value={this.state.email} handleInput={this.handleEmailInput}/>
+						<Input title="Password" name="Password" type="password" value={this.state.password} handleInput={this.handlePasswordInput}/>
+						<input type="submit" onClick={this.handleSubmit}/>
 					</form>
-					<a href="/signup">Sign Up</a>
+					{this.state.message ? (
+						<p>{this.state.messageContent}</p>
+					) : (
+						<div></div>
+					)}
+					<Link to="/signup">Sign Up</Link> <br/>
+					<Link to="/forgot">Forgot Password?</Link>
 				</div>
 			)
 		}

@@ -34,8 +34,10 @@ userSchema.pre('save', function(next){
 	if (!this.password) {
 		console.log('models/user.js =======NO PASSWORD PROVIDED=======');
 		next();
-	} else {
+	} else if (this.password.charAt(0) !== '$') {
 		this.password = this.hashPassword(this.password);
+		next();
+	} else {
 		next();
 	}
 });

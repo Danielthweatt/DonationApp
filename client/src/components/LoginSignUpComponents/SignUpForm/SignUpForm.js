@@ -7,15 +7,29 @@ class SignUpForm extends Component {
 	constructor() {
 		super();
 		this.state = {
-			username: '',
+			firstName: '',
+			lastName: '',
+			email: '',
 			password: '',
 			confirmPassword: '',
-			redirectTo: null
+			redirectTo: null,
+			message: false,
+			messageContent: ''
 		};
 		this.handleSubmit = this.handleSubmit.bind(this);
+		this.handleFirstNameInput = this.handleFirstNameInput.bind(this);
+		this.handleLastNameInput = this.handleLastNameInput.bind(this);
 		this.handleEmailInput = this.handleEmailInput.bind(this);
 		this.handlePasswordInput = this.handlePasswordInput.bind(this); 
 		this.handlePasswordConfirmInput = this.handlePasswordConfirmInput.bind(this); 
+	}
+
+	handleFirstNameInput = e => {
+		this.setState({firstName: e.target.value});
+	}
+
+	handleLastNameInput = e => {
+		this.setState({lastName: e.target.value});
 	}
 
 	handleEmailInput = e => {
@@ -32,27 +46,66 @@ class SignUpForm extends Component {
 
 	handleSubmit(event) {
 		event.preventDefault();
-		if (this.state.password === this.state.confirmPassword) {
+		this.setState({
+			message: false,
+			messageContent: ''
+		});
+		if (!this.state.firstName) {
+			this.setState({
+				message: true,
+				messageContent: 'Please enter your first name.'
+			});
+		} else if (!this.state.lastName) {
+			this.setState({
+				message: true,
+				messageContent: 'Please enter your last name.'
+			});
+		} else if (!this.state.email) {
+			this.setState({
+				message: true,
+				messageContent: 'Please enter your email.'
+			});
+		} else if (!this.state.password) {
+			this.setState({
+				message: true,
+				messageContent: 'Please enter a password.'
+			});
+		} else if (this.state.password.indexOf('$') !== -1) {
+            this.setState({
+				message: true,
+				messageContent: 'Passwords cannot contain a $ symbol.'
+			});
+		} else if (this.state.password !== this.state.confirmPassword) {
+			this.setState({
+				message: true,
+				messageContent: 'Please re-enter a matching password.'
+			});
+		} else {
 			const signUpInfo = {
+				firstName: this.state.firstName,
+				lastName: this.state.lastName,
 				email: this.state.email,
 				password: this.state.password
 			};
 			axios.post('/user/signup', signUpInfo).then(response => {
-				if (!response.data.errmsg) {
-					this.setState({ //redirect to login page
-						redirectTo: '/'
+				if (response.data.error) {
+					this.setState({
+						message: true,
+						messageContent: response.data.error
 					});
 				} else {
-					// To be replaced
-					console.log('Username already taken');
-				}
+					this.setState({
+						redirectTo: '/'
+					});
+				} 
 			}).catch(error => {
+				this.setState({
+					message: true,
+					messageContent: 'Signup error.'
+				});
 				console.log('Signup error: ');
 				console.log(error);
 			});
-		} else {
-			// To be replaced
-			alert("Please re-enter the same password.");
 		}
 	}
 
@@ -61,23 +114,21 @@ class SignUpForm extends Component {
             return <Redirect to={{ pathname: this.state.redirectTo }} />
         } else {
 			return (
-				<form>
-					<div>
-						<label>Email:</label>
-						<Input title = "Name" name="email" handleInput={this.handleEmailInput}/>
-					</div>
-					<div>
-						<label>Password:</label>
-						<Input title = "Name" type="password" name="password" handleInput={this.handlePasswordInput}/>
-					</div>
-					<div>
-						<label>Confirm Password:</label>
-						<Input title = "Name" type="password" name="confirmPassword" handleInput={this.handlePasswordConfirmInput}/>
-					</div>
-					<div>
+				<div>
+					<form>
+						<Input title="First Name" name="First Name" type="text" value={this.state.firstName} handleInput={this.handleFirstNameInput}/>
+						<Input title="Last Name" name="Last Name" type="text" value={this.state.lastName} handleInput={this.handleLastNameInput}/>
+						<Input title="Email" name="Email" type="text" value={this.state.email} handleInput={this.handleEmailInput}/>
+						<Input title="Password" name="Password" type="password" value={this.state.password} handleInput={this.handlePasswordInput}/>
+						<Input title="Confirm Password" name="Confirm Password" type="password" value={this.state.confirmPassword} handleInput={this.handlePasswordConfirmInput}/>
 						<input type="submit" onClick={this.handleSubmit}/>
-					</div>
-				</form>
+					</form>
+					{this.state.message ? (
+						<p>{this.state.messageContent}</p>
+					) : (
+						<div></div>
+					)}
+				</div>
 			)
 		}
 	}

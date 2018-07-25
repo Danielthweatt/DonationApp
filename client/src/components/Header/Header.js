@@ -1,6 +1,8 @@
 import React, { Component } from 'react'; 
 import axios from 'axios';
 import './Header.css'; 
+import { Link } from 'react-router-dom';
+
 
 class Header extends Component {
 	constructor() {
@@ -15,7 +17,8 @@ class Header extends Component {
 				this.props.updateUser({
 					loggedIn: false,
 					hasCustomerAccount: false,
-					id: null
+					email: null,
+					userId: null
 				});
 			}
 		}).catch(err => {
@@ -34,19 +37,26 @@ class Header extends Component {
 				<div className="collapse navbar-collapse" id="navbarSupportedContent">
 					<ul className="navbar-nav mr-auto">
 						<li className="nav-item active">
-							<a className="nav-link" href="/">Home <span className="sr-only">(current)</span></a>
+							<Link to="/" className="nav-link" >Home <span className="sr-only">(current)</span></Link>
 						</li>
 						<li className="nav-item">
-							<a className="nav-link" href="/about">About</a>
+							<Link to="/about" className="nav-link">About</Link>
 						</li>
 						<li className="nav-item">
-							<a className="nav-link" href="/donations">Donations</a>
+							<Link to="/donations" className="nav-link">Donations</Link>
 						</li>
+						{this.props.userInfo.loggedIn ? (
+							<li className="nav-item">
+								<Link to="/settings" className="nav-link" href="/settings">Account Settings</Link>
+							</li>
+						) : ( 
+							<div></div>
+						)}
 						<li className="nav-item">
-							{this.props.userInfo.loggedIn ? (
+							{this.props.userInfo.loggedIn ? (	
 								<button className="nav-link disabled" onClick={this.logout}>Logout</button>
 							) : (
-								<a className="nav-link disabled" href="/login">Login</a>
+								<Link to="/login" className="nav-link disabled">Login</Link>
 							)}
 						</li>
 					</ul>
