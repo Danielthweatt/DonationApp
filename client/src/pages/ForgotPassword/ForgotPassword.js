@@ -6,7 +6,7 @@ import Footer from '../../components/Footer/Footer';
 
 
 
-class Home extends React.Component {
+class ForgotPassword extends React.Component {
 	render () {
 		return (
 			< Wrapper >
@@ -18,4 +18,4 @@ class Home extends React.Component {
 	}
 }
 
-export default Home;
+export default ForgotPassword;
