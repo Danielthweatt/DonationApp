@@ -9,7 +9,7 @@ class AccountSettings extends Component {
         return (
             <Wrapper>
                 <Header updateUser={this.props.updateUser} userInfo={this.props.userInfo} />
-                <Settings userInfo={this.props.userInfo}/>
+                <Settings updateUser={this.props.updateUser} userInfo={this.props.userInfo}/>
                 <Footer />
             </Wrapper>
         )
