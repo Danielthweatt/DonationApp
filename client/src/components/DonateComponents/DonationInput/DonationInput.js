@@ -5,6 +5,7 @@ import {Elements, StripeProvider} from 'react-stripe-elements';
 import StripeCheckout from 'react-stripe-checkout';
 import DonateOptions from '../DonateOptions'; 
 import Checkbox from "../Checkbox";
+import DonationModal from "../DonationModal";
 
 class DonationInput extends Component {
 	constructor() {
@@ -19,8 +20,10 @@ class DonationInput extends Component {
 			rememberMe: false,
 			subscriptionStarted: false,
 			message: false,
-			messageContent: ''
+			messageContent: '',
+			isOpen: false
 		};
+
 		this.handleFirstNameInput = this.handleFirstNameInput.bind(this);
 		this.handleLastNameInput = this.handleLastNameInput.bind(this);
 		this.handleEmailInput = this.handleEmailInput.bind(this);
@@ -30,6 +33,7 @@ class DonationInput extends Component {
 		this.handleSubscribe = this.handleSubscribe.bind(this);
 		this.chargeACustomer = this.chargeACustomer.bind(this);
 		this.onToken = this.onToken.bind(this);
+		this.thankYouModal = this.thankYouModal.bind(this);
 	}
 	
 	handleFirstNameInput = e => {
@@ -61,13 +65,17 @@ class DonationInput extends Component {
 	}
 
 	handleCheckbox = () => {
-		let newRememberMeValue = !this.state.rememberMe;
-		this.setState({rememberMe: newRememberMeValue});
+		this.setState((prevState)=>({rememberMe: !prevState.rememberMe}))
 	}
 
 	handleSubscribe = () => {
-		let newSubscriptionStarted = !this.state.subscriptionStarted;
-		this.setState({subscriptionStarted: newSubscriptionStarted});
+		this.setState((prevState)=>({subscriptionStarted: !prevState.subscriptionStarted}))
+	}
+
+	thankYouModal = () => {
+
+		this.setState((prevState)=>({isOpen: !prevState.isOpen}))
+		console.log('Pikachu!!!')
 	}
 
 	chargeACustomer() {
@@ -87,6 +95,7 @@ class DonationInput extends Component {
 					message: true,
 					messageContent: 'Donation complete.'
 				});
+				this.thankYouModal();
 			} else {
 				this.setState({
 					message: true,
@@ -169,6 +178,7 @@ class DonationInput extends Component {
 						message: true,
 						messageContent: 'Donation complete.'
 					});
+					this.thankYouModal();
 				} else {
 					this.setState({
 						message: true,
@@ -266,6 +276,7 @@ class DonationInput extends Component {
 							token={this.onToken}
 							amount={this.state.amount * 100}
 							stripeKey={'pk_test_laDoJCqgOQpou2PvCdG07DE2'}
+					
 						/>
 						</Elements>
 					</StripeProvider>
