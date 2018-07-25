@@ -60,13 +60,20 @@ class DonationInput extends Component {
 		});
 	}
 	
-	handleMoneyCustom = e => {
+	handleMoneyCustomButton = e => {
 		this.setState({
 			customAmount: e.currentTarget.value,
 			amount: '',
-			custom: true
+			custom: true,
+			buttonClicked: e.currentTarget.value
 		});
-  }
+	}
+
+	handleMoneyCustom = e => {
+		this.setState({
+			customAmount: e.target.value
+		});
+  	}
 
 	checkMoneyInput = () => {
 		const regex = /^\d+(?:\.\d{0,2})$/;
@@ -148,6 +155,7 @@ class DonationInput extends Component {
 					this.props.updateUser({
 						hasCustomerAccount: true
 					});
+					this.thankYouModal();
 				} else {
 					this.setState({
 						message: true,
@@ -219,10 +227,10 @@ class DonationInput extends Component {
 				<DonateOptions
 					buttonClicked={this.state.buttonClicked}
 					handleMoneyButton={this.handleMoneyButton}
-					handleMoneyCustom={this.handleMoneyCustom}
+					handleMoneyCustomButton={this.handleMoneyCustomButton}
 					customAmount={this.state.customAmount}
 					custom={this.state.custom}
-          checkMoneyInput={this.checkMoneyInput}
+          			checkMoneyInput={this.checkMoneyInput}
 				/>
 
 				{this.state.custom ? (
@@ -231,7 +239,7 @@ class DonationInput extends Component {
 							title="Amount"
 							name="Amount"
 							id="custom-payment" 
-							onChange={this.state.handleMoneyCustom} 
+							handleInput={this.handleMoneyCustom} 
 							onBlur={this.state.checkMoneyInput}
 							value={this.state.customAmount} 
 							type="number" 
