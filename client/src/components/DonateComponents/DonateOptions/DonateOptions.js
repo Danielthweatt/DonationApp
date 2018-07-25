@@ -4,7 +4,7 @@ import Donate from '../Donate/Donate';
 
 class DonateOptions extends Component {
 
-	render () {
+	render () { 
 		return (
 			<div>
 				<button onClick={this.props.handleMoneyButton} value="5"> $5 </button>
@@ -14,7 +14,7 @@ class DonateOptions extends Component {
 				{this.props.custom ? (
 					<div>
 						<label for="custom-payment">Amount:</label>
-						<input id="custom-payment" onChange={this.props.handleMoneyCustom} value={this.props.customAmount} type="number" step="0.01" min="0.01" type={Donate}/>
+						<input id="custom-payment" onChange={this.props.handleMoneyCustom} onBlur={this.props.checkMoneyInput} value={this.props.customAmount} type="number" step="0.01" min="0.01" type={Donate}/>
 					</div>
 				) : (
 					<div></div>
