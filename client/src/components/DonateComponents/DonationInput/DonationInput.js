@@ -264,7 +264,6 @@ class DonationInput extends Component {
 								this.state.customAmount * 100
 							)}
 							token={this.onToken}
-							amount={this.state.amount * 100}
 							stripeKey={'pk_test_laDoJCqgOQpou2PvCdG07DE2'}
 						/>
 						</Elements>

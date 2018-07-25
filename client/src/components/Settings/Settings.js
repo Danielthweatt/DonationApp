@@ -51,7 +51,10 @@ class Settings extends Component {
         axios.put('/settings/delete/' + this.state.userId, {})
         .then(res => {
             console.log(res)
-            window.location.reload();
+            this.props.updateUser({
+                hasCustomerAccount: false,
+                customerId: ""
+            });
         })
     }
     
