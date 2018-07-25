@@ -59,7 +59,7 @@ class DonationInput extends Component {
 	handleMoneyCustom = e => {
 		this.setState({
 			customAmount: e.target.value,
-      amount: '',
+      		amount: '',
 			custom: true
 		});
   }
@@ -213,7 +213,7 @@ class DonationInput extends Component {
 					handleMoneyCustom={this.handleMoneyCustom}
 					customAmount={this.state.customAmount}
 					custom={this.state.custom}
-          checkMoneyInput={this.checkMoneyInput}
+          			checkMoneyInput={this.checkMoneyInput}
 				/>
 
 				{this.props.userInfo.loggedIn ? (
