@@ -9,3 +9,20 @@
     margin-top: -7em;
 }
 
+@media (max-width: 575.98px) {
+    .card-deck {
+        display: none;
+    }
+    .mobile-pillars {
+        display: visible;
+    }
+}
+
+@media (min-width: 576px) { 
+    .card-deck {
+        display: visible;
+    }
+    .mobile-pillars {
+        display: none;
+    }
+}
