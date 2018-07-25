@@ -7,6 +7,7 @@ import Donate from '../Donate/Donate';
 import DonateOptions from '../DonateOptions'; 
 import Checkbox from "../Checkbox";
 import './DonationInput.css'; 
+// import DonationModal from "../DonationModal";
 
 class DonationInput extends Component {
 	constructor() {
@@ -22,8 +23,10 @@ class DonationInput extends Component {
 			buttonClicked: 0,
 			subscriptionStarted: false,
 			message: false,
-			messageContent: ''
+			messageContent: '',
+			isOpen: false
 		};
+
 		this.handleFirstNameInput = this.handleFirstNameInput.bind(this);
 		this.handleLastNameInput = this.handleLastNameInput.bind(this);
 		this.handleEmailInput = this.handleEmailInput.bind(this);
@@ -33,6 +36,7 @@ class DonationInput extends Component {
 		this.handleSubscribe = this.handleSubscribe.bind(this);
 		this.chargeACustomer = this.chargeACustomer.bind(this);
 		this.onToken = this.onToken.bind(this);
+		this.thankYouModal = this.thankYouModal.bind(this);
 	}
 	
 	handleFirstNameInput = e => {
@@ -58,21 +62,33 @@ class DonationInput extends Component {
 	
 	handleMoneyCustom = e => {
 		this.setState({
-			buttonClicked: e.currentTarget.value,
 			customAmount: e.currentTarget.value,
 			amount: '',
 			custom: true
 		});
+  }
+
+	checkMoneyInput = () => {
+		const regex = /^\d+(?:\.\d{0,2})$/;
+		console.log('testies', this.state.amount)
+
+		if (!regex.test(this.state.amount))
+			console.log("Invalid Number");
+			
 	}
 
 	handleCheckbox = () => {
-		let newRememberMeValue = !this.state.rememberMe;
-		this.setState({rememberMe: newRememberMeValue});
+		this.setState((prevState)=>({rememberMe: !prevState.rememberMe}))
 	}
 
 	handleSubscribe = () => {
-		let newSubscriptionStarted = !this.state.subscriptionStarted;
-		this.setState({subscriptionStarted: newSubscriptionStarted});
+		this.setState((prevState)=>({subscriptionStarted: !prevState.subscriptionStarted}))
+	}
+
+	thankYouModal = () => {
+
+		this.setState((prevState)=>({isOpen: !prevState.isOpen}))
+		console.log('Pikachu!!!')
 	}
 
 	chargeACustomer() {
@@ -92,6 +108,7 @@ class DonationInput extends Component {
 					message: true,
 					messageContent: 'Donation complete.'
 				});
+				this.thankYouModal();
 			} else {
 				this.setState({
 					message: true,
@@ -174,6 +191,7 @@ class DonationInput extends Component {
 						message: true,
 						messageContent: 'Donation complete.'
 					});
+					this.thankYouModal();
 				} else {
 					this.setState({
 						message: true,
@@ -204,6 +222,7 @@ class DonationInput extends Component {
 					handleMoneyCustom={this.handleMoneyCustom}
 					customAmount={this.state.customAmount}
 					custom={this.state.custom}
+          checkMoneyInput={this.checkMoneyInput}
 				/>
 
 				{this.state.custom ? (
@@ -292,6 +311,7 @@ class DonationInput extends Component {
 							)}
 							token={this.onToken}
 							stripeKey={'pk_test_laDoJCqgOQpou2PvCdG07DE2'}
+					
 						/>
 						</Elements>
 					</StripeProvider>
