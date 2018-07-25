@@ -177,7 +177,7 @@ class Settings extends Component {
         console.log(this.props.userInfo)
         return (
             <div>
-            <h1>User Info:</h1>
+            <h1>User Information:</h1>
             <form>
                 <Input 
                     title="First Name" 
@@ -205,11 +205,11 @@ class Settings extends Component {
 
                 <button onClick={this.updateUserInfo}>Update</button>
             </form>
-
+            <h1>Update Password:</h1>
             <form>
                 <Input 
-                    title="Password" 
-                    name="Password" 
+                    title="New Password" 
+                    name="New Password" 
                     type="password" 
                     value={this.state.password} 
                     handleInput={this.handlePasswordInput} 
@@ -239,7 +239,7 @@ class Settings extends Component {
                 </StripeProvider>
 
                 <button onClick={this.deleteCustomer}>
-                    Delete My Payment Info
+                    Delete My Payment Information
                 </button>
 
                 {this.state.message ? (

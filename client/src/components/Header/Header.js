@@ -47,7 +47,7 @@ class Header extends Component {
 						</li>
 						{this.props.userInfo.loggedIn ? (
 							<li className="nav-item">
-								<Link to="/settings" className="nav-link" href="/settings">Settings</Link>
+								<Link to="/settings" className="nav-link" href="/settings">Account Settings</Link>
 							</li>
 						) : ( 
 							<div></div>
