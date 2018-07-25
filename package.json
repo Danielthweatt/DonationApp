@@ -34,14 +34,7 @@
   },
   "dependencies": {
     "@material-ui/core": "^1.4.1",
-    "@material/button": "^0.37.1",
-    "@material/card": "^0.37.1",
-    "@material/form-field": "^0.37.1",
-    "@material/react-text-field": "^0.3.0",
-    "@material/ripple": "^0.37.1",
-    "@material/textfield": "^0.37.1",
-    "@react-mdc/ripple": "^0.1.11",
-    "@react-mdc/textfield": "^0.1.11",
+    "async-waterfall": "^0.1.5",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.18.3",
     "connect-flash": "^0.1.1",
@@ -52,6 +45,7 @@
     "express-session": "^1.15.6",
     "if-env": "^1.0.4",
     "mongoose": "^5.2.1",
+    "nodemailer": "^4.6.7",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
     "stripe": "^6.2.1"

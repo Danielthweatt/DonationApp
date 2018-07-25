@@ -230,7 +230,7 @@ class DonationInput extends Component {
 						title = "First Name"
 						name = "First Name"
 						type="text"
-						value={this.props.firstName}
+						value={this.state.firstName}
 						handleInput={this.handleFirstNameInput}
 					/>
 				)}
@@ -242,7 +242,7 @@ class DonationInput extends Component {
 						title = "Last Name"
 						name = "Last Name"
 						type="text"
-						value={this.props.lastName}
+						value={this.state.lastName}
 						handleInput={this.handleLastNameInput}
 					/>
 				)}
@@ -254,7 +254,7 @@ class DonationInput extends Component {
 						title = "Email"
 						name = "Email"
 						type="text"
-						value={this.props.email}
+						value={this.state.email}
 						handleInput={this.handleEmailInput}
 					/>
 				)}
@@ -291,7 +291,6 @@ class DonationInput extends Component {
 								this.state.customAmount * 100
 							)}
 							token={this.onToken}
-							amount={this.state.amount * 100}
 							stripeKey={'pk_test_laDoJCqgOQpou2PvCdG07DE2'}
 						/>
 						</Elements>
