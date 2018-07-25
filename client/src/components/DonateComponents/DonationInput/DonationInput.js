@@ -3,9 +3,11 @@ import axios from 'axios';
 import Input from '../../Input'; 
 import {Elements, StripeProvider} from 'react-stripe-elements';
 import StripeCheckout from 'react-stripe-checkout';
+import Donate from '../Donate/Donate'; 
 import DonateOptions from '../DonateOptions'; 
 import Checkbox from "../Checkbox";
-import DonationModal from "../DonationModal";
+import './DonationInput.css'; 
+// import DonationModal from "../DonationModal";
 
 class DonationInput extends Component {
 	constructor() {
@@ -17,7 +19,8 @@ class DonationInput extends Component {
 			amount: '',
 			customAmount: '',
 			custom: false,
-			rememberMe: false,
+			rememberMe: false, 
+			buttonClicked: 0,
 			subscriptionStarted: false,
 			message: false,
 			messageContent: '',
@@ -51,15 +54,16 @@ class DonationInput extends Component {
 	handleMoneyButton = e => {
 		this.setState({
 			customAmount: '',
-			amount: e.target.value,
-			custom: false
+			amount: e.currentTarget.value,
+			custom: false,
+			buttonClicked: e.currentTarget.value
 		});
 	}
 	
 	handleMoneyCustom = e => {
 		this.setState({
-			customAmount: e.target.value,
-      		amount: '',
+			customAmount: e.currentTarget.value,
+			amount: '',
 			custom: true
 		});
   }
@@ -206,15 +210,38 @@ class DonationInput extends Component {
 	
 	render() {
 		return (
-			<div className = "donation-input">
-
+			<div className = "donation-input-card">
+				<center>
+					<h2>Donate</h2>
+					<hr/>
+				</center>
+				<br/>
 				<DonateOptions
+					buttonClicked={this.state.buttonClicked}
 					handleMoneyButton={this.handleMoneyButton}
 					handleMoneyCustom={this.handleMoneyCustom}
 					customAmount={this.state.customAmount}
 					custom={this.state.custom}
           			checkMoneyInput={this.checkMoneyInput}
 				/>
+
+				{this.state.custom ? (
+					<div>
+						<Input 
+							title="Amount"
+							name="Amount"
+							id="custom-payment" 
+							onChange={this.state.handleMoneyCustom} 
+							onBlur={this.state.checkMoneyInput}
+							value={this.state.customAmount} 
+							type="number" 
+							step="0.01" 
+							min="0.01" 
+							type={Donate}/>
+					</div>
+				) : (
+					<div></div>
+				)}
 
 				{this.props.userInfo.loggedIn ? (
 					<div></div>

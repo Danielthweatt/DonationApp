@@ -7,11 +7,14 @@ import Settings from '../../components/Settings';
 class AccountSettings extends Component {
 	render() {
 		return (
-			<Wrapper>
-				<Header updateUser={this.props.updateUser} userInfo={this.props.userInfo} />
-				<Settings updateUser={this.props.updateUser} userInfo={this.props.userInfo}/>
+			<div>
+				<Header page="settings" updateUser={this.props.updateUser} userInfo={this.props.userInfo} />
+				<Wrapper>
+					<Settings updateUser={this.props.updateUser} userInfo={this.props.userInfo}/>
+                   
+				</Wrapper>
 				<Footer />
-			</Wrapper>
+			</div>
 		);
 	}
 }
