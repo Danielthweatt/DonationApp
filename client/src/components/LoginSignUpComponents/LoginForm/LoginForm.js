@@ -96,7 +96,7 @@ class LoginForm extends Component {
 					) : (
 						<div></div>
 					)}
-					<Link to="/signup">Sign Up</Link>
+					<Link to="/signup">Sign Up</Link> <br/>
 					<Link to="/forgot">Forgot Password?</Link>
 				</div>
 			)

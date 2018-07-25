@@ -316,7 +316,7 @@ module.exports = function(app, passport, User){
 				res.status(422).send('Something went wrong.');
 			} else {
 				user.passwordResetToken = '';
-				user.passwordResetTokenExpiration = '';
+				user.passwordResetTokenExpiration = null;
 				user.password = req.body.password;
 				user.save(function(err){
 					if (err) {
@@ -332,6 +332,7 @@ module.exports = function(app, passport, User){
 	// Update User Info Route
 	app.put('/user/update/:userId', function(req, res){
 		if (req.body.password) {
+			console.log('updating password');
 			User.findOne({ _id: req.params.userId }, (err, user) => { 
 				if (err) {
 					res.status(422).send(err);
@@ -349,21 +350,22 @@ module.exports = function(app, passport, User){
 				}
 			});
 		} else {
-			User.findOne({ _id: req.params.userId }, (err, user) => { 
+			User.findOneAndUpdate({ _id: req.params.userId }, {
+				$set: {
+					firstName: req.body.firstName,
+					lastName: req.body.lastName,
+					email: req.body.email
+				}
+			}, (err, user) => { 
 				if (err) {
 					res.status(422).send(err);
 				} else if (!user) {
 					res.status(422).send('Something went wrong.');
 				} else {
-					user.firstName = req.body.firstName;
-					user.lastName = req.body.lastName;
-					user.email = req.body.email;
-					user.save(function(err){
-						if (err) {
-							res.status(422).send(err);
-						} else {
-							res.send('Success');
-						}
+					res.send({
+						firstName: req.body.firstName,
+						lastName: req.body.lastName,
+						email: req.body.email
 					});
 				}
 			});

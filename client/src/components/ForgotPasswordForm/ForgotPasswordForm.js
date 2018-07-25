@@ -94,6 +94,11 @@ class ForgotPasswordForm extends Component {
 				message: true,
 				messageContent: 'Please enter your password.'
 			});
+		} else if (this.state.password.indexOf('$') !== -1) {
+            this.setState({
+				message: true,
+				messageContent: 'Passwords cannot contain a $ symbol.'
+			});
 		} else if (this.state.confirmPassword !== this.state.password) {
 			this.setState({
 				message: true,
