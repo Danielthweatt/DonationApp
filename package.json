@@ -33,7 +33,7 @@
     "nodemon": "^1.17.5"
   },
   "dependencies": {
-    "@material/button": "^0.37.1",
+    "@material-ui/core": "^1.4.1",
     "async-waterfall": "^0.1.5",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.18.3",

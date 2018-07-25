@@ -1,0 +1,165 @@
+/* .card-deck {
+    
+        background: #f9f9f9;
+        padding: 2%;
+        box-shadow:0px 5px 10px 2px rgba(0,0,0,0.2);
+        border-radius: 3px;
+        border-top: 10px;
+        border-top-style: solid;
+        border-image: linear-gradient(to right,#ff3e00, #d62562) 10;
+        margin-top: 5px;
+    } */
+
+    .team-wrapper{
+        margin-top: 15px; 
+    }
+
+    .our-team {
+        text-align: center; 
+    }
+
+    .team-card-deck {
+        background: transparent;
+        border: none;
+    }
+
+    .team-circle-gradient-styling {
+        width: 11.5vw;
+        height: 11.5vw;
+        /* CALCULATION NOTE: padding = (height - height of .team-circle-thumbnail-styling) / 2 */
+        padding: .75vw;
+        content: " ";
+        border-radius: 50%;
+        background: linear-gradient(to right,#ff3e00, #d62562);
+        position: relative;
+        /* overflow: hidden; */
+        margin: auto;
+    }
+
+    .team-circle-thumbnail-styling {
+        width: 10vw;
+        height: 10vw;
+        content: " ";
+        border-radius: 50%;
+        /* border: 3px solid #3d6487;  */
+        position: relative;
+        /* left: 50%; */
+        /* top: 15%; */
+        overflow: hidden;
+        margin: auto;
+        /* padding: 30%; */
+    }
+
+    .team-circle-thumbnail-styling > img {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        min-height: 101%;
+        object-fit: cover;
+        /* min-width: 100%; */
+        /* padding: 25%; */
+            -webkit-transform: translate(-50%,-50%);
+            -ms-transform: translate(-50%,-50%);
+                transform: translate(-50%,-50%);
+    }
+
+    .team-card{
+        background: #f9f9f9;
+        padding: 2em .5em;
+        text-align: center;
+        box-shadow:0px 5px 10px 2px rgba(0,0,0,0.2);
+        border-radius: 3px;
+        border-top: 10px;
+        border-top-style: solid;
+        border-image: linear-gradient(to right,#ff3e00, #d62562) 10;
+        margin: .7em auto;
+        height: 100%;
+        width: 100%;
+    }
+
+    .card-custom-styling {
+        height: 100%;
+        /* width: 100%; */
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+
+@media (max-width: 575.98px) {
+        .team-circle-gradient-styling {
+        width: 34vw;
+        height: 34vw;
+        /* CALCULATION NOTE: padding = (height - height of .team-circle-thumbnail-styling) / 2 */
+        padding: 2vw;
+    }
+    .team-circle-thumbnail-styling {
+        width: 30vw;
+        height: 30vw;
+    }
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) { 
+        .team-circle-gradient-styling {
+        width: 17.5vw;
+        height: 17.5vw;
+        /* CALCULATION NOTE: padding = (height - height of .team-circle-thumbnail-styling) / 2 */
+        padding: 1.25vw;
+    }
+    .team-circle-thumbnail-styling {
+        width: 15vw;
+        height: 15vw;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+    .team-circle-gradient-styling {
+        width: 17vw;
+        height: 17vw;
+        /* CALCULATION NOTE: padding = (height - height of .team-circle-thumbnail-styling) / 2 */
+        padding: 1vw;
+    }
+    
+    .team-circle-thumbnail-styling {
+        width: 15vw;
+        height: 15vw;
+    }
+    
+}
+
+@media (min-width: 992px) and (max-width: 1199.98px) {
+        .team-circle-gradient-styling {
+        width: 15vw;
+        height: 15vw;
+        /* CALCULATION NOTE: padding = (height - height of .team-circle-thumbnail-styling) / 2 */
+        padding: 1vw;
+    }
+    .team-circle-thumbnail-styling {
+        width: 13vw;
+        height: 13vw;
+    }
+}
+
+@media (min-width: 1200px) and (max-width: 1699.98px) {
+    .team-circle-gradient-styling {
+        width: 10.5vw;
+        height: 10.5vw;
+        /* CALCULATION NOTE: padding = (height - height of .team-circle-thumbnail-styling) / 2 */
+        padding: .75vw;
+    }
+    .team-circle-thumbnail-styling {
+        width: 9vw;
+        height: 9vw;
+    }
+}
+
+@media (min-width: 1700px) {
+    .team-circle-gradient-styling {
+        width: 8vw;
+        height: 8vw;
+        /* CALCULATION NOTE: padding = (height - height of .team-circle-thumbnail-styling) / 2 */
+        padding: .5vw;
+    }
+    .team-circle-thumbnail-styling {
+        width: 7vw;
+        height: 7vw;
+    }
+}

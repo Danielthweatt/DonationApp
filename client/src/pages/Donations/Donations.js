@@ -19,16 +19,22 @@ class Donations extends Component {
 
 	render() {
 		return (
-			<Wrapper>
-				<Header updateUser={this.props.updateUser} userInfo={this.props.userInfo} />
-				{	this.state.isOpen ? (<DonationModal 
-					onClose={this.onClose}>
-          Thank you for making a difference :)
-				</DonationModal>) : null}
-				<DonationInput updateUser={this.props.updateUser} userInfo={this.props.userInfo} />
-				<DonationImpact />
+			<div>
+				<Header page="donations" updateUser={this.props.updateUser} userInfo={this.props.userInfo} />
+				<Wrapper>
+					{	this.state.isOpen ? (
+						<DonationModal 
+							onClose={this.onClose}>
+							Thank you for making a difference :)
+						</DonationModal>) 
+						: null
+					}
+					<DonationInput updateUser={this.props.updateUser} userInfo={this.props.userInfo} />
+					<DonationImpact />
+					
+				</Wrapper>
 				<Footer />
-			</Wrapper>
+			</div>
 		);
 	}
 }
