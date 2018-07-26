@@ -10,10 +10,12 @@ class ForgotPassword extends React.Component {
 	render () {
 		return (
 			<div>
-				< Header updateUser={this.props.updateUser} userInfo={this.props.userInfo} />
-				< Wrapper >
-					< ForgotPasswordForm userInfo={this.props.userInfo} />
-				</ Wrapper > 
+				<div className="pageHeight">
+					< Header updateUser={this.props.updateUser} userInfo={this.props.userInfo} />
+					< Wrapper >
+						< ForgotPasswordForm userInfo={this.props.userInfo} />
+					</ Wrapper > 
+				</div>
 				< Footer />
 			</div>
 		);

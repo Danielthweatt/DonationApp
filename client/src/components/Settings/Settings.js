@@ -4,6 +4,8 @@ import Input from '../Input';
 import { Redirect } from 'react-router-dom'; 
 import {Elements, StripeProvider} from 'react-stripe-elements';
 import StripeCheckout from 'react-stripe-checkout';
+import ButtonPrimary from '../Buttons/ButtonPrimary'
+
 
 class Settings extends Component {
     constructor(){
@@ -217,8 +219,9 @@ class Settings extends Component {
                             handleInput={this.handleEmailInput} 
                         />
 
-                        <button onClick={this.updateUserInfo}>Update</button>
+                        <ButtonPrimary handleClick={this.updateUserInfo}>Update</ButtonPrimary>
                     </form>
+                    <br/><br/>
 
                     <h4>Update Password:</h4>
                     <form>
@@ -239,8 +242,11 @@ class Settings extends Component {
                             handleInput={this.handlePasswordConfirmInput} 
                         />
 
-                        <button onClick={this.updateUserPassword}>Update</button>
+                        <ButtonPrimary handleClick={this.updateUserPassword}>Update</ButtonPrimary>
                     </form>
+                    <br/><br/>
+
+                    <h4>Update Payment Information:</h4>
 
                     <StripeProvider apiKey="pk_test_laDoJCqgOQpou2PvCdG07DE2">
                         <Elements>
@@ -253,10 +259,10 @@ class Settings extends Component {
                             />
                         </Elements>
                     </StripeProvider>
-
-                    <button onClick={this.deleteCustomer}>
+                    <br/><br/>
+                    <ButtonPrimary handleClick={this.deleteCustomer}>
                         Delete My Payment Information
-                    </button>
+                    </ButtonPrimary>
 
                     {this.state.message ? (
 					    <p>{this.state.messageContent}</p>

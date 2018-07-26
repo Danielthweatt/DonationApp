@@ -32,6 +32,11 @@ hr {
     font-kerning: none;
 }
 
+.pageHeight {
+    min-height: 100vh;
+    padding-bottom: 130px;
+}
+
 input:-webkit-autofill,
 input:-webkit-autofill:hover, 
 input:-webkit-autofill:focus

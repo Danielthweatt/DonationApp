@@ -11,13 +11,15 @@ class Login extends Component {
 	render (){
 		return (
 			<div>
-				<Header page="login" updateUser={this.props.updateUser} userInfo={this.props.userInfo} />
-				<Wrapper>
-					<LoginForm updateUser={this.props.updateUser} />
+				<div className="pageHeight">
+					<Header page="login" updateUser={this.props.updateUser} userInfo={this.props.userInfo} />
+					<Wrapper>
+						<LoginForm updateUser={this.props.updateUser} />
 
 
-				
-				</Wrapper>
+					
+					</Wrapper>
+				</div>
 				<Footer />
 			</div>
 		
