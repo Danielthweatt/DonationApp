@@ -9,11 +9,13 @@ import Footer from '../../components/Footer/Footer';
 class ForgotPassword extends React.Component {
 	render () {
 		return (
-			< Wrapper >
+			<div>
 				< Header updateUser={this.props.updateUser} userInfo={this.props.userInfo} />
-				< ForgotPasswordForm userInfo={this.props.userInfo} />
+				< Wrapper >
+					< ForgotPasswordForm userInfo={this.props.userInfo} />
+				</ Wrapper > 
 				< Footer />
-			</ Wrapper > 
+			</div>
 		);
 	}
 }

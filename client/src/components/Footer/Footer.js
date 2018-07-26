@@ -3,9 +3,7 @@ import '../Footer/Footer.css';
 import Wrapper from '../Wrapper/Wrapper'; 
 
 const Footer = () => (
-	
-	<div className="content">
-		{/* <Wrapper> */}
+
 		<footer id="myFooter">
 			<div className="container">
 				<div className="row">
@@ -24,8 +22,7 @@ const Footer = () => (
 				</div>
 			</div>
 		</footer>
-		{/* </Wrapper> */}
-	</div>
+
 	
 );
 
