@@ -1118,3 +1118,9 @@ select:-webkit-autofill:focus {
     font-size: 3.8em; }
   h2 {
     font-size: 2.8em; } }
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+  h1 {
+    font-size: 4em; }
+  h2 {
+    font-size: 3em; } }
