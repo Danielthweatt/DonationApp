@@ -34,10 +34,17 @@ button:focus {
 @media (max-width: 575.98px) {
     .row {
         background-color: blueviolet; 
+        font-size: 50%; 
      
     }
 
 }
+
+/* @media (max-width: 575.98px){
+    .MuiButton-label-5 {
+        font-size: 35%;
+    }
+} */
 
 /* @media (min-width: 578px) and (max-width: 991.98px) {
     .row {

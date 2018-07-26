@@ -1,4 +1,4 @@
-#myFooter {
+#myFooter { 
     background: linear-gradient(to right,  #33658A, #3B3D40); 
     /* background:  #33658A;  */
     content: ""; 
@@ -6,7 +6,18 @@
     padding-top: 15px;
     margin-top: 50px; 
     height: 80px; 
+   
 }
+
+.social-icons{
+    float: right; 
+}
+
+.fa {
+    margin: 5px; 
+    color: #f9f9f9; 
+}
+
 
 /* #map-container {
     height: 240px;
@@ -19,17 +30,17 @@
     margin: 0 5px;
 }
 
-#myFooter .footer-copyright {
+/* #myFooter .footer-copyright { */
     /* background: linear-gradient(to right, #5E5D5C, #33658A);   */
-    padding-top: 3px;   
+    /* padding-top: 3px;   
     padding-bottom: 3px;
     text-align: center;
-}
+} */
 
-#myFooter .footer-copyright p {
+/* #myFooter .footer-copyright p {
     margin: 5px;
     color: #ccc;
-}
+} */
 
 
 
@@ -39,11 +50,11 @@
 
 
 
-#myFooter a:hover,
+/* #myFooter a:hover,
 #myFooter a:focus {
     text-decoration: none;
     color: white;
-}
+} */
 
 
 
