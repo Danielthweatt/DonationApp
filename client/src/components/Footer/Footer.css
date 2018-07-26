@@ -5,6 +5,7 @@
     color: white;
     padding-top: 15px;
     margin-top: 50px; 
+    height: 80px; 
 }
 
 /* #map-container {
@@ -30,33 +31,21 @@
     color: #ccc;
 }
 
-#myFooter .container {
-    width: auto;
-}
 
-#myFooter ul {
-    list-style-type: none;
-    padding-left: 0;
-    line-height: 1.7;
-}
 
-#myFooter h5 {
-    font-size: 18px;
-    color: white;
-    font-weight: bold;
-    margin-top: 15px;
-}
 
-#myFooter a {
-    color: #d2d1d1;
-    text-decoration: none;
-}
+
+
+
+
 
 #myFooter a:hover,
 #myFooter a:focus {
     text-decoration: none;
     color: white;
 }
+
+
 
 @media screen and (max-width: 767px) {
     #myFooter {
@@ -88,5 +77,10 @@ body{
    flex: 1 0 auto;
    -webkit-flex: 1 0 auto;
    min-height: 100px;
+}
+
+.icon {
+    height: 20em;
+    width: 20em; 
 }
 

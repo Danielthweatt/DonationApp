@@ -15,6 +15,38 @@ button:focus {
     border: none;
 }
 
+@media (max-width: 578px) {
+     
+    .donationButton{
+    height: 80px; 
+    width: 80px;
+}
+}
+
+
+@media (min-width: 578px) and (max-width: 991.98px) {
+    .donationButton {
+        margin-bottom:10px; 
+         
+    }
+}
+
+@media (max-width: 575.98px) {
+    .row {
+        background-color: blueviolet; 
+     
+    }
+
+}
+
+/* @media (min-width: 578px) and (max-width: 991.98px) {
+    .row {
+        background-color: aqua; 
+    }
+} */
+
+
+
 /* .donation-button-clicked {
     height: 10vw !important; 
     width: 10vw !important; 

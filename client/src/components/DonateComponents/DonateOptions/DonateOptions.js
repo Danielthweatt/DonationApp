@@ -9,6 +9,7 @@ import { withStyles } from '@material-ui/core/styles';
 
 const styles = {
 	donationButton: {
+		display: 'block', 
 		height: '10vw', 
 		width: '10vw', 
 		borderRadius: '50%', 
@@ -20,8 +21,12 @@ const styles = {
 		overflow: 'hidden', 
 		color: '#3B3D40', 
 		boxShadow: 'none',
+		margin: 'auto', 
+		marginBottom: '10px', 
+		 
 	},
 	donationButtonClicked: {
+		display: 'block', 
 		height: '10vw', 
 		width: '10vw', 
 		borderRadius: '50%', 
@@ -31,6 +36,9 @@ const styles = {
 		background: 'linear-gradient(to right, #2B89FE,  #6834FF)',
 		overflow: 'hidden', 
 		boxShadow: 'none',
+		margin: 'auto', 
+		marginBottom: '10px', 
+		
 	},
 };
 
@@ -38,23 +46,24 @@ class DonateOptions extends Component {
 
 	render () {
 		return (
-
+			
 			<div className="row">
-				<div className="col-3">
-					{/* <Ripple.Meta color="accent"> */}
+				<div className="col-6 col-sm-3 col-lg-3">
+	
 					<Button className={this.props.buttonClicked === '5' ? this.props.classes.donationButtonClicked: this.props.classes.donationButton} variant="fab" onClick={this.props.handleMoneyButton} value="5"> $5 </Button>
-					{/* </Ripple.Meta> */}
+	
 				</div>
-				<div className="col-3">
+				<div className="col-6 col-sm-3 col-lg-3">
   				<Button className={this.props.buttonClicked === '10' ? this.props.classes.donationButtonClicked: this.props.classes.donationButton} variant="fab" onClick={this.props.handleMoneyButton} value="10"> $10 </Button>
 				  </div>
-				  <div className="col-3">
+				  <div className="col-6 col-sm-3 col-lg-3">
   				<Button className={this.props.buttonClicked === '20' ? this.props.classes.donationButtonClicked: this.props.classes.donationButton} variant="fab" onClick={this.props.handleMoneyButton} value="20"> $20 </Button>
 				  </div>
-				  <div className="col-3">
+				  <div className="col-6 col-sm-3 col-lg-3">
 					<Button className={this.props.buttonClicked === '' ? this.props.classes.donationButtonClicked: this.props.classes.donationButton} variant="fab" onClick={this.props.handleMoneyCustom} value=''> Custom Amount </Button>
 				</div>
-			{/* <div>
+				
+				{/* <div>
 				<button onClick={this.props.handleMoneyButton} value="5"> $5 </button>
   				<button onClick={this.props.handleMoneyButton} value="10"> $10 </button>
   				<button onClick={this.props.handleMoneyButton} value="20"> $20 </button>
