@@ -7,11 +7,11 @@ import Donate from '../Donate/Donate';
 import DonateOptions from '../DonateOptions'; 
 import Checkbox from "../Checkbox";
 import './DonationInput.css'; 
-// import DonationModal from "../DonationModal";
+import DonationModal from "../DonationModal";
 
 class DonationInput extends Component {
-	constructor() {
-		super();
+	constructor(props) {
+		super(props);
 		this.state = {
 			firstName: '',
 			lastName: '',
@@ -24,7 +24,6 @@ class DonationInput extends Component {
 			subscriptionStarted: false,
 			message: false,
 			messageContent: '',
-			isOpen: false
 		};
 
 		this.handleFirstNameInput = this.handleFirstNameInput.bind(this);
@@ -36,7 +35,6 @@ class DonationInput extends Component {
 		this.handleSubscribe = this.handleSubscribe.bind(this);
 		this.chargeACustomer = this.chargeACustomer.bind(this);
 		this.onToken = this.onToken.bind(this);
-		this.thankYouModal = this.thankYouModal.bind(this);
 	}
 	
 	handleFirstNameInput = e => {
@@ -76,6 +74,8 @@ class DonationInput extends Component {
   	}
 
 	checkMoneyInput = () => {
+
+		
 		const regex = /^\d+(?:\.\d{0,2})$/;
 		console.log('testies', this.state.amount)
 
@@ -85,17 +85,11 @@ class DonationInput extends Component {
 	}
 
 	handleCheckbox = () => {
-		this.setState((prevState)=>({rememberMe: !prevState.rememberMe}))
+		this.setState({rememberMe: !this.State.rememberMe})
 	}
 
 	handleSubscribe = () => {
-		this.setState((prevState)=>({subscriptionStarted: !prevState.subscriptionStarted}))
-	}
-
-	thankYouModal = () => {
-
-		this.setState((prevState)=>({isOpen: !prevState.isOpen}))
-		console.log('Pikachu!!!')
+		this.setState({subscriptionStarted: !this.state.subscriptionStarted})
 	}
 
 	chargeACustomer() {
@@ -115,7 +109,7 @@ class DonationInput extends Component {
 					message: true,
 					messageContent: 'Donation complete.'
 				});
-				this.thankYouModal();
+				this.props.handleModalOpen();
 			} else {
 				this.setState({
 					message: true,
@@ -155,7 +149,7 @@ class DonationInput extends Component {
 					this.props.updateUser({
 						hasCustomerAccount: true
 					});
-					this.thankYouModal();
+					this.props.handleModalOpen();
 				} else {
 					this.setState({
 						message: true,
@@ -199,7 +193,7 @@ class DonationInput extends Component {
 						message: true,
 						messageContent: 'Donation complete.'
 					});
-					this.thankYouModal();
+					this.props.handleModalOpen();
 				} else {
 					this.setState({
 						message: true,
@@ -223,7 +217,6 @@ class DonationInput extends Component {
 					<h2>Donate</h2>
 					<hr/>
 				</center>
-				<br/>
 				<DonateOptions
 					buttonClicked={this.state.buttonClicked}
 					handleMoneyButton={this.handleMoneyButton}
