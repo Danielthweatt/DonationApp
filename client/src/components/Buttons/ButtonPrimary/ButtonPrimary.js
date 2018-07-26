@@ -5,11 +5,11 @@ import './ButtonPrimary.css'
 class ButtonPrimary extends React.Component {
 	render () {
 		return (
-			<a href={this.props.linkUrl}>
-				<Button raised className='button-alternate button-primary-style'onClick={() => console.log('clicked!')}>
+			// <a href={this.props.linkUrl}>
+				<Button raised className='button-alternate button-primary-style' onClick={this.props.handleClick}>
 					{this.props.children}
 				</Button>
-			</a>
+			// </a>
 		)
 	}
 

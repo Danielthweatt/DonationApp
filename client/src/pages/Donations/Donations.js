@@ -19,7 +19,7 @@ class Donations extends Component {
 	}
 
 	onClose = () => {
-		this.setState({isOpen: !this.State.isOpen})
+		this.setState({isOpen: !this.state.isOpen})
 	}
 
 	render() {
