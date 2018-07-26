@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Redirect, Link } from 'react-router-dom';
 import Input from '../Input'; 
 import './ForgotPasswordForm.css';
+import ButtonPrimary from '../Buttons/ButtonPrimary'
 
 
 class ForgotPasswordForm extends Component {
@@ -131,7 +132,7 @@ class ForgotPasswordForm extends Component {
 					{this.state.resetOrForgot === 'forgot' ? (
 						<form>
 							<Input title="Email" name="Email" type="text" value={this.state.email} handleInput={this.handleEmailInput}/>
-							<input type="submit" onClick={this.handleEmailSubmit}/>
+							<ButtonPrimary type="submit" handleClick={this.handleEmailSubmit}>Submit</ButtonPrimary>
 						</form>
 					) : (
 						<div></div>
@@ -141,7 +142,7 @@ class ForgotPasswordForm extends Component {
 						<form>
 							<Input title="Password" name="Password" type="password" value={this.state.password} handleInput={this.handlePasswordInput}/>
 							<Input title="Confirm Password" name="Confirm Password" type="password" value={this.state.confirmPassword} handleInput={this.handlePasswordConfirmInput}/>
-							<input type="submit" onClick={this.handlePasswordSubmit}/>
+							<ButtonPrimary type="submit" handleClick={this.handlePasswordSubmit}>Submit</ButtonPrimary>
 						</form>
 					) : (
 						<div></div>

@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import axios from 'axios';
 import Input from '../../Input'; 
+import ButtonPrimary from '../../Buttons/ButtonPrimary'
+
 
 class SignUpForm extends Component {
 	constructor() {
@@ -121,13 +123,14 @@ class SignUpForm extends Component {
 						<Input title="Email" name="Email" type="text" value={this.state.email} handleInput={this.handleEmailInput}/>
 						<Input title="Password" name="Password" type="password" value={this.state.password} handleInput={this.handlePasswordInput}/>
 						<Input title="Confirm Password" name="Confirm Password" type="password" value={this.state.confirmPassword} handleInput={this.handlePasswordConfirmInput}/>
-						<input type="submit" onClick={this.handleSubmit}/>
+						<ButtonPrimary type="submit" handleClick={this.handleSubmit}>Submit</ButtonPrimary>
 					</form>
 					{this.state.message ? (
 						<p>{this.state.messageContent}</p>
 					) : (
 						<div></div>
 					)}
+					{/* <Link to="/login">Login</Link> <br/> */}
 				</div>
 			)
 		}
