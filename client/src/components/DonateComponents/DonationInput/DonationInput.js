@@ -223,7 +223,7 @@ class DonationInput extends Component {
 					handleMoneyCustomButton={this.handleMoneyCustomButton}
 					customAmount={this.state.customAmount}
 					custom={this.state.custom}
-          			checkMoneyInput={this.checkMoneyInput}
+					checkMoneyInput={this.checkMoneyInput}
 				/>
 
 				{this.state.custom ? (

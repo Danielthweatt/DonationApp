@@ -19,25 +19,27 @@ class Donations extends Component {
 	}
 
 	onClose = () => {
-		this.setState({isOpen: !this.State.isOpen})
+		this.setState({isOpen: !this.state.isOpen})
 	}
 
 	render() {
 		console.beer(' Dat YUNG BEER=>', this.props)
 		return (
 			<div>
-				<Header page="donations" updateUser={this.props.updateUser} userInfo={this.props.userInfo} />
-				<Wrapper>
-					{	this.state.isOpen && 
-						<DonationModal 
-							onClose={this.onClose}>
-							Thank you for making a difference :)
-						</DonationModal>
-					}
-					<DonationInput updateUser={this.props.updateUser} userInfo={this.props.userInfo} handleModalOpen={ this.handleModalOpen }/>
-					<DonationImpact />
-					
-				</Wrapper>
+				<div className="pageHeight">
+					<Header page="donations" updateUser={this.props.updateUser} userInfo={this.props.userInfo} />
+					<Wrapper>
+						{	this.state.isOpen && 
+							<DonationModal 
+								onClose={this.onClose}>
+								Thank you for making a difference :)
+							</DonationModal>
+						}
+						<DonationInput updateUser={this.props.updateUser} userInfo={this.props.userInfo} handleModalOpen={ this.handleModalOpen }/>
+						<DonationImpact />
+						
+					</Wrapper>
+				</div>
 				<Footer />
 			</div>
 		);

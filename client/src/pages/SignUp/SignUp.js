@@ -10,11 +10,13 @@ class SignUp extends Component {
 	render (){
 		return (
 			<div>
-				<Header updateUser={this.props.updateUser} userInfo={this.props.userInfo} />
-				<Wrapper>
-					<SignUpForm />
-				
-				</Wrapper>
+				<div className="pageHeight">
+					<Header updateUser={this.props.updateUser} userInfo={this.props.userInfo} />
+					<Wrapper>
+						<SignUpForm />
+					
+					</Wrapper>
+				</div>
 				<Footer />
 			</div>
 		
