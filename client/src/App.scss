@@ -7,6 +7,7 @@
 body {
     font-family: 'Roboto Condensed', sans-serif;
     color: #3B3D40;
+    z-index: -10;
 }
 
 h1 {
@@ -46,6 +47,27 @@ select:-webkit-autofill:focus {
   -webkit-box-shadow: 0 0 0px 1000px rgb(217,231,253) inset;
   transition: background-color 5000s ease-in-out 0s;
 }
+
+
+@media (max-width: 575.98px) {
+
+    h1, .lead {
+        color: #3B3D40;
+    }
+
+    h1 {
+        font-size: 3.8em;
+    }
+
+    h2 {
+        font-size: 2.8em;
+    }
+
+
+
+
+}
+
 
 
 

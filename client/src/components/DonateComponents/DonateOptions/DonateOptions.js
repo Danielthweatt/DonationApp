@@ -44,7 +44,7 @@ const styles = {
 
 class DonateOptions extends Component {
 
-	render () {
+	render () { 
 		return (
 			
 			<div className="row">
@@ -71,7 +71,7 @@ class DonateOptions extends Component {
 				{/* {this.props.custom ? (
 					<div>
 						<label for="custom-payment">Amount:</label>
-						<Input id="custom-payment" onChange={this.props.handleMoneyCustom} value={this.props.customAmount} type="number" step="0.01" min="0.01" type={Donate}/>
+						<Input id="custom-payment" onChange={this.props.handleMoneyCustom} onBlur={this.props.checkMoneyInput} value={this.props.customAmount} type="number" step="0.01" min="0.01" type={Donate}/>
 					</div>
 				) : (
 					<div></div>

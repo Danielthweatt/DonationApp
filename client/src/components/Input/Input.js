@@ -34,7 +34,17 @@ class Input extends React.Component {
 			// 	below is how we get the material design to work for the text areas
 			// 	will need to change what it is referencing, since "Input is in all their .js in DonationInput"
 			// 	<TextField.Input name=
-				<TextField  id="with-placeholder" label={this.props.title} placeholder={this.props.title} name={this.props.name} type={this.props.type} value={this.props.value} onChange={this.props.handleInput} className={this.props.classes.defaultInputStyle + " form-control"} aria-label="Input field" />
+				<TextField  
+					id="with-placeholder" 
+					label={this.props.title} 
+					placeholder={this.props.title} 
+					name={this.props.name} 
+					type={this.props.type} 
+					value={this.props.value} 
+					onChange={this.props.handleInput} 
+					className={this.props.classes.defaultInputStyle + " form-control"} 
+					aria-label="Input field" 
+				/>
 			// </div>
 		)
 	}

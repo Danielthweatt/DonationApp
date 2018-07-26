@@ -8,6 +8,7 @@ class Jumbotron extends React.Component {
             <div className="jumbotron jumbotron-fluid" style={{zIndex: -1}}>
                 {/* This empty div for color gradient overlay on top of image */}
                 <div className="color-overlay"></div>
+                <div className="white-box"/>
                 <div className="inner">
                     <h1>Love Foundation</h1>
                     <p className="lead lead-text">Making sure the Earth exists for the next generation.</p>

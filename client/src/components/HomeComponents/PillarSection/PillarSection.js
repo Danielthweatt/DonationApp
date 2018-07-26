@@ -4,6 +4,7 @@ import './PillarSection.css';
 import iconClock from '../../../assets/images/icon-clock.png';
 import iconHeart from '../../../assets/images/icon-heart.png';
 import iconPerson from '../../../assets/images/icon-person.png';
+import PillarMobile from '../Pillar/Mobile';
 
 class PillarSection extends React.Component {
     render() {
@@ -18,6 +19,11 @@ class PillarSection extends React.Component {
                     < Pillar imageURL={iconClock} />
                     < Pillar imageURL={iconHeart} />
                     < Pillar imageURL={iconPerson} />
+                </div>
+                <div className="mobile-pillars" >
+                    < PillarMobile imageURL={iconClock} />
+                    < PillarMobile imageURL={iconHeart} />
+                    < PillarMobile imageURL={iconPerson} />
                 </div>
             </div>
         )
