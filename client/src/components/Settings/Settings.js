@@ -17,6 +17,7 @@ class Settings extends Component {
         this.deleteCustomer = this.deleteCustomer.bind(this);
 }
 
+
     componentDidMount(){
         this.setState({
             userId: this.props.userInfo.userId,
@@ -31,7 +32,7 @@ class Settings extends Component {
         axios.put('/settings/' + this.state.userId,{
             email: this.state.email,
             data: token.id,
-            stripeKey: "pk_test_laDoJCqgOQpou2PvCdG07DE2"
+            stripeKey: "pk_test_xwATFGfvWsyNnp1dDh2MOk8I"
         }).then(res => {
             console.log(res)
             this.setState({
@@ -79,13 +80,13 @@ class Settings extends Component {
             <button>Update</button>
             </form>
 
-                <StripeProvider apiKey="pk_test_laDoJCqgOQpou2PvCdG07DE2">
+                <StripeProvider apiKey="pk_test_xwATFGfvWsyNnp1dDh2MOk8I">
                     <Elements>
                         <StripeCheckout
                             email={this.state.email}
                             label ="Update Info"
                             token={this.onToken}
-                            stripeKey={'pk_test_laDoJCqgOQpou2PvCdG07DE2'}
+                            stripeKey={'pk_test_xwATFGfvWsyNnp1dDh2MOk8I'}
                             allowRememberMe = {false}
                         />
                     </Elements>

@@ -1,6 +1,6 @@
 //Dependencies
 const path = require('path');
-const keyPublishable = 'pk_test_laDoJCqgOQpou2PvCdG07DE2';
+const keyPublishable = 'pk_test_xwATFGfvWsyNnp1dDh2MOk8I';
 const secret = require('../config/config.js');
 const keySecret = secret.SECRET_KEY;
 const stripe = require('stripe')(keySecret);
