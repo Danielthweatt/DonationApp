@@ -28,10 +28,11 @@ app.use(passport.session());
 // Configure Passport
 require('./config/passport/passport.js')(passport, User);
 
-console.log(userController);
+// Create Router
+const router = require('./routes')(express, passport, userController);
 
-// Configure Routes
-require('./routes')(app, passport, userController);
+// Use Router
+app.use(router);
 
 // Connection to MongoDB
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost/donation_app';

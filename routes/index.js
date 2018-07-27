@@ -8,10 +8,12 @@ const waterfall = require('async-waterfall');
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 
-module.exports = function(app, passport, userController){
+module.exports = function(express, passport, userController){
+
+	const router = express.Router();
 
 	//Standard Charge Route
-	app.post('/charge', (req, res) => {
+	router.post('/charge', (req, res) => {
 		//get to dollar amount by *100
 		stripe.charges.create({
 			amount: req.body.amount * 100,
@@ -27,7 +29,7 @@ module.exports = function(app, passport, userController){
 	});
 
 	//Charge and Save User Payment Info Route
-	app.post('/charge/create/:userId', (req, res) => {
+	router.post('/charge/create/:userId', (req, res) => {
 		stripe.customers.create({
 			email: req.body.email,
 			//source is the token linked to their card
@@ -49,7 +51,7 @@ module.exports = function(app, passport, userController){
 	
 	});
 
-	app.post('/charge/subscription/:id', (req, res) => {
+	router.post('/charge/subscription/:id', (req, res) => {
 		console.log('here is the user/mongo id', req.params.id);
 		stripe.customers.create({
 			email: req.body.email,
@@ -103,17 +105,17 @@ module.exports = function(app, passport, userController){
 	});
 
 	//Charge a Customer With a Saved Card Route
-	app.post('/charge/:userId', (req, res) => {
+	router.post('/charge/:userId', (req, res) => {
 		userController.chargeSavedUser(req.params.userId, res, stripe, req.body.amount);
 	});
 
 	//Sign-Up Route
-	app.post('/user/signup', (req, res) => {
+	router.post('/user/signup', (req, res) => {
 		userController.signUp(req.body.email, res, req.body.firstName, req.body.lastName, req.body.password);
 	});
 
 	//Sign-In Route
-	app.post('/user/signin', passport.authenticate('local', {
+	router.post('/user/signin', passport.authenticate('local', {
 		failureRedirect: '/user/signin/failure',
 		failureFlash: true
 	}), (req, res) => {
@@ -131,13 +133,13 @@ module.exports = function(app, passport, userController){
 		res.send(userInfo);
 	});
 
-	app.get('/user/signin/failure', (req, res) => {
+	router.get('/user/signin/failure', (req, res) => {
 		let message = req.flash('error')[0];
 		res.send({message});
 	});
 
 	//Check to see if signed-in Route
-	app.get('/user', (req, res) => {
+	router.get('/user', (req, res) => {
 		if (req.user) {
 			userController.findLoggedInUser(req.user._id, res);
 		} else {
@@ -146,7 +148,7 @@ module.exports = function(app, passport, userController){
 	});
 
 	//Sign-Out Route
-	app.post('/user/signout', (req, res) => {
+	router.post('/user/signout', (req, res) => {
 		if (req.user) {
 			req.logout();
 			res.send({ message: 'Logging out' });
@@ -156,7 +158,7 @@ module.exports = function(app, passport, userController){
 	});
 
 	//Forgot Password Route
-	app.post('/user/forgot', (req, res) => {
+	router.post('/user/forgot', (req, res) => {
 		waterfall([
 			function(done){
 				crypto.randomBytes(20, function(err, buf){
@@ -203,17 +205,17 @@ module.exports = function(app, passport, userController){
 	});
 
 	//Reset Password Token Check Route
-	app.get('/user/reset/check/:token', function(req, res){
+	router.get('/user/reset/check/:token', function(req, res){
 		userController.checkPasswordResetToken(req.params.token, res);
 	});
 
 	//Reset Password Route
-	app.put('/user/reset/:userId', function(req, res){
+	router.put('/user/reset/:userId', function(req, res){
 		userController.resetPassword(req.params.userId, res, req.body.password);
 	});
 
 	// Update User Info Route
-	app.put('/user/update/:userId', function(req, res){
+	router.put('/user/update/:userId', function(req, res){
 		if (req.body.password) {
 			userController.updatePassword(req.params.userId, res, req.body.password);
 		} else {
@@ -222,20 +224,22 @@ module.exports = function(app, passport, userController){
 	});
 
 	//update customer card info
-	app.put('/user/charge/update/:userId', (req, res) => {
+	router.put('/user/charge/update/:userId', (req, res) => {
 		userController.updateUserPaymentInfo(req.params.userId, res, stripe, req.body.data);
 	});
 
 	//delete a customer and delete cust id from db
-	app.delete('/user/charge/update/:userId', (req,res) => {
+	router.delete('/user/charge/update/:userId', (req,res) => {
 		userController.deleteUserPaymentInfo(req.params.userId, res, stripe);
 	});
 
 	//React App
 	if (process.env.NODE_ENV === 'production') {
-		app.get('*', function(req, res) {
+		router.get('*', function(req, res) {
 			res.sendFile(path.join(__dirname, '../client/build/index.html'));
 		});
 	}
+
+	return router;
 
 };

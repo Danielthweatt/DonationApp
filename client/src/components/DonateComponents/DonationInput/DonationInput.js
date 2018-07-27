@@ -278,14 +278,7 @@ class DonationInput extends Component {
 							) : (
 								this.state.customAmount * 100
 							)}
-							token={this.state.amount || this.state.customAmout ? (
-								this.onToken
-							): (
-								this.setState({
-									message: true,
-									messageContent: 'Select or enter an amount to donate.'
-								})
-							)}
+							token={this.onToken}
 							stripeKey={'pk_test_laDoJCqgOQpou2PvCdG07DE2'}
 					
 						/>
