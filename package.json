@@ -17,9 +17,6 @@
     "build": "cd client && npm run build",
     "heroku-postbuild": "npm run build"
   },
-  "jest":{
-    "collectCoverageFrom": ["./client/src/**/*.js"]
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Danielthweatt/DonationApp.git"
@@ -42,7 +39,6 @@
     "async-waterfall": "^0.1.5",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.18.3",
-    "chai": "^4.1.2",
     "connect-flash": "^0.1.1",
     "cors": "^2.8.4",
     "dotenv": "^6.0.0",
@@ -51,7 +47,6 @@
     "express-session": "^1.15.6",
     "if-env": "^1.0.4",
     "jsdom": "^11.11.0",
-    "mocha": "^5.2.0",
     "mongoose": "^5.2.1",
     "nodemailer": "^4.6.7",
     "passport": "^0.4.0",

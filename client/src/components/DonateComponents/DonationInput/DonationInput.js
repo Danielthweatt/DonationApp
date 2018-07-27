@@ -85,7 +85,7 @@ class DonationInput extends Component {
 	}
 
 	handleCheckbox = () => {
-		this.setState({rememberMe: !this.State.rememberMe})
+		this.setState({rememberMe: !this.state.rememberMe})
 	}
 
 	handleSubscribe = () => {
@@ -311,7 +311,11 @@ class DonationInput extends Component {
 							) : (
 								this.state.customAmount * 100
 							)}
-							token={this.onToken}
+							token={this.state.amount ? (
+								this.onToken
+							) : (
+								<div/>
+							)}
 							stripeKey={'pk_test_xwATFGfvWsyNnp1dDh2MOk8I'}
 						/>
 						</Elements>
