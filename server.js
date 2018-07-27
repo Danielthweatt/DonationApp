@@ -1,13 +1,13 @@
-//Dependecies
+// Dependecies
 const express = require('express');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const passport = require('passport');
-const User = require('./models').User;
 const mongoose = require('mongoose');
-const userController = require('./controllers/userController.js')(User);
 const flash = require('connect-flash');
 const redirectToHTTPS = require('express-http-to-https').redirectToHTTPS;
+
+// Create App
 const app = express();
 const PORT = process.env.PORT || 3001;
  
@@ -28,18 +28,24 @@ app.use(passport.session());
 // Configure Passport
 require('./config/passport/passport.js')(passport, User);
 
+// Create User Model
+const User = require('./models').User;
+
+// Create User Controller
+const userController = require('./controllers/userController.js')(User);
+
 // Create Router
 const router = require('./routes')(express, passport, userController);
 
 // Use Router
 app.use(router);
 
-// Connection to MongoDB
+// Connect to MongoDB
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost/donation_app';
 mongoose.Promise = Promise;
 mongoose.connect(MONGODB_URI);
 
-// API server Start
+// API Server Start
 app.listen(PORT, function() {
 	console.log(`API Server now listening on PORT ${PORT}!`);
 });

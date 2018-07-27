@@ -71,7 +71,7 @@ class DonationInput extends Component {
 	}
 
 	handleCheckbox = () => {
-		this.setState({rememberMe: !this.State.rememberMe})
+		this.setState({rememberMe: !this.state.rememberMe})
 	}
 
 	handleSubscribe = () => {
@@ -79,6 +79,10 @@ class DonationInput extends Component {
 	}
 
 	chargeSavedUser = () => {
+		this.setState({
+			message: false,
+			messageContent: ''
+		});
 		let userId = this.props.userInfo.userId;
 		let amount;
 		if (this.state.amount) {
@@ -86,29 +90,40 @@ class DonationInput extends Component {
 		} else {
 			amount = this.state.customAmount;
 		}
-		API.chargeSavedUser(userId, amount).then(res => {
-			if (res.status === 200) { 
-				this.setState({
-					message: true,
-					messageContent: 'Donation complete.'
-				});
-				this.props.handleModalOpen();
-			} else {
+		if (amount) {
+			API.chargeSavedUser(userId, amount).then(res => {
+				if (res.status === 200) { 
+					this.setState({
+						message: true,
+						messageContent: 'Donation complete.'
+					});
+					this.props.handleModalOpen();
+				} else {
+					this.setState({
+						message: true,
+						messageContent: 'Something went wrong.'
+					});
+				}
+			}).catch(err => {
+				console.log(err);
 				this.setState({
 					message: true,
 					messageContent: 'Something went wrong.'
 				});
-			}
-		}).catch(err => {
-			console.log(err);
+			});
+		} else {
 			this.setState({
 				message: true,
-				messageContent: 'Something went wrong.'
+				messageContent: 'Please enter an amount to donate.'
 			});
-		});
+		}
 	}
 
 	onToken = (token) => {
+		this.setState({
+			message: false,
+			messageContent: ''
+		});
 		let userId = this.props.userInfo.userId;
 		let amount;
 		if (this.state.amount) {
@@ -117,7 +132,7 @@ class DonationInput extends Component {
 			amount = this.state.customAmount;
 		}
 		if (this.props.userInfo.loggedIn && this.state.rememberMe && !this.state.handleSubscribe && amount) {
-			API.chargeAndSaveAUser(userId, this.props.userInfo.email, token.id, amount, "pk_test_laDoJCqgOQpou2PvCdG07DE2").then(res => {
+			API.chargeAndSaveAUser(userId, this.props.userInfo.email, token.id, amount).then(res => {
 				if (res.status === 200) {
 					this.setState({
 						rememberMe: false,
@@ -142,12 +157,29 @@ class DonationInput extends Component {
 				});
 			});
 		} else if (this.props.userInfo.loggedIn && this.state.subscriptionStarted && amount) {
-			API.startASubscription(userId, this.props.userInfo.email, token.id, amount, "pk_test_laDoJCqgOQpou2PvCdG07DE2").then(res => {
+			API.startASubscription(userId, amount).then(res => {
 				if (res.status === 200) {
-					alert('subscription saved!');
+					this.setState({
+						rememberMe: false,
+						message: true,
+						messageContent: 'Donation complete and subscription started.'
+					});
+					this.props.updateUser({
+						hasCustomerAccount: true
+					});
+					this.props.handleModalOpen();
 				} else {
-					alert('Something went wrong.');
+					this.setState({
+						message: true,
+						messageContent: 'Something went wrong.'
+					});
 				}
+			}).catch(err => {
+				console.log(err);
+				this.setState({
+					message: true,
+					messageContent: 'Something went wrong.'
+				});
 			});
 		} else if (amount) {
 			API.charge(this.state.email, token.id, amount).then(res => {
@@ -168,11 +200,12 @@ class DonationInput extends Component {
 					});
 				}
         	}).catch((err) => {
-				console.log(err);
 				this.setState({
 					message: true,
 					messageContent: 'Something went wrong.'
 				});
+				console.log('Something went wrong: ');
+				console.log(err);
 			});
 		} else {
 			this.setState({
@@ -252,8 +285,9 @@ class DonationInput extends Component {
 					/>
 				)}
 
-				{this.props.userInfo.loggedIn && !this.props.userInfo.hasCustomerAccount ? (
+				{this.props.userInfo.loggedIn ? (
 					<Checkbox
+						hasCustomerAccount = {this.props.userInfo.hasCustomerAccount}
 						handleCheckbox = {this.handleCheckbox}
 						handleSubscribe = {this.handleSubscribe}
 					/>

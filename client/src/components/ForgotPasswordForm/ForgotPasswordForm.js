@@ -20,7 +20,7 @@ class ForgotPasswordForm extends Component {
 
 	componentDidMount = () => {
 		if (this.props.userInfo.resetOrForgot === 'reset') {
-			API.resetCheck(window.location.pathname.slice(7)).then(res => { 
+			API.resetUserPasswordCheck(window.location.pathname.slice(7)).then(res => { 
 				if (res.message) {
 					this.setState({
 						message: true,
@@ -33,7 +33,14 @@ class ForgotPasswordForm extends Component {
 						resetOrForgot: 'reset success' 
 					});
 				}
-			}).catch();
+			}).catch(err => {
+				this.setState({
+					message: true,
+					messageContent: 'Something went wrong.'
+				});
+				console.log('Something went wrong: ');
+				console.log(err);
+			});
 		} else {
 			this.setState({
 				resetOrForgot: 'forgot'
@@ -65,7 +72,7 @@ class ForgotPasswordForm extends Component {
 				messageContent: 'Please enter your email.'
 			});
 		} else {
-			API.forgot(this.state.email).then(res => 
+			API.forgotUserPassword(this.state.email).then(res => 
 				this.setState({
 					message: true,
 					messageContent: res.data
@@ -103,7 +110,7 @@ class ForgotPasswordForm extends Component {
 				messageContent: 'Please re-enter a matching password.'
 			});
 		} else {
-			API.reset(this.state.userId, this.state.password).then(res => 
+			API.resetUserPassword(this.state.userId, this.state.password).then(() => 
 				this.setState({
 					redirectTo: '/'
 				})
@@ -125,6 +132,7 @@ class ForgotPasswordForm extends Component {
 			return (
 				<div>
 					{this.state.resetOrForgot === 'forgot' ? (
+						<h4>Please enter your email address to reset your password:</h4>
 						<form>
 							<Input title="Email" name="Email" type="text" value={this.state.email} handleInput={this.handleEmailInput}/>
 							<ButtonPrimary type="submit" handleClick={this.handleEmailSubmit}>Submit</ButtonPrimary>
@@ -134,6 +142,7 @@ class ForgotPasswordForm extends Component {
 					)}
 
 					{this.state.resetOrForgot === 'reset success' ? (
+						<h4>Please reset your password now:</h4>
 						<form>
 							<Input title="Password" name="Password" type="password" value={this.state.password} handleInput={this.handlePasswordInput}/>
 							<Input title="Confirm Password" name="Confirm Password" type="password" value={this.state.confirmPassword} handleInput={this.handlePasswordConfirmInput}/>

@@ -16,7 +16,6 @@ class Settings extends Component {
         confirmPassword: '',
         message: false,
         messageContent: '',
-        customerId: '',
         userId: ''
     };
 
@@ -89,11 +88,12 @@ class Settings extends Component {
 				    });
 			    }
 		    }).catch(err => {
-			    console.log(err);
 			    this.setState({
 				    message: true,
 				    messageContent: 'Something went wrong.'
-			    });
+                });
+                console.log('Something went wrong: ');
+				console.log(err);
             });
         }
     }
@@ -143,31 +143,53 @@ class Settings extends Component {
         }
     }
 
-    //update card info
     onToken = token => {
         API.updateUserPaymentInfo(this.state.userId, this.state.email, token.id, "pk_test_laDoJCqgOQpou2PvCdG07DE2").then(res => {
-            console.log(res)
-            this.setState({
-                message: true,
-                messageContent: 'Congratulations, your default payment method was updated.'
-            })
-            }).catch(err => {
-            console.log(err)
+            if (res.status === 200) { 
                 this.setState({
                     message: true,
-                    messageContent: 'Uh oh.. something has gone awry'
-                })
-            })
+                    messageContent: 'Payment information updated.'
+                });
+            } else {
+                this.setState({
+                    message: true,
+                    messageContent: 'Something went wrong.'
+                });
+            }
+        }).catch(err => {
+            this.setState({
+                message: true,
+                messageContent: 'Something went wrong.'
+            });
+            console.log('Something went wrong: ');
+            console.log(err);
+        });
     }
 
-    //delete customers info
-    deleteCustomer = () => {
+    deletePaymentInfo = () => {
         API.deleteUserPaymentInfo(this.state.userId).then(res => {
-            console.log(res)
-            this.props.updateUser({
-                hasCustomerAccount: false
+            if (res.status === 200) { 
+                this.setState({
+                    message: true,
+                    messageContent: 'Payment information deleted.'
+                });
+                this.props.updateUser({
+                    hasCustomerAccount: false
+                });
+            } else {
+                this.setState({
+                    message: true,
+                    messageContent: 'Something went wrong.'
+                });
+            }
+        }).catch(err => {
+            this.setState({
+                message: true,
+                messageContent: 'Something went wrong.'
             });
-        })
+            console.log('Something went wrong: ');
+            console.log(err);
+        });
     }
     
     render() {
@@ -236,7 +258,7 @@ class Settings extends Component {
                         <Elements>
                             <StripeCheckout
                                 email={this.state.email}
-                                label ="Update Info"
+                                label ="Update Payment Information"
                                 token={this.onToken}
                                 stripeKey={'pk_test_laDoJCqgOQpou2PvCdG07DE2'}
                                 allowRememberMe = {false}
@@ -244,7 +266,7 @@ class Settings extends Component {
                         </Elements>
                     </StripeProvider>
                     <br/><br/>
-                    <ButtonPrimary handleClick={this.deleteCustomer}>
+                    <ButtonPrimary handleClick={this.deletePaymentInfo}>
                         Delete My Payment Information
                     </ButtonPrimary>
 

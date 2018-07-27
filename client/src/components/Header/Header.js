@@ -26,11 +26,13 @@ class Header extends Component {
 					loggedIn: false,
 					hasCustomerAccount: false,
 					email: null,
+					firstName: null,
+					lastName: null,
 					userId: null
 				});
 			}
 		}).catch(err => {
-				console.log(`Logout error: ${err}`);
+			console.log(`Logout error: ${err}`);
 		});
 	}
 

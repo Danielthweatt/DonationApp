@@ -22,28 +22,28 @@ export default {
 			password
 		});
 	},
-	updateUserPaymentInfo: function(userId, email, data, stripeKey){
+	updateUserPaymentInfo: function(userId, email, source, stripeKey){
 		return axios.put(`/user/charge/update/${userId}`,{
 			email,
-			data,
+			source,
 			stripeKey
 		});
 	},
 	deleteUserPaymentInfo: function(userId){
-		return axios.delete(`/user/charge/update/${userId}`, {});
+		return axios.delete(`/user/charge/update/${userId}`);
 	},
 	logout: function(){
 		return axios.post('/user/signout');
 	},
-	forgot: function(email){
+	forgotUserPassword: function(email){
 		return axios.post('/user/forgot', {
 			email
 		});
 	},
-	resetCheck: function(token){
+	resetUserPasswordCheck: function(token){
 		return axios.get(`/user/reset/check/${token}`);
 	},
-	reset: function(userId, password){
+	resetUserPassword: function(userId, password){
 		return axios.put(`/user/reset/${userId}`, {
 			password
 		});
@@ -55,12 +55,11 @@ export default {
 			amount
 		});
 	},
-	chargeAndSaveAUser: function(userId, email, source, amount, stripeKey){
+	chargeAndSaveAUser: function(userId, email, source, amount){
 		return axios.post(`/charge/create/${userId}`, {
 			email,
 			source,
-			amount,
-			stripeKey
+			amount
 		});
 	},
 	chargeSavedUser: function(userId, amount){
@@ -68,12 +67,9 @@ export default {
 			amount
 		});
 	},
-	startASubscription: function(userId, email, source, amount, stripeKey){
+	startASubscription: function(userId, amount){
 		return axios.post(`/charge/subscription/${userId}`, {
-			email,
-			source,
-			amount,
-			stripeKey
+			amount
 		});
 	}
 };
