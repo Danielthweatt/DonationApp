@@ -7,13 +7,13 @@ Donation App was created for non-profits to quickly implement a platform to rece
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 **Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
 
-- [Tech Used](#tech-used)
+-[Description](#description)
+- [User Stories](#user-stories)
+- [Built With](#built-with)
 - [Installation](#installation)
-- [API Reference](#api-reference)
-  - [Endpoint](#endpoint)
-- [Testing](#testing)
+- [Setting Up Stripe](#setting-up-stripe)
+- [Contributors](#contributors)
 - [License](#license)
-- [Next Steps](#next-steps)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
