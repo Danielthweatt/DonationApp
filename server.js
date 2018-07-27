@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const passport = require('passport');
 const User = require('./models').User;
 const mongoose = require('mongoose');
+const userController = require('./controllers/userController.js')(User);
 const flash = require('connect-flash');
 const redirectToHTTPS = require('express-http-to-https').redirectToHTTPS;
 const app = express();
@@ -27,8 +28,10 @@ app.use(passport.session());
 // Configure Passport
 require('./config/passport/passport.js')(passport, User);
 
+console.log(userController);
+
 // Configure Routes
-require('./routes')(app, passport, User);
+require('./routes')(app, passport, userController);
 
 // Connection to MongoDB
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost/donation_app';

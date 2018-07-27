@@ -22,14 +22,14 @@ export default {
 			password
 		});
 	},
-	updatePaymentInfo: function(userId, email, data, stripeKey){
+	updateUserPaymentInfo: function(userId, email, data, stripeKey){
 		return axios.put(`/user/charge/update/${userId}`,{
 			email,
 			data,
 			stripeKey
 		});
 	},
-	deletePaymentInfo: function(userId){
+	deleteUserPaymentInfo: function(userId){
 		return axios.delete(`/user/charge/update/${userId}`, {});
 	},
 	logout: function(){

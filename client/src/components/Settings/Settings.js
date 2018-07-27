@@ -145,7 +145,7 @@ class Settings extends Component {
 
     //update card info
     onToken = token => {
-        API.updatePaymentInfo(this.state.userId, this.state.email, token.id, "pk_test_laDoJCqgOQpou2PvCdG07DE2").then(res => {
+        API.updateUserPaymentInfo(this.state.userId, this.state.email, token.id, "pk_test_laDoJCqgOQpou2PvCdG07DE2").then(res => {
             console.log(res)
             this.setState({
                 message: true,
@@ -162,7 +162,7 @@ class Settings extends Component {
 
     //delete customers info
     deleteCustomer = () => {
-        API.deletePaymentInfo(this.state.userId).then(res => {
+        API.deleteUserPaymentInfo(this.state.userId).then(res => {
             console.log(res)
             this.props.updateUser({
                 hasCustomerAccount: false
