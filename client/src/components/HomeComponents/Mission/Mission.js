@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router-dom'
 import './Mission.css'
 import ButtonPrimary from '../../Buttons/ButtonPrimary'
 
@@ -12,9 +13,9 @@ class Mission extends React.Component {
                 </center>
 				<div className="card-body">
 					<p className="card-text">Making sure the Earth exists for the next generation.</p>
-					<a href="/about" >
+					<Link to="/about" >
 						<ButtonPrimary handleClick={null}>About Us</ButtonPrimary>
-					</a>
+					</Link>
 				</div>
 			</div>
 		);
