@@ -12,7 +12,9 @@ class Mission extends React.Component {
                 </center>
 				<div className="card-body">
 					<p className="card-text">Making sure the Earth exists for the next generation.</p>
-					<ButtonPrimary linkUrl="/about">About Us</ButtonPrimary>
+					<a href="/about" >
+						<ButtonPrimary handleClick={null}>About Us</ButtonPrimary>
+					</a>
 				</div>
 			</div>
 		);

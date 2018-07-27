@@ -40,9 +40,7 @@ class Header extends Component {
 	}
 
 	handleNavHamClick = () => {
-		this.setState(prevState => ({
-			navHamClicked: !prevState.navHamClicked
-		  }));
+		this.setState({ navHamClicked: !this.state.navHamClicked});
 	}
 
 	render() {
