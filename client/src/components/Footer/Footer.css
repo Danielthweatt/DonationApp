@@ -61,11 +61,23 @@
 @media screen and (max-width: 767px) {
     #myFooter {
         text-align: center;
+        font-size: 75%; 
     }
     #myFooter .row {
         margin: 0;
     }
 }
+
+@media screen and (max-width: 575.98) {
+    #myFooter {
+        text-align: center;
+        font-size: 50%; 
+    }
+    #myFooter .row {
+        margin: 0;
+    }
+}
+
 
 
 

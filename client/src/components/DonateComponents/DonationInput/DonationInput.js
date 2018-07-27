@@ -64,7 +64,8 @@ class DonationInput extends Component {
 		this.setState({
 			customAmount: e.currentTarget.value,
 			amount: '',
-			custom: true
+			custom: true,
+			buttonClicked: ''
 		});
   }
 

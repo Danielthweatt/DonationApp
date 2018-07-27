@@ -48,6 +48,7 @@ class DonateOptions extends Component {
 		return (
 			
 			<div className="row">
+				
 				<div className="col-3 col-sm-3 col-lg-3">
 	
 					<Button className={this.props.buttonClicked === '5' ? this.props.classes.donationButtonClicked: this.props.classes.donationButton} variant="fab" onClick={this.props.handleMoneyButton} value="5"> $5 </Button>
@@ -59,7 +60,7 @@ class DonateOptions extends Component {
 				  <div className="col-3 col-sm-3 col-lg-3">
   				<Button className={this.props.buttonClicked === '20' ? this.props.classes.donationButtonClicked: this.props.classes.donationButton} variant="fab" onClick={this.props.handleMoneyButton} value="20"> $20 </Button>
 				  </div>
-				  <div className="col-3 col-sm-3 col-lg-3">
+				  <div className="col-3 col-sm-3 col-lg-3 custom">
 					<Button className={this.props.buttonClicked === '' ? this.props.classes.donationButtonClicked: this.props.classes.donationButton} variant="fab" onClick={this.props.handleMoneyCustom} value=''> Custom Amount </Button>
 				</div>
 				
@@ -76,6 +77,7 @@ class DonateOptions extends Component {
 				) : (
 					<div></div>
 				)} */}
+				
 			</div>
 		);
 	}

@@ -27,24 +27,27 @@ button:focus {
 @media (min-width: 578px) and (max-width: 991.98px) {
     .donationButton {
         margin-bottom:10px; 
+        
          
     }
 }
 
-@media (max-width: 575.98px) {
-    .row {
-        background-color: blueviolet; 
-        font-size: 50%; 
-     
-    }
 
-}
 
-/* @media (max-width: 575.98px){
-    .MuiButton-label-5 {
+
+ @media (max-width: 575.98px){
+    .custom .MuiButton-label-5 {
         font-size: 35%;
     }
-} */
+} 
+
+@media (max-width: 575.98px){
+    .MuiButton-label-5 {
+        font-size: 50%;
+    }
+} 
+
+
 
 /* @media (min-width: 578px) and (max-width: 991.98px) {
     .row {
