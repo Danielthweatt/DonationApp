@@ -138,6 +138,7 @@ class DonationInput extends Component {
 				email: this.props.userInfo.email,
 				source: token.id,
 				amount,
+				//replace with your public key
 				stripeKey: "pk_test_xwATFGfvWsyNnp1dDh2MOk8I"
 			}).then(res => {
 				if (res.status === 200) {
@@ -170,6 +171,7 @@ class DonationInput extends Component {
 				email: this.props.userInfo.email,
 				source: token.id,
 				amount,
+				//replace with your public key
 				stripeKey: "pk_test_xwATFGfvWsyNnp1dDh2MOk8I"
 		}).then(res => {
 			if (res.status === 200) {
@@ -316,6 +318,7 @@ class DonationInput extends Component {
 							) : (
 								<div/>
 							)}
+							//replace with your public key
 							stripeKey={'pk_test_xwATFGfvWsyNnp1dDh2MOk8I'}
 						/>
 						</Elements>

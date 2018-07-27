@@ -159,6 +159,7 @@ class Settings extends Component {
         axios.put('/settings/' + this.state.userId,{
             email: this.state.email,
             data: token.id,
+            //replace with your public key
             stripeKey: "pk_test_xwATFGfvWsyNnp1dDh2MOk8I"
         }).then(res => {
             console.log(res)
@@ -249,12 +250,14 @@ class Settings extends Component {
 
                     <h4>Update Payment Information:</h4>
 
+                    {/*replace with your public key*/}
                     <StripeProvider apiKey="pk_test_laDoJCqgOQpou2PvCdG07DE2">
                         <Elements>
                             <StripeCheckout
                                 email={this.state.email}
                                 label ="Update Info"
                                 token={this.onToken}
+                                //replace with your public key
                                 stripeKey={'pk_test_laDoJCqgOQpou2PvCdG07DE2'}
                                 allowRememberMe = {false}
                             />

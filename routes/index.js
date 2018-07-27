@@ -1,7 +1,8 @@
 //Dependencies
 const path = require('path');
+//replace with your public key
 const keyPublishable = 'pk_test_xwATFGfvWsyNnp1dDh2MOk8I';
-const secret = require('../config/config.js');
+const secret = require('../config.js');
 const keySecret = secret.SECRET_KEY;
 const stripe = require('stripe')(keySecret);
 const waterfall = require('async-waterfall');

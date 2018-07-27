@@ -58,7 +58,7 @@ typings/
 .env
 
 # api keys
-config/config.js
+.config.js
 
 # next.js build output
 .next
