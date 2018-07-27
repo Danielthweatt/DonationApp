@@ -116,7 +116,7 @@ class DonationInput extends Component {
 		} else {
 			amount = this.state.customAmount;
 		}
-		if (this.props.userInfo.loggedIn && this.state.rememberMe && !this.state.handleSubscribe) {
+		if (this.props.userInfo.loggedIn && this.state.rememberMe && !this.state.handleSubscribe && amount) {
 			API.chargeAndSaveAUser(userId, this.props.userInfo.email, token.id, amount, "pk_test_laDoJCqgOQpou2PvCdG07DE2").then(res => {
 				if (res.status === 200) {
 					this.setState({
@@ -141,7 +141,7 @@ class DonationInput extends Component {
 					messageContent: 'Something went wrong.'
 				});
 			});
-		} else if (this.props.userInfo.loggedIn && this.state.subscriptionStarted){
+		} else if (this.props.userInfo.loggedIn && this.state.subscriptionStarted && amount) {
 			API.startASubscription(userId, this.props.userInfo.email, token.id, amount, "pk_test_laDoJCqgOQpou2PvCdG07DE2").then(res => {
 				if (res.status === 200) {
 					alert('subscription saved!');
@@ -149,7 +149,7 @@ class DonationInput extends Component {
 					alert('Something went wrong.');
 				}
 			});
-		} else {
+		} else if (amount) {
 			API.charge(this.state.email, token.id, amount).then(res => {
 				if (res.status === 200) {
 					this.setState({
@@ -173,6 +173,11 @@ class DonationInput extends Component {
 					message: true,
 					messageContent: 'Something went wrong.'
 				});
+			});
+		} else {
+			this.setState({
+				message: true,
+				messageContent: 'Please enter an amount to donate.'
 			});
 		}
 	}
