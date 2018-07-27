@@ -85,7 +85,7 @@ class DonationInput extends Component {
 	}
 
 	handleCheckbox = () => {
-		this.setState({rememberMe: !this.State.rememberMe})
+		this.setState({rememberMe: !this.state.rememberMe})
 	}
 
 	handleSubscribe = () => {
@@ -138,7 +138,8 @@ class DonationInput extends Component {
 				email: this.props.userInfo.email,
 				source: token.id,
 				amount,
-				stripeKey: "pk_test_laDoJCqgOQpou2PvCdG07DE2"
+				//replace with your public key
+				stripeKey: "pk_test_xwATFGfvWsyNnp1dDh2MOk8I"
 			}).then(res => {
 				if (res.status === 200) {
 					this.setState({
@@ -170,7 +171,8 @@ class DonationInput extends Component {
 				email: this.props.userInfo.email,
 				source: token.id,
 				amount,
-				stripeKey: "pk_test_laDoJCqgOQpou2PvCdG07DE2"
+				//replace with your public key
+				stripeKey: "pk_test_xwATFGfvWsyNnp1dDh2MOk8I"
 		}).then(res => {
 			if (res.status === 200) {
 				alert('subscription saved!');
@@ -292,7 +294,7 @@ class DonationInput extends Component {
 				{this.props.userInfo.loggedIn && this.props.userInfo.hasCustomerAccount ? (
 					<button onClick={this.chargeACustomer}>Donate</button>
 				) : (
-					<StripeProvider apiKey="pk_test_laDoJCqgOQpou2PvCdG07DE2">
+					<StripeProvider apiKey="pk_test_xwATFGfvWsyNnp1dDh2MOk8I">
 						<Elements>
 						<StripeCheckout
 							allowRememberMe = {false}
@@ -311,9 +313,13 @@ class DonationInput extends Component {
 							) : (
 								this.state.customAmount * 100
 							)}
-							token={this.onToken}
-							stripeKey={'pk_test_laDoJCqgOQpou2PvCdG07DE2'}
-					
+							token={this.state.amount ? (
+								this.onToken
+							) : (
+								<div/>
+							)}
+							//replace with your public key
+							stripeKey={'pk_test_xwATFGfvWsyNnp1dDh2MOk8I'}
 						/>
 						</Elements>
 					</StripeProvider>
