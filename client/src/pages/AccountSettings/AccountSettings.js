@@ -8,11 +8,13 @@ class AccountSettings extends Component {
 	render() {
 		return (
 			<div>
-				<Header page="settings" updateUser={this.props.updateUser} userInfo={this.props.userInfo} />
-				<Wrapper>
-					<Settings updateUser={this.props.updateUser} userInfo={this.props.userInfo}/>
-                   
-				</Wrapper>
+				<div className="pageHeight">
+					<Header page="settings" updateUser={this.props.updateUser} userInfo={this.props.userInfo} />
+					<Wrapper>
+						<Settings updateUser={this.props.updateUser} userInfo={this.props.userInfo}/>
+					
+					</Wrapper>
+				</div>
 				<Footer />
 			</div>
 		);

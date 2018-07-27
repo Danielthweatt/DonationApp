@@ -1,11 +1,24 @@
-#myFooter {
+#myFooter { 
     background: linear-gradient(to right,  #33658A, #3B3D40); 
     /* background:  #33658A;  */
     content: ""; 
     color: white;
     padding-top: 15px;
-    margin-top: 50px; 
+    margin-top: -80px; 
+    width: 100%;
+    height: 80px; 
+   
 }
+
+.social-icons{
+    float: right; 
+}
+
+.fa {
+    margin: 5px; 
+    color: #f9f9f9; 
+}
+
 
 /* #map-container {
     height: 240px;
@@ -18,45 +31,33 @@
     margin: 0 5px;
 }
 
-#myFooter .footer-copyright {
+/* #myFooter .footer-copyright { */
     /* background: linear-gradient(to right, #5E5D5C, #33658A);   */
-    padding-top: 3px;   
+    /* padding-top: 3px;   
     padding-bottom: 3px;
     text-align: center;
-}
+} */
 
-#myFooter .footer-copyright p {
+/* #myFooter .footer-copyright p {
     margin: 5px;
     color: #ccc;
-}
+} */
 
-#myFooter .container {
-    width: auto;
-}
 
-#myFooter ul {
-    list-style-type: none;
-    padding-left: 0;
-    line-height: 1.7;
-}
 
-#myFooter h5 {
-    font-size: 18px;
-    color: white;
-    font-weight: bold;
-    margin-top: 15px;
-}
 
-#myFooter a {
-    color: #d2d1d1;
-    text-decoration: none;
-}
 
-#myFooter a:hover,
+
+
+
+
+/* #myFooter a:hover,
 #myFooter a:focus {
     text-decoration: none;
     color: white;
-}
+} */
+
+
 
 @media screen and (max-width: 767px) {
     #myFooter {
@@ -88,5 +89,10 @@ body{
    flex: 1 0 auto;
    -webkit-flex: 1 0 auto;
    min-height: 100px;
+}
+
+.icon {
+    height: 20em;
+    width: 20em; 
 }
 

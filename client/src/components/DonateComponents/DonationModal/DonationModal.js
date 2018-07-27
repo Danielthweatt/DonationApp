@@ -1,4 +1,5 @@
 import React from 'react';
+import ButtonPrimary from '../../Buttons/ButtonPrimary'
 
 
 class DonationModal extends React.Component {
@@ -15,8 +16,9 @@ class DonationModal extends React.Component {
 			bottom: 0,
 			left: 0,
 			right: 0,
-			backgroundColor: 'rgba(0,0,0,0.3)',
+			backgroundColor: 'rgba(0,0,0,0.5)',
 			padding: 50,
+			zIndex:5,
 		};
 
 		// The modal "window"
@@ -24,19 +26,22 @@ class DonationModal extends React.Component {
 			backgroundColor: '#fff',
 			borderRadius: 5,
 			maxWidth: 500,
-			minHeight: 300,
+			minHeight: 100,
 			margin: '0 auto',
+			boxShadow: '0px 5px 10px 2px rgba(0,0,0,0.4)',
 			padding: 30,
 		};
 
 		return (
-			<div className="backdrop" style={{backdropStyle}}>
-				<div className="thanksModal" style={{modalStyle}}>
-					{this.props.children}
-					<div className="footer">
-						<button onClick={this.props.onClose}>
-              Close
-						</button>
+			<div className="backdrop" style={backdropStyle}>
+				<div className="modal-content" style={modalStyle}>
+					<div className="modal-body">
+						{this.props.children}
+					</div>
+					<div className="modal-footer">
+						<ButtonPrimary handleClick={this.props.onClose}>
+							Close
+						</ButtonPrimary>
 					</div>
 				</div>
 			</div>

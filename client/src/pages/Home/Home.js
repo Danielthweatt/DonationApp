@@ -12,13 +12,15 @@ class Home extends React.Component {
 	render () {
 		return (
 			<div>
-				< Header page="home" updateUser={this.props.updateUser} userInfo={this.props.userInfo} />
-				< Jumbotron />
-				< Wrapper >
-					< PillarSection />
-					< Mission />
-					
-				</ Wrapper > 
+				<div className="pageHeight">
+					< Header page="home" updateUser={this.props.updateUser} userInfo={this.props.userInfo} />
+					< Jumbotron />
+					< Wrapper >
+						< PillarSection />
+						< Mission />
+						
+					</ Wrapper > 
+				</div>
 				< Footer />
 			</div>
 		);

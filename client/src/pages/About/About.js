@@ -11,11 +11,16 @@ class About extends Component {
 	render (){
 		return (
 			<div>
-				<Header page="about" updateUser={this.props.updateUser} userInfo={this.props.userInfo} />
-				<Wrapper>			
-					<AboutUs />
-					<Team />
-				</Wrapper>
+				<div className="pageHeight">
+					<Header page="about" updateUser={this.props.updateUser} userInfo={this.props.userInfo} />
+					<Wrapper>			
+						<AboutUs />
+					
+						<Team />
+
+						
+					</Wrapper>
+				</div>
 				<Footer />
 			</div>
 		
