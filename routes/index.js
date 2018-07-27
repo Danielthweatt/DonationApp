@@ -231,7 +231,7 @@ module.exports = function(app, passport, User){
 	});
 
 	//Forgot Password Route
-	app.post('/forgot', (req, res) => {
+	app.post('/user/forgot', (req, res) => {
 		waterfall([
 			function(done){
 				crypto.randomBytes(20, function(err, buf){
@@ -290,7 +290,7 @@ module.exports = function(app, passport, User){
 	});
 
 	//Reset Password Token Check Route
-	app.get('/reset/check/:token', function(req, res){
+	app.get('/user/reset/check/:token', function(req, res){
 		User.findOne({
 			passwordResetToken: req.params.token,
 			passwordResetTokenExpiration: {
@@ -308,7 +308,7 @@ module.exports = function(app, passport, User){
 	});
 
 	//Reset Password Route
-	app.put('/reset/:userId', function(req, res){
+	app.put('/user/reset/:userId', function(req, res){
 		User.findOne({ _id: req.params.userId }, (err, user) => { 
 			if (err) {
 				res.status(422).send(err);
@@ -373,7 +373,7 @@ module.exports = function(app, passport, User){
 	});
 
 	//update customer card info
-	app.put('/settings/:id', (req,res) => {
+	app.put('/user/charge/update/:id', (req,res) => {
 		let id = req.params.id;
 		User.findById({_id: id}, (err, user) => {
 			if (err) {
@@ -395,7 +395,7 @@ module.exports = function(app, passport, User){
 	});
 
 	//delete a customer and delete cust id from db
-	app.put('/settings/delete/:id', (req,res) => {
+	app.delete('/user/charge/update/:id', (req,res) => {
 		console.log(req.params.id);
 		let id = req.params.id;
 		User.findById({_id: id}, (err, user) => {

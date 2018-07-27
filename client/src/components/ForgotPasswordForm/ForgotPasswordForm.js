@@ -1,12 +1,11 @@
 import React, { Component } from 'react'; 
-import axios from 'axios';
+import API from '../../utils/API';
 import { Redirect, Link } from 'react-router-dom';
 import Input from '../Input'; 
 import './ForgotPasswordForm.css';
 
 
 class ForgotPasswordForm extends Component {
-
 	state = {
 		userId: '',
 		email: '',
@@ -18,9 +17,9 @@ class ForgotPasswordForm extends Component {
 		redirectTo: null
 	}
 
-	componentDidMount(){
+	componentDidMount = () => {
 		if (this.props.userInfo.resetOrForgot === 'reset') {
-			axios.get(`/reset/check/${window.location.pathname.slice(7)}`).then(res => { 
+			API.resetCheck(window.location.pathname.slice(7)).then(res => { 
 				if (res.message) {
 					this.setState({
 						message: true,
@@ -65,9 +64,7 @@ class ForgotPasswordForm extends Component {
 				messageContent: 'Please enter your email.'
 			});
 		} else {
-			axios.post('/forgot', {
-				email: this.state.email
-			}).then(res => 
+			API.forgot(this.state.email).then(res => 
 				this.setState({
 					message: true,
 					messageContent: res.data
@@ -105,9 +102,7 @@ class ForgotPasswordForm extends Component {
 				messageContent: 'Please re-enter a matching password.'
 			});
 		} else {
-			axios.put('/reset/' + this.state.userId, {
-				password: this.state.password
-			}).then(res => 
+			API.reset(this.state.userId, this.state.password).then(res => 
 				this.setState({
 					redirectTo: '/'
 				})

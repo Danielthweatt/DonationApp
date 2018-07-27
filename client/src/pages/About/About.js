@@ -14,10 +14,7 @@ class About extends Component {
 				<Header page="about" updateUser={this.props.updateUser} userInfo={this.props.userInfo} />
 				<Wrapper>			
 					<AboutUs />
-				
 					<Team />
-
-					
 				</Wrapper>
 				<Footer />
 			</div>

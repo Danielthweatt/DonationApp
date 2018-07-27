@@ -1,28 +1,19 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
-import axios from 'axios';
+import API from '../../../utils/API';
 import Input from '../../Input'; 
 
 class SignUpForm extends Component {
-	constructor() {
-		super();
-		this.state = {
-			firstName: '',
-			lastName: '',
-			email: '',
-			password: '',
-			confirmPassword: '',
-			redirectTo: null,
-			message: false,
-			messageContent: ''
-		};
-		this.handleSubmit = this.handleSubmit.bind(this);
-		this.handleFirstNameInput = this.handleFirstNameInput.bind(this);
-		this.handleLastNameInput = this.handleLastNameInput.bind(this);
-		this.handleEmailInput = this.handleEmailInput.bind(this);
-		this.handlePasswordInput = this.handlePasswordInput.bind(this); 
-		this.handlePasswordConfirmInput = this.handlePasswordConfirmInput.bind(this); 
-	}
+	state = {
+		firstName: '',
+		lastName: '',
+		email: '',
+		password: '',
+		confirmPassword: '',
+		redirectTo: null,
+		message: false,
+		messageContent: ''
+	};
 
 	handleFirstNameInput = e => {
 		this.setState({firstName: e.target.value});
@@ -44,7 +35,7 @@ class SignUpForm extends Component {
 		this.setState({confirmPassword: e.target.value});
 	}
 
-	handleSubmit(event) {
+	handleSubmit = event => {
 		event.preventDefault();
 		this.setState({
 			message: false,
@@ -87,7 +78,7 @@ class SignUpForm extends Component {
 				email: this.state.email,
 				password: this.state.password
 			};
-			axios.post('/user/signup', signUpInfo).then(response => {
+			API.signUp(signUpInfo).then(response => {
 				if (response.data.error) {
 					this.setState({
 						message: true,

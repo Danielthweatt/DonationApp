@@ -1,41 +1,27 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+import API from '../../../utils/API';
 import Input from '../../Input'; 
 import {Elements, StripeProvider} from 'react-stripe-elements';
 import StripeCheckout from 'react-stripe-checkout';
 import Donate from '../Donate/Donate'; 
 import DonateOptions from '../DonateOptions'; 
 import Checkbox from "../Checkbox";
-import './DonationInput.css'; 
-import DonationModal from "../DonationModal";
+import './DonationInput.css';
 
 class DonationInput extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			firstName: '',
-			lastName: '',
-			email: '',
-			amount: '',
-			customAmount: '',
-			custom: false,
-			rememberMe: false, 
-			buttonClicked: 0,
-			subscriptionStarted: false,
-			message: false,
-			messageContent: '',
-		};
-
-		this.handleFirstNameInput = this.handleFirstNameInput.bind(this);
-		this.handleLastNameInput = this.handleLastNameInput.bind(this);
-		this.handleEmailInput = this.handleEmailInput.bind(this);
-		this.handleMoneyButton = this.handleMoneyButton.bind(this);
-		this.handleMoneyCustom = this.handleMoneyCustom.bind(this);
-		this.handleCheckbox = this.handleCheckbox.bind(this);
-		this.handleSubscribe = this.handleSubscribe.bind(this);
-		this.chargeACustomer = this.chargeACustomer.bind(this);
-		this.onToken = this.onToken.bind(this);
-	}
+	state = {
+		firstName: '',
+		lastName: '',
+		email: '',
+		amount: '',
+		customAmount: '',
+		custom: false,
+		rememberMe: false, 
+		buttonClicked: 0,
+		subscriptionStarted: false,
+		message: false,
+		messageContent: ''
+	};
 	
 	handleFirstNameInput = e => {
 		this.setState({firstName: e.target.value});
@@ -92,8 +78,7 @@ class DonationInput extends Component {
 		this.setState({subscriptionStarted: !this.state.subscriptionStarted})
 	}
 
-	chargeACustomer() {
-		//charge the customer instead of the card
+	chargeSavedUser = () => {
 		let userId = this.props.userInfo.userId;
 		let amount;
 		if (this.state.amount) {
@@ -101,9 +86,7 @@ class DonationInput extends Component {
 		} else {
 			amount = this.state.customAmount;
 		}
-		axios.post('/charge/' + userId, {
-			amount
-		}).then(res => {
+		API.chargeSavedUser(userId, amount).then(res => {
 			if (res.status === 200) { 
 				this.setState({
 					message: true,
@@ -134,12 +117,7 @@ class DonationInput extends Component {
 			amount = this.state.customAmount;
 		}
 		if (this.props.userInfo.loggedIn && this.state.rememberMe && !this.state.handleSubscribe) {
-			axios.post('/charge/create/' + userId, {
-				email: this.props.userInfo.email,
-				source: token.id,
-				amount,
-				stripeKey: "pk_test_laDoJCqgOQpou2PvCdG07DE2"
-			}).then(res => {
+			API.chargeAndSaveAUser(userId, this.props.userInfo.email, token.id, amount, "pk_test_laDoJCqgOQpou2PvCdG07DE2").then(res => {
 				if (res.status === 200) {
 					this.setState({
 						rememberMe: false,
@@ -164,26 +142,15 @@ class DonationInput extends Component {
 				});
 			});
 		} else if (this.props.userInfo.loggedIn && this.state.subscriptionStarted){
-			console.log('subscribe!!!');
-			//post route to start subscription
-			axios.post('/charge/subscription/' + userId, {
-				email: this.props.userInfo.email,
-				source: token.id,
-				amount,
-				stripeKey: "pk_test_laDoJCqgOQpou2PvCdG07DE2"
-		}).then(res => {
-			if (res.status === 200) {
-				alert('subscription saved!');
-			} else {
-				alert('Something went wrong.');
-			}})
-
+			API.startASubscription(userId, this.props.userInfo.email, token.id, amount, "pk_test_laDoJCqgOQpou2PvCdG07DE2").then(res => {
+				if (res.status === 200) {
+					alert('subscription saved!');
+				} else {
+					alert('Something went wrong.');
+				}
+			});
 		} else {
-			axios.post('/charge', {
-				email: this.state.email,
-				source: token.id,
-				amount
-        	}).then(res => {
+			API.charge(this.state.email, token.id, amount).then(res => {
 				if (res.status === 200) {
 					this.setState({
 						firstName: '',
@@ -290,7 +257,7 @@ class DonationInput extends Component {
 				)}
 			
 				{this.props.userInfo.loggedIn && this.props.userInfo.hasCustomerAccount ? (
-					<button onClick={this.chargeACustomer}>Donate</button>
+					<button onClick={this.chargeSavedUser}>Donate</button>
 				) : (
 					<StripeProvider apiKey="pk_test_laDoJCqgOQpou2PvCdG07DE2">
 						<Elements>

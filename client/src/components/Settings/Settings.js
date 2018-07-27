@@ -1,34 +1,30 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+import API from '../../utils/API';
 import Input from '../Input'; 
 import { Redirect } from 'react-router-dom'; 
 import {Elements, StripeProvider} from 'react-stripe-elements';
 import StripeCheckout from 'react-stripe-checkout';
 
 class Settings extends Component {
-    constructor(){
-        super();
-        this.state = {
-            firstName: "",
-            lastName: "",
-            email: "",
-            password: '',
-            confirmPassword: '',
-            message: false,
-            messageContent: '',
-            customerId: "",
-            userId: ""
-        };
-        this.deleteCustomer = this.deleteCustomer.bind(this);
-}
+    state = {
+        firstName: '',
+        lastName: '',
+        email: '',
+        password: '',
+        confirmPassword: '',
+        message: false,
+        messageContent: '',
+        customerId: '',
+        userId: ''
+    };
 
-    componentDidMount(){
+    componentDidMount = () => {
         this.setState({
             userId: this.props.userInfo.userId,
             firstName: this.props.userInfo.firstName,
             lastName: this.props.userInfo.lastName,
-            email: this.props.userInfo.email,
-        })
+            email: this.props.userInfo.email
+        });
     }
 
     handleFirstNameInput = e => {
@@ -73,11 +69,7 @@ class Settings extends Component {
 				messageContent: 'Please enter your email.'
 			});
 		} else {
-            axios.put('/user/update/' + this.state.userId, {
-                firstName: this.state.firstName,
-                lastName: this.state.lastName,
-                email: this.state.email
-            }).then(res => {
+            API.updateUserInfo(this.state.userId, this.state.firstName, this.state.lastName, this.state.email).then(res => {
 			    if (res.status === 200) { 
 				    this.setState({
 					    message: true,
@@ -126,9 +118,7 @@ class Settings extends Component {
 				messageContent: 'Please re-enter a matching password.'
 			});
 		} else {
-            axios.put('/user/update/' + this.state.userId, {
-				password: this.state.password
-			}).then(res => {
+            API.updateUserPassword(this.state.userId, this.state.password).then(res => {
 				if (res.status === 200) { 
 				    this.setState({
 					    message: true,
@@ -152,12 +142,8 @@ class Settings extends Component {
     }
 
     //update card info
-    onToken = (token) => {
-        axios.put('/settings/' + this.state.userId,{
-            email: this.state.email,
-            data: token.id,
-            stripeKey: "pk_test_laDoJCqgOQpou2PvCdG07DE2"
-        }).then(res => {
+    onToken = token => {
+        API.updatePaymentInfo(this.state.userId, this.state.email, token.id, "pk_test_laDoJCqgOQpou2PvCdG07DE2").then(res => {
             console.log(res)
             this.setState({
                 message: true,
@@ -173,10 +159,8 @@ class Settings extends Component {
     }
 
     //delete customers info
-    deleteCustomer(){
-        //console.log(this.state)
-        axios.put('/settings/delete/' + this.state.userId, {})
-        .then(res => {
+    deleteCustomer = () => {
+        API.deletePaymentInfo(this.state.userId).then(res => {
             console.log(res)
             this.props.updateUser({
                 hasCustomerAccount: false

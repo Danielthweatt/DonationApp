@@ -1,23 +1,16 @@
 import React, { Component } from 'react';
 import { Redirect, Link } from 'react-router-dom';
-import axios from 'axios';
+import API from '../../../utils/API';
 import Input from '../../Input';
 
 class LoginForm extends Component {
-	constructor() {
-        super();
-        this.state = {
-            email: '',
-            password: '',
-			redirectTo: null,
-			message: false,
-			messageContent: ''
-        };
-        this.handleSubmit = this.handleSubmit.bind(this);
-		this.handleEmailInput = this.handleEmailInput.bind(this);
-		this.handlePasswordInput = this.handlePasswordInput.bind(this);  
-    }
-
+	state = {
+        email: '',
+        password: '',
+		redirectTo: null,
+		message: false,
+		messageContent: ''  
+    };
 
 	handleEmailInput = e => {
 		this.setState({email: e.target.value});
@@ -27,7 +20,7 @@ class LoginForm extends Component {
 		this.setState({password: e.target.value});
 	}
 
-	handleSubmit(event) {
+	handleSubmit = event => {
 		event.preventDefault();
 		this.setState({
 			message: false,
@@ -48,7 +41,7 @@ class LoginForm extends Component {
 				email: this.state.email,
 				password: this.state.password
 			};
-        	axios.post('/user/signin', signInInfo).then(response => {
+        	API.login(signInInfo).then(response => {
 				if (response.status === 200) {
 					if (response.data.message) {
 						this.setState({

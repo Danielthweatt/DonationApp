@@ -10,7 +10,7 @@ module.exports = function(passport, User){
 
 	// user object attaches to the request as req.user
 	passport.deserializeUser(function(id, done){
-		User.findOne({ _id: id }, 'username', (err, user) => {
+		User.findOne({ _id: id }, (err, user) => {
 			done(err, user);
 		});
 	});
@@ -26,7 +26,7 @@ module.exports = function(passport, User){
 					return done(err);
 				}
 				if (!user) {
-					return done(null, false, {message:  'Incorrect email.'});
+					return done(null, false, {message: 'Could not find a user account with that email address.'});
 				}
 				if (!user.checkPassword(password)) {
 					return done(null, false, {message: 'Incorrect password.'});
