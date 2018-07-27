@@ -5,9 +5,11 @@ import Login from './pages/Login';
 import SignUp from './pages/SignUp'; 
 import Donations from './pages/Donations';
 import AccountSettings from './pages/AccountSettings';
+import ForgotPassword from './pages/ForgotPassword';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import axios from 'axios';
 import './App.css';
+
 
 // import Home from './pages/Home';
 
@@ -94,6 +96,18 @@ class App extends Component {
 						<Route exact path="/signup" render= {() =>
 							<SignUp updateUser={this.updateUser} 
 								userInfo={{loggedIn: this.state.loggedIn}}/>} />
+						<Route exact path="/forgot" render={() =>
+							<ForgotPassword updateUser={this.updateUser} 
+								userInfo={{
+									loggedIn: this.state.loggedIn,
+									resetOrForgot: 'forgot'
+								}}/>} />
+						<Route path="/reset" render={() =>
+							<ForgotPassword updateUser={this.updateUser} 
+								userInfo={{
+									loggedIn: this.state.loggedIn,
+									resetOrForgot: 'reset'
+								}}/>} />
 						<Route exact path="*" render= {() =>
 							<Home updateUser={this.updateUser} 
 								userInfo={{loggedIn: this.state.loggedIn}}/>} />

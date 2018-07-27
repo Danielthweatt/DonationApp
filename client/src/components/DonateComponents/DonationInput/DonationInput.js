@@ -3,12 +3,15 @@ import axios from 'axios';
 import Input from '../../Input'; 
 import {Elements, StripeProvider} from 'react-stripe-elements';
 import StripeCheckout from 'react-stripe-checkout';
+import Donate from '../Donate/Donate'; 
 import DonateOptions from '../DonateOptions'; 
 import Checkbox from "../Checkbox";
+import './DonationInput.css'; 
+import DonationModal from "../DonationModal";
 
 class DonationInput extends Component {
-	constructor() {
-		super();
+	constructor(props) {
+		super(props);
 		this.state = {
 			firstName: '',
 			lastName: '',
@@ -16,11 +19,13 @@ class DonationInput extends Component {
 			amount: '',
 			customAmount: '',
 			custom: false,
-			rememberMe: false,
+			rememberMe: false, 
+			buttonClicked: 0,
 			subscriptionStarted: false,
 			message: false,
-			messageContent: ''
+			messageContent: '',
 		};
+
 		this.handleFirstNameInput = this.handleFirstNameInput.bind(this);
 		this.handleLastNameInput = this.handleLastNameInput.bind(this);
 		this.handleEmailInput = this.handleEmailInput.bind(this);
@@ -47,27 +52,44 @@ class DonationInput extends Component {
 	handleMoneyButton = e => {
 		this.setState({
 			customAmount: '',
-			amount: e.target.value,
-			custom: false
+			amount: e.currentTarget.value,
+			custom: false,
+			buttonClicked: e.currentTarget.value
 		});
 	}
 	
-	handleMoneyCustom = e => {
+	handleMoneyCustomButton = e => {
 		this.setState({
-			customAmount: e.target.value,
+			customAmount: e.currentTarget.value,
 			amount: '',
-			custom: true
+			custom: true,
+			buttonClicked: e.currentTarget.value
 		});
 	}
 
+	handleMoneyCustom = e => {
+		this.setState({
+			customAmount: e.target.value
+		});
+  	}
+
+	checkMoneyInput = () => {
+
+		
+		const regex = /^\d+(?:\.\d{0,2})$/;
+		console.log('testies', this.state.amount)
+
+		if (!regex.test(this.state.amount))
+			console.log("Invalid Number");
+			
+	}
+
 	handleCheckbox = () => {
-		let newRememberMeValue = !this.state.rememberMe;
-		this.setState({rememberMe: newRememberMeValue});
+		this.setState({rememberMe: !this.State.rememberMe})
 	}
 
 	handleSubscribe = () => {
-		let newSubscriptionStarted = !this.state.subscriptionStarted;
-		this.setState({subscriptionStarted: newSubscriptionStarted});
+		this.setState({subscriptionStarted: !this.state.subscriptionStarted})
 	}
 
 	chargeACustomer() {
@@ -87,6 +109,7 @@ class DonationInput extends Component {
 					message: true,
 					messageContent: 'Donation complete.'
 				});
+				this.props.handleModalOpen();
 			} else {
 				this.setState({
 					message: true,
@@ -126,6 +149,7 @@ class DonationInput extends Component {
 					this.props.updateUser({
 						hasCustomerAccount: true
 					});
+					this.props.handleModalOpen();
 				} else {
 					this.setState({
 						message: true,
@@ -169,6 +193,7 @@ class DonationInput extends Component {
 						message: true,
 						messageContent: 'Donation complete.'
 					});
+					this.props.handleModalOpen();
 				} else {
 					this.setState({
 						message: true,
@@ -187,14 +212,37 @@ class DonationInput extends Component {
 	
 	render() {
 		return (
-			<div className = "donation-input">
-
+			<div className = "donation-input-card">
+				<center>
+					<h2>Donate</h2>
+					<hr/>
+				</center>
 				<DonateOptions
+					buttonClicked={this.state.buttonClicked}
 					handleMoneyButton={this.handleMoneyButton}
-					handleMoneyCustom={this.handleMoneyCustom}
+					handleMoneyCustomButton={this.handleMoneyCustomButton}
 					customAmount={this.state.customAmount}
 					custom={this.state.custom}
+					checkMoneyInput={this.checkMoneyInput}
 				/>
+
+				{this.state.custom ? (
+					<div>
+						<Input 
+							title="Amount"
+							name="Amount"
+							id="custom-payment" 
+							handleInput={this.handleMoneyCustom} 
+							onBlur={this.state.checkMoneyInput}
+							value={this.state.customAmount} 
+							type="number" 
+							step="0.01" 
+							min="0.01" 
+							type={Donate}/>
+					</div>
+				) : (
+					<div></div>
+				)}
 
 				{this.props.userInfo.loggedIn ? (
 					<div></div>
@@ -203,7 +251,7 @@ class DonationInput extends Component {
 						title = "First Name"
 						name = "First Name"
 						type="text"
-						value={this.props.firstName}
+						value={this.state.firstName}
 						handleInput={this.handleFirstNameInput}
 					/>
 				)}
@@ -215,7 +263,7 @@ class DonationInput extends Component {
 						title = "Last Name"
 						name = "Last Name"
 						type="text"
-						value={this.props.lastName}
+						value={this.state.lastName}
 						handleInput={this.handleLastNameInput}
 					/>
 				)}
@@ -227,7 +275,7 @@ class DonationInput extends Component {
 						title = "Email"
 						name = "Email"
 						type="text"
-						value={this.props.email}
+						value={this.state.email}
 						handleInput={this.handleEmailInput}
 					/>
 				)}

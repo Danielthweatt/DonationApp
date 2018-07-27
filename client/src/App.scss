@@ -1,0 +1,114 @@
+@import "@material/react-button/index"; // the .scss extension is implied
+@import "./styling/theme1/react-button-overrides";
+// @import "@material/textfield/mdc-text-field";
+@import './styling/theme1/react-text-overides.scss';
+
+
+body {
+    font-family: 'Roboto Condensed', sans-serif;
+    color: #3B3D40;
+    z-index: -10;
+}
+
+h1 {
+    font-weight: bolder;
+    font-size: 5.5em;
+    font-kerning: none;
+}
+
+h2 {
+    font-weight: bolder;
+    font-size: 3.5em;
+    font-kerning: none;
+}
+
+hr {
+    width:70%;
+}
+
+.lead-text {
+    font-weight: 300;
+    font-style: italic;
+    font-kerning: none;
+}
+
+.pageHeight {
+    min-height: 100vh;
+    padding-bottom: 130px;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  border: none;
+  box-shadow: 0 0 0px 1000px rgb(217,231,253) inset;
+  -webkit-text-fill-color: #000;
+  -webkit-box-shadow: 0 0 0px 1000px rgb(217,231,253) inset;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+
+@media (max-width: 575.98px) {
+
+    h1, .lead {
+        color: #3B3D40;
+    }
+
+    h1 {
+        font-size: 3.8em;
+    }
+
+    h2 {
+        font-size: 2.8em;
+    }
+
+
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) { 
+    h1 {
+        font-size: 4em;
+    }
+
+    h2 {
+        font-size: 3em;
+    }
+}
+
+
+
+
+// .App {
+//   text-align: center;
+// }
+
+// .App-logo {
+//   animation: App-logo-spin infinite 20s linear;
+//   height: 80px;
+// }
+
+// .App-header {
+//   background-color: #222;
+//   height: 150px;
+//   padding: 20px;
+//   color: white;
+// }
+
+// .App-title {
+//   font-size: 1.5em;
+// }
+
+// .App-intro {
+//   font-size: large;
+// }
+
+// @keyframes App-logo-spin {
+//   from { transform: rotate(0deg); }
+//   to { transform: rotate(360deg); }
+// }

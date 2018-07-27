@@ -32,15 +32,14 @@
   "homepage": "https://github.com/Danielthweatt/DonationApp",
   "devDependencies": {
     "concurrently": "^3.6.0",
-    "enzyme": "^3.3.0",
-    "enzyme-adapter-react-16": "^1.1.1",
-    "enzyme-to-json": "^3.3.4",
     "eslint": "^5.0.1",
     "eslint-plugin-react": "^7.10.0",
-    "nodemon": "^1.17.5"
+    "nodemon": "^1.17.5",
+    "react-social-icons": "^3.0.0"
   },
   "dependencies": {
-    "@material/button": "^0.37.1",
+    "@material-ui/core": "^1.4.1",
+    "async-waterfall": "^0.1.5",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.18.3",
     "chai": "^4.1.2",
@@ -54,6 +53,7 @@
     "jsdom": "^11.11.0",
     "mocha": "^5.2.0",
     "mongoose": "^5.2.1",
+    "nodemailer": "^4.6.7",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
     "react-test-renderer": "^16.4.1",

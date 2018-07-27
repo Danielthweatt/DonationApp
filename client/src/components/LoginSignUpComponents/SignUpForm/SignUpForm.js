@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import axios from 'axios';
 import Input from '../../Input'; 
+import ButtonPrimary from '../../Buttons/ButtonPrimary'
+
 
 class SignUpForm extends Component {
 	constructor() {
@@ -70,6 +72,11 @@ class SignUpForm extends Component {
 				message: true,
 				messageContent: 'Please enter a password.'
 			});
+		} else if (this.state.password.indexOf('$') !== -1) {
+            this.setState({
+				message: true,
+				messageContent: 'Passwords cannot contain a $ symbol.'
+			});
 		} else if (this.state.password !== this.state.confirmPassword) {
 			this.setState({
 				message: true,
@@ -111,30 +118,19 @@ class SignUpForm extends Component {
 			return (
 				<div>
 					<form>
-						<div>
-							<Input title="First Name" name="First Name" type="text" value={this.props.firstName} handleInput={this.handleFirstNameInput}/>
-						</div>
-						<div>
-							<Input title="Last Name" name="Last Name" type="text" value={this.props.lastName} handleInput={this.handleLastNameInput}/>
-						</div>
-						<div>
-							<Input title="Email" name="Email" type="text" value={this.props.email} handleInput={this.handleEmailInput}/>
-						</div>
-						<div>
-							<Input title="Password" name="Password" type="password" value={this.props.password} handleInput={this.handlePasswordInput}/>
-						</div>
-						<div>
-							<Input title="Confirm Password" name="Confirm Password" type="password" value={this.props.confirmPassword} handleInput={this.handlePasswordConfirmInput}/>
-						</div>
-						<div>
-							<input type="submit" onClick={this.handleSubmit}/>
-						</div>
+						<Input title="First Name" name="First Name" type="text" value={this.state.firstName} handleInput={this.handleFirstNameInput}/>
+						<Input title="Last Name" name="Last Name" type="text" value={this.state.lastName} handleInput={this.handleLastNameInput}/>
+						<Input title="Email" name="Email" type="text" value={this.state.email} handleInput={this.handleEmailInput}/>
+						<Input title="Password" name="Password" type="password" value={this.state.password} handleInput={this.handlePasswordInput}/>
+						<Input title="Confirm Password" name="Confirm Password" type="password" value={this.state.confirmPassword} handleInput={this.handlePasswordConfirmInput}/>
+						<ButtonPrimary type="submit" handleClick={this.handleSubmit}>Submit</ButtonPrimary>
 					</form>
 					{this.state.message ? (
 						<p>{this.state.messageContent}</p>
 					) : (
 						<div></div>
 					)}
+					{/* <Link to="/login">Login</Link> <br/> */}
 				</div>
 			)
 		}

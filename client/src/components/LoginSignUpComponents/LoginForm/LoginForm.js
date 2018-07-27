@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import axios from 'axios';
 import Input from '../../Input';
-import { Link } from 'react-router-dom';
+import ButtonPrimary from '../../Buttons/ButtonPrimary'
 
 class LoginForm extends Component {
 	constructor() {
@@ -51,7 +51,7 @@ class LoginForm extends Component {
 			};
         	axios.post('/user/signin', signInInfo).then(response => {
 				if (response.status === 200) {
-					if (response.data.message === 'Incorrect email.' || response.data.message === 'Incorrect password.') {
+					if (response.data.message) {
 						this.setState({
 							message: true,
 							messageContent: response.data.message
@@ -88,22 +88,17 @@ class LoginForm extends Component {
 			return (
 				<div>
 					<form>
-						<div>
-							<Input title="Email" name="Email" type="text" value={this.props.email} handleInput={this.handleEmailInput}/>
-						</div>
-						<div>
-							<Input title="Password" name="Password" type="password" value={this.props.password} handleInput={this.handlePasswordInput}/>
-						</div>
-						<div>
-							<input type="submit" onClick={this.handleSubmit}/>
-						</div>
+						<Input title="Email" name="Email" type="text" value={this.state.email} handleInput={this.handleEmailInput}/>
+						<Input title="Password" name="Password" type="password" value={this.state.password} handleInput={this.handlePasswordInput}/>
+						<ButtonPrimary type="submit" handleClick={this.handleSubmit}>Submit</ButtonPrimary>
 					</form>
 					{this.state.message ? (
 						<p>{this.state.messageContent}</p>
 					) : (
 						<div></div>
 					)}
-					<Link to="/signup">Sign Up</Link>
+					<Link to="/signup">Sign Up</Link> <br/>
+					<Link to="/forgot">Forgot Password?</Link>
 				</div>
 			)
 		}

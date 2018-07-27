@@ -4,6 +4,9 @@ const keyPublishable = 'pk_test_xwATFGfvWsyNnp1dDh2MOk8I';
 const secret = require('../config/config.js');
 const keySecret = secret.SECRET_KEY;
 const stripe = require('stripe')(keySecret);
+const waterfall = require('async-waterfall');
+const crypto = require('crypto');
+const nodemailer = require('nodemailer');
 
 module.exports = function(app, passport, User){
 
@@ -18,7 +21,7 @@ module.exports = function(app, passport, User){
 			//receipt_email: req.body.email
 		}).then(charge => {
 			console.log(charge);
-			res.send(charge);
+			res.send('Success');
 		}).catch(err => 
 			res.status(500).send(err)
 		);
@@ -36,23 +39,21 @@ module.exports = function(app, passport, User){
 				currency: 'usd',
 				customer: customer.id,
 				receipt_email: req.body.email
-			})
-		
-				.then(() => {
-					User.findOneAndUpdate({_id: req.params.id}, {
-						$set: {customerId : customer.id}
-					}, (err, user) => {
-						if (err) {
-							res.status(422).send(err);
-						} 
-						else {
-							res.send(user);
-						}
-					});
-				}).catch(err => 
-					res.status(500).send(err)
-				);
-		}).catch(err =>
+			}).then(() => {
+				User.findOneAndUpdate({_id: req.params.id}, {
+					$set: {customerId : customer.id}
+				}, (err, user) => {
+					if (err) {
+						res.status(422).send(err);
+					} 
+					else {
+						res.send('Success');
+					}
+				});
+			}).catch(err => 
+				res.status(500).send(err)
+			);
+		}).catch(err => 
 			res.status(500).send(err)
 		);
 	
@@ -123,7 +124,7 @@ module.exports = function(app, passport, User){
 					currency: 'usd',
 					receipt_email: user.email
 				}).then(charge => 
-					res.send(charge)
+					res.send('Success')
 				).catch(err => 
 					res.status(500).send(err)
 				);
@@ -154,7 +155,7 @@ module.exports = function(app, passport, User){
 				});
 				newUser.save((err, savedUser) => {
 					if (err) return res.status(422).send(err);
-					res.send(savedUser);
+					res.send('Success');
 				});
 			}
 		});
@@ -229,6 +230,148 @@ module.exports = function(app, passport, User){
 		}
 	});
 
+	//Forgot Password Route
+	app.post('/forgot', (req, res) => {
+		waterfall([
+			function(done){
+				crypto.randomBytes(20, function(err, buf){
+					const token = buf.toString('hex');
+					done(err, token);
+				});
+			},
+			function(token, done){
+				User.findOne({ email: req.body.email }, (err, user) => { 
+					if (err) {
+						res.status(422).send(err);
+					} else if (!user) {
+						res.send('Could not find a user account with that email address.');
+					} else {
+						user.passwordResetToken = token;
+						user.passwordResetTokenExpiration = Date.now() + 3600000;
+						user.save(function(err){
+							done(err, token, user);
+						});
+					}
+				});
+			},
+			function(token, user, done){
+				let host;
+				if (process.env.NODE_ENV === 'production') {
+					host = req.headers.host;
+				} else {
+					host = 'localhost:3000';
+				}
+				const mailer = nodemailer.createTransport({
+					service: 'gmail',
+					auth: {
+						user: 'lovefoundation361@gmail.com',
+						pass: 'Romadacama'
+					}
+				});
+				const mailOptions = {
+					to: user.email,
+					from: 'lovefoundation361@gmail.com',
+					subject: 'Love Foundation Password Reset',
+					text: 'You are receiving this because you (or someone else) have requested the reset of the password for your Love Foundation account.\n\n' +
+                    'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
+                    'http://' + host + '/reset/' + token + '\n\n' +
+                    'If you did not request this, please ignore this email and your password will remain unchanged.\n'
+				};
+				mailer.sendMail(mailOptions, function(err){
+					if (!err) {
+						res.send('An e-mail has been sent to ' + user.email + ' with further instructions.');
+					}
+					done(err, 'done');
+				});
+			}
+		], function(err){
+			res.status(500).send(err);
+		});
+	});
+
+	//Reset Password Token Check Route
+	app.get('/reset/check/:token', function(req, res){
+		User.findOne({
+			passwordResetToken: req.params.token,
+			passwordResetTokenExpiration: {
+				$gt: Date.now()
+			} 
+		}, (err, user) => {
+			if (err) {
+				res.status(422).send(err);
+			} else if (!user) {
+				res.send({ message: 'Password reset token invalid or expired.' });
+			} else {
+				res.send({ userId: user._id});
+			}
+		});
+	});
+
+	//Reset Password Route
+	app.put('/reset/:userId', function(req, res){
+		User.findOne({ _id: req.params.userId }, (err, user) => { 
+			if (err) {
+				res.status(422).send(err);
+			} else if (!user) {
+				res.status(422).send('Something went wrong.');
+			} else {
+				user.passwordResetToken = '';
+				user.passwordResetTokenExpiration = null;
+				user.password = req.body.password;
+				user.save(function(err){
+					if (err) {
+						res.status(422).send(err);
+					} else {
+						res.send('Success');
+					}
+				});
+			}
+		});
+	});
+
+	// Update User Info Route
+	app.put('/user/update/:userId', function(req, res){
+		if (req.body.password) {
+			console.log('updating password');
+			User.findOne({ _id: req.params.userId }, (err, user) => { 
+				if (err) {
+					res.status(422).send(err);
+				} else if (!user) {
+					res.status(422).send('Something went wrong.');
+				} else {
+					user.password = req.body.password;
+					user.save(function(err){
+						if (err) {
+							res.status(422).send(err);
+						} else {
+							res.send('Success');
+						}
+					});
+				}
+			});
+		} else {
+			User.findOneAndUpdate({ _id: req.params.userId }, {
+				$set: {
+					firstName: req.body.firstName,
+					lastName: req.body.lastName,
+					email: req.body.email
+				}
+			}, (err, user) => { 
+				if (err) {
+					res.status(422).send(err);
+				} else if (!user) {
+					res.status(422).send('Something went wrong.');
+				} else {
+					res.send({
+						firstName: req.body.firstName,
+						lastName: req.body.lastName,
+						email: req.body.email
+					});
+				}
+			});
+		}
+	});
+
 	//update customer card info
 	app.put('/settings/:id', (req,res) => {
 		let id = req.params.id;
@@ -238,12 +381,12 @@ module.exports = function(app, passport, User){
 			} else {
 				//console.log(user)
 				//console.log('the req body',req.body)
-				let customerId = user.customerId
+				let customerId = user.customerId;
 				//update the customer card
 				stripe.customers.update(customerId, {
 					source: req.body.data
 				}, (err, confirmation) => {
-					if(err) console.log(err)
+					if(err) console.log(err);
 					else{
 						res.send(confirmation);
 					}
@@ -253,53 +396,55 @@ module.exports = function(app, passport, User){
 
 	//delete a customer and delete cust id from db
 	app.put('/settings/delete/:id', (req,res) => {
-		console.log(req.params.id)
+		console.log(req.params.id);
 		let id = req.params.id;
 		User.findById({_id: id}, (err, user) => {
-			if(err) console.log(err)
+			if(err) console.log(err);
 			else {
 				//console.log(user.customerId)
 				stripe.customers.del(
 					user.customerId,
 					(err, confirmation) => {
-						if (err) console.log(err)
+						if (err) console.log(err);
 						else {
-							console.log(confirmation)
+							console.log(confirmation);
 						}
 					}
 				  );
 			}
 		})
-		.then(() => {
+			.then(() => {
 			//console.log('here')
-			User.findOneAndUpdate({_id: id}, {
-				$set: 
+				User.findOneAndUpdate({_id: id}, {
+					$set: 
 				{
-					customerId : "",
+					customerId : '',
 				}}, {new: true}, (err, user) => {
-						if (err) {
-							res.status(422).send(err);
-						} 
-						else {
-							console.log(user)
-							res.send({user:{
-								userId: user._id,
-								firstName: user.firstName,
-								lastName: user.lastName,
-								email: user.email,
-								customerId: user.customerId,
-								hasCustomerAccount: false,
-							}})
-						}
-					})
+					if (err) {
+						res.status(422).send(err);
+					} 
+					else {
+						console.log(user);
+						res.send({user:{
+							userId: user._id,
+							firstName: user.firstName,
+							lastName: user.lastName,
+							email: user.email,
+							customerId: user.customerId,
+							hasCustomerAccount: false,
+						}});
+					}
+				});
 			})
-		.catch(err => console.log(err))
-	})
+			.catch(err => console.log(err));
+	});
 	
 
 	//React App
-	// app.get('*', function(req, res) {
-	// 	res.sendFile(path.join(__dirname, '../client/build/index.html'));
-	// });
+	if (process.env.NODE_ENV === 'production') {
+		app.get('*', function(req, res) {
+			res.sendFile(path.join(__dirname, '../client/build/index.html'));
+		});
+	}
 
 };

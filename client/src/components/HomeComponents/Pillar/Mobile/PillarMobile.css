@@ -1,0 +1,31 @@
+
+.pillar-mobile-img-styling {
+    width: 20vw;
+    height: 20vw;
+    content: " ";
+    border-radius: 50%;
+    position: relative;
+    overflow: hidden;
+    margin: auto;
+    /* padding: 30%; */
+}
+
+.pillar-mobile-img-styling > img {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    min-height: 101%;
+    /* width:50%; */
+    object-fit: cover;
+    /* min-width: 100%; */
+    /* padding: 25%; */
+    background: linear-gradient(to right, #ff3e00, #d62562);
+    -webkit-transform: translate(-50%,-50%);
+        -ms-transform: translate(-50%,-50%);
+            transform: translate(-50%,-50%);
+}
+
+.pillar-mobile-body-styling {
+    text-align: left;
+    margin: auto;
+}

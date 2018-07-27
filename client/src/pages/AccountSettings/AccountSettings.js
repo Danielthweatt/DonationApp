@@ -5,15 +5,20 @@ import Footer from '../../components/Footer/Footer';
 import Settings from '../../components/Settings';
 
 class AccountSettings extends Component {
-    render() {
-        return (
-            <Wrapper>
-                <Header updateUser={this.props.updateUser} userInfo={this.props.userInfo} />
-                <Settings updateUser={this.props.updateUser} userInfo={this.props.userInfo}/>
-                <Footer />
-            </Wrapper>
-        )
-    }
+	render() {
+		return (
+			<div>
+				<div className="pageHeight">
+					<Header page="settings" updateUser={this.props.updateUser} userInfo={this.props.userInfo} />
+					<Wrapper>
+						<Settings updateUser={this.props.updateUser} userInfo={this.props.userInfo}/>
+					
+					</Wrapper>
+				</div>
+				<Footer />
+			</div>
+		);
+	}
 }
 
 export default AccountSettings;
