@@ -134,22 +134,26 @@ class ForgotPasswordForm extends Component {
 			return (
 				<div>
 					{this.state.resetOrForgot === 'forgot' ? (
-						<h4>Please enter your email address to reset your password:</h4>
-						<form>
-							<Input title="Email" name="Email" type="text" value={this.state.email} handleInput={this.handleEmailInput}/>
-							<ButtonPrimary type="submit" handleClick={this.handleEmailSubmit}>Submit</ButtonPrimary>
-						</form>
+						<div>
+							<h4>Please enter your email address to reset your password:</h4>
+							<form>
+								<Input title="Email" name="Email" type="text" value={this.state.email} handleInput={this.handleEmailInput}/>
+								<ButtonPrimary type="submit" handleClick={this.handleEmailSubmit}>Submit</ButtonPrimary>
+							</form>
+						</div>
 					) : (
 						<div></div>
 					)}
 
 					{this.state.resetOrForgot === 'reset success' ? (
-						<h4>Please reset your password now:</h4>
-						<form>
-							<Input title="Password" name="Password" type="password" value={this.state.password} handleInput={this.handlePasswordInput}/>
-							<Input title="Confirm Password" name="Confirm Password" type="password" value={this.state.confirmPassword} handleInput={this.handlePasswordConfirmInput}/>
-							<ButtonPrimary type="submit" handleClick={this.handlePasswordSubmit}>Submit</ButtonPrimary>
-						</form>
+						<div>
+							<h4>Please reset your password now:</h4>
+							<form>
+								<Input title="Password" name="Password" type="password" value={this.state.password} handleInput={this.handlePasswordInput}/>
+								<Input title="Confirm Password" name="Confirm Password" type="password" value={this.state.confirmPassword} handleInput={this.handlePasswordConfirmInput}/>
+								<ButtonPrimary type="submit" handleClick={this.handlePasswordSubmit}>Submit</ButtonPrimary>
+							</form>
+						</div>
 					) : (
 						<div></div>
 					)}

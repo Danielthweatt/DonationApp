@@ -25,11 +25,11 @@ app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Configure Passport
-require('./config/passport/passport.js')(passport, User);
-
 // Create User Model
 const User = require('./models').User;
+
+// Configure Passport
+require('./config/passport/passport.js')(passport, User);
 
 // Create User Controller
 const userController = require('./controllers/userController.js')(User);
