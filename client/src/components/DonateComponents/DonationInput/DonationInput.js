@@ -8,6 +8,8 @@ import DonateOptions from '../DonateOptions';
 import Checkbox from "../Checkbox";
 import './DonationInput.css'; 
 import DonationModal from "../DonationModal";
+import ButtonPrimary from '../../Buttons/ButtonPrimary'
+
 
 class DonationInput extends Component {
 	constructor(props) {
@@ -314,7 +316,9 @@ class DonationInput extends Component {
 							token={this.onToken}
 							stripeKey={'pk_test_laDoJCqgOQpou2PvCdG07DE2'}
 					
-						/>
+						>
+							<ButtonPrimary>Pay With Card</ButtonPrimary>
+						</StripeCheckout>
 						</Elements>
 					</StripeProvider>
 				)}

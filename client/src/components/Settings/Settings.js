@@ -256,7 +256,9 @@ class Settings extends Component {
                                 token={this.onToken}
                                 stripeKey={'pk_test_laDoJCqgOQpou2PvCdG07DE2'}
                                 allowRememberMe = {false}
-                            />
+                            >
+                                <ButtonPrimary>Update Info</ButtonPrimary>
+                            </StripeCheckout>
                         </Elements>
                     </StripeProvider>
                     <br/><br/>
