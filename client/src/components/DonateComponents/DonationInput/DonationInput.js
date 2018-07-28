@@ -5,8 +5,11 @@ import {Elements, StripeProvider} from 'react-stripe-elements';
 import StripeCheckout from 'react-stripe-checkout';
 import Donate from '../Donate/Donate'; 
 import DonateOptions from '../DonateOptions'; 
-import Checkbox from "../Checkbox";
-import './DonationInput.css';
+import CBox from "../Checkbox";
+import './DonationInput.css'; 
+import DonationModal from "../DonationModal";
+import ButtonPrimary from '../../Buttons/ButtonPrimary'
+
 
 class DonationInput extends Component {
 	state = {
@@ -117,7 +120,8 @@ class DonationInput extends Component {
 				message: true,
 				messageContent: 'Please enter an amount to donate.'
 			});
-		}
+			this.props.handleErrorOpen();
+		};
 	}
 
 	onToken = (token) => {
@@ -149,6 +153,7 @@ class DonationInput extends Component {
 						message: true,
 						messageContent: 'Something went wrong.'
 					});
+					this.props.handleErrorOpen();
 				}
 			}).catch(err => {
 				this.setState({
@@ -181,8 +186,7 @@ class DonationInput extends Component {
 					message: true,
 					messageContent: 'Something went wrong.'
 				});
-				console.log('Something went wrong: ');
-				console.log(err);
+				this.props.handleErrorOpen();
 			});
 		} else if (amount) {
 			API.charge(this.state.email, token.id, amount).then(res => {
@@ -201,12 +205,14 @@ class DonationInput extends Component {
 						message: true,
 						messageContent: 'Something went wrong.'
 					});
+					this.props.handleErrorOpen();
 				}
         	}).catch((err) => {
 				this.setState({
 					message: true,
 					messageContent: 'Something went wrong.'
 				});
+				this.props.handleErrorOpen();
 				console.log('Something went wrong: ');
 				console.log(err);
 			});
@@ -288,10 +294,8 @@ class DonationInput extends Component {
 					/>
 				)}
 
-				{this.props.userInfo.loggedIn ? (
-					<Checkbox
-						hasCustomerAccount = {this.props.userInfo.hasCustomerAccount}
-						hasSubscription = {this.props.userInfo.hasSubscription}
+				{this.props.userInfo.loggedIn && !this.props.userInfo.hasCustomerAccount ? (
+					<CBox
 						handleCheckbox = {this.handleCheckbox}
 						handleSubscribe = {this.handleSubscribe}
 					/>
@@ -325,7 +329,10 @@ class DonationInput extends Component {
 							token={this.onToken}
 							//replace stripeKey with your public key
 							stripeKey={'pk_test_xwATFGfvWsyNnp1dDh2MOk8I'}
-						/>
+					
+						>
+							<ButtonPrimary>Pay With Card</ButtonPrimary>
+						</StripeCheckout>
 						</Elements>
 					</StripeProvider>
 				)}

@@ -1,5 +1,6 @@
 import React from 'react';
-import ButtonPrimary from '../../Buttons/ButtonPrimary'
+import ButtonPrimary from '../../Buttons/ButtonPrimary';
+import './DonationModal.css'; 
 
 
 class DonationModal extends React.Component {
