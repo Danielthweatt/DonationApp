@@ -1,12 +1,13 @@
 import React from 'react'; 
 import './AboutUs.css'; 
+import logoImage from "../../../assets/images/Logo.png";
 
 const AboutUs = () => (
 	<div className="card" id="about">
 		<div className="row no-gutters">
 			<div className="col-auto">
 				<div className="about-logo-img-styling">
-					<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSpq5dUAQ7RFh1JQISWijgyZ5UKRnIkbm3ZxY_ZVsI1cEwMCzgaDQ" className="img-fluid" alt=""></img>
+					<img src={logoImage} className="img-fluid" style={{backgroundColor: '#f9f9f9'}} alt=""></img>
 				</div>
 			</div>
 			<div className="col">

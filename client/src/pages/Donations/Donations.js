@@ -11,15 +11,28 @@ class Donations extends Component {
 		super(props);
 		console.beer = console.log.bind(console, '🍺');
 
-		this.state = { isOpen: false };
+		this.state = { 
+			isOpen: false,
+			isError: false
+		};
 	}
 
 	handleModalOpen = () => {
-		this.setState({ isOpen: !this.state.isOpen })
+		this.setState({ isOpen: true })
+	}
+
+	handleErrorOpen = () => {
+		this.setState({ 
+			
+			isError: true
+		})
 	}
 
 	onClose = () => {
-		this.setState({isOpen: !this.state.isOpen})
+		this.setState({
+			isOpen: false,
+			isError: false
+		})
 	}
 
 	render() {
@@ -35,7 +48,13 @@ class Donations extends Component {
 								Thank you for making a difference :)
 							</DonationModal>
 						}
-						<DonationInput updateUser={this.props.updateUser} userInfo={this.props.userInfo} handleModalOpen={ this.handleModalOpen }/>
+						{	this.state.isError && 
+							<DonationModal 
+								onClose={this.onClose}>
+								Something went wrong! :(
+							</DonationModal>
+						}
+						<DonationInput updateUser={this.props.updateUser} userInfo={this.props.userInfo} handleModalOpen={ this.handleModalOpen } handleErrorOpen={this.handleErrorOpen}/>
 						<DonationImpact />
 						
 					</Wrapper>

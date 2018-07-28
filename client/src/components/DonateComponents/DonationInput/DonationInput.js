@@ -5,8 +5,11 @@ import {Elements, StripeProvider} from 'react-stripe-elements';
 import StripeCheckout from 'react-stripe-checkout';
 import Donate from '../Donate/Donate'; 
 import DonateOptions from '../DonateOptions'; 
-import Checkbox from "../Checkbox";
-import './DonationInput.css';
+import CBox from "../Checkbox";
+import './DonationInput.css'; 
+import DonationModal from "../DonationModal";
+import ButtonPrimary from '../../Buttons/ButtonPrimary'
+
 
 class DonationInput extends Component {
 	state = {
@@ -90,7 +93,7 @@ class DonationInput extends Component {
 		} else {
 			amount = this.state.customAmount;
 		}
-		if (amount) {
+		if (amount && !this.state.subscriptionStarted) {
 			API.chargeSavedUser(userId, amount).then(res => {
 				if (res.status === 200) { 
 					this.setState({
@@ -112,12 +115,38 @@ class DonationInput extends Component {
 				console.log('Something went wrong: ');
 				console.log(err);
 			});
+		} else if (amount && this.state.subscriptionStarted) {
+			API.startASubscription(userId, amount).then(res => {
+				if (res.status === 200) {
+					this.setState({
+						rememberMe: false,
+						message: true,
+						messageContent: 'This donation is complete and will automatically be repeated monthly.'
+					});
+					this.props.updateUser({
+						hasSubscription: true
+					});
+					this.props.handleModalOpen();
+				} else {
+					this.setState({
+						message: true,
+						messageContent: 'Something went wrong.'
+					});
+				}
+			}).catch(err => {
+				this.setState({
+					message: true,
+					messageContent: 'Something went wrong.'
+				});
+				this.props.handleErrorOpen();
+			});
 		} else {
 			this.setState({
 				message: true,
 				messageContent: 'Please enter an amount to donate.'
 			});
-		}
+			this.props.handleErrorOpen();
+		};
 	}
 
 	onToken = (token) => {
@@ -149,32 +178,7 @@ class DonationInput extends Component {
 						message: true,
 						messageContent: 'Something went wrong.'
 					});
-				}
-			}).catch(err => {
-				this.setState({
-					message: true,
-					messageContent: 'Something went wrong.'
-				});
-				console.log('Something went wrong: ');
-				console.log(err);
-			});
-		} else if (this.props.userInfo.loggedIn && this.state.subscriptionStarted && amount) {
-			API.startASubscription(userId, amount).then(res => {
-				if (res.status === 200) {
-					this.setState({
-						rememberMe: false,
-						message: true,
-						messageContent: 'This donation is complete and will automatically be repeated monthly.'
-					});
-					this.props.updateUser({
-						hasSubscription: true
-					});
-					this.props.handleModalOpen();
-				} else {
-					this.setState({
-						message: true,
-						messageContent: 'Something went wrong.'
-					});
+					this.props.handleErrorOpen();
 				}
 			}).catch(err => {
 				this.setState({
@@ -201,12 +205,14 @@ class DonationInput extends Component {
 						message: true,
 						messageContent: 'Something went wrong.'
 					});
+					this.props.handleErrorOpen();
 				}
         	}).catch((err) => {
 				this.setState({
 					message: true,
 					messageContent: 'Something went wrong.'
 				});
+				this.props.handleErrorOpen();
 				console.log('Something went wrong: ');
 				console.log(err);
 			});
@@ -289,7 +295,7 @@ class DonationInput extends Component {
 				)}
 
 				{this.props.userInfo.loggedIn ? (
-					<Checkbox
+					<CBox
 						hasCustomerAccount = {this.props.userInfo.hasCustomerAccount}
 						hasSubscription = {this.props.userInfo.hasSubscription}
 						handleCheckbox = {this.handleCheckbox}
@@ -300,7 +306,7 @@ class DonationInput extends Component {
 				)}
 			
 				{this.props.userInfo.loggedIn && this.props.userInfo.hasCustomerAccount ? (
-					<button onClick={this.chargeSavedUser}>Donate</button>
+					<ButtonPrimary handleClick={this.chargeSavedUser}>Donate</ButtonPrimary>
 				) : (
 					//replace apiKey with your public key
 					<StripeProvider apiKey="pk_test_xwATFGfvWsyNnp1dDh2MOk8I">
@@ -325,7 +331,10 @@ class DonationInput extends Component {
 							token={this.onToken}
 							//replace stripeKey with your public key
 							stripeKey={'pk_test_xwATFGfvWsyNnp1dDh2MOk8I'}
-						/>
+					
+						>
+							<ButtonPrimary>Pay With Card</ButtonPrimary>
+						</StripeCheckout>
 						</Elements>
 					</StripeProvider>
 				)}

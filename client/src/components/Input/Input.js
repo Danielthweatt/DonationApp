@@ -35,7 +35,6 @@ class Input extends React.Component {
 			// 	will need to change what it is referencing, since "Input is in all their .js in DonationInput"
 			// 	<TextField.Input name=
 				<TextField  
-					id="with-placeholder" 
 					label={this.props.title} 
 					placeholder={this.props.title} 
 					name={this.props.name} 

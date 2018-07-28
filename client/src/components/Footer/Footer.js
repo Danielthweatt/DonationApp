@@ -1,6 +1,6 @@
 import React from 'react'; 
 import '../Footer/Footer.css';
-import Wrapper from '../Wrapper/Wrapper'; 
+import {Link} from 'react-router-dom';
 
 
 const Footer = () => (
@@ -15,10 +15,10 @@ const Footer = () => (
 					</div>
 					<div className="col-12 col-lg-4">
 						<div className="social-icons">
-							<a href="#" className="fa fa-facebook"></a>
-							<a href="#" className="fa fa-youtube"></a>
-							<a href="#" className="fa fa-instagram"></a>
-							<a href="#" className="fa fa-linkedin"></a>
+							<Link to="#" className="fa fa-facebook"></Link>
+							<Link to="#" className="fa fa-youtube"></Link>
+							<Link to="#" className="fa fa-instagram"></Link>
+							<Link to="#" className="fa fa-linkedin"></Link>
 
 						</div>
 					</div>

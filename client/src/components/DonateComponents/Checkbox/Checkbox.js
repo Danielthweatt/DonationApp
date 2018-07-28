@@ -1,20 +1,20 @@
 import React from 'react';
+import Checkbox from '@material-ui/core/Checkbox';
 
-const Checkbox = props => (
-
+const CBox = props => (
 	<div className="checkbox">
-		{this.props.hasCustomerAccount ? (
+		{props.hasCustomerAccount ? (
 			<div></div>
 		) : (
 			<div>
 				<label for="save-payment">Save My Payment Information</label>
-				<input type="checkbox" id="save-payment" name="checkbox" onChange={props.handleCheckbox}/>
+				<Checkbox id="save-payment"  onChange={props.handleCheckbox} />
 			</div>
 		)}
-		{!this.props.hasSubscription && this.props.hasCustomerAccount ? (
+		{!props.hasSubscription && props.hasCustomerAccount ? (
 			<div>
 				<label for="save-subscribe">Monthly Donation</label>
-				<input type="checkbox" id="save-subscribe" name="subscribe-checkbox" onChange={props.handleSubscribe}/>
+				<Checkbox id="save-subscribe" onChange={props.handleSubscribe}/>
 			</div>
 		) : (
 			<div></div>
@@ -22,4 +22,4 @@ const Checkbox = props => (
 	</div>
 );
 
-export default Checkbox;
+export default CBox;
