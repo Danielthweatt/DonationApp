@@ -10,7 +10,7 @@
 }
 
 @media (max-width: 575.98px) {
-    .card-deck {
+    .pillar-card-deck {
         display: none;
     }
     .mobile-pillars {

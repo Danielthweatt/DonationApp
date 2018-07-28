@@ -5,7 +5,7 @@ import {Elements, StripeProvider} from 'react-stripe-elements';
 import StripeCheckout from 'react-stripe-checkout';
 import Donate from '../Donate/Donate'; 
 import DonateOptions from '../DonateOptions'; 
-import Checkbox from "../Checkbox";
+import CBox from "../Checkbox";
 import './DonationInput.css'; 
 import DonationModal from "../DonationModal";
 
@@ -115,6 +115,7 @@ class DonationInput extends Component {
 					message: true,
 					messageContent: 'Something went wrong.'
 				});
+				this.props.handleErrorOpen();
 			}
 		}).catch(err => {
 			console.log(err);
@@ -122,6 +123,7 @@ class DonationInput extends Component {
 				message: true,
 				messageContent: 'Something went wrong.'
 			});
+			this.props.handleErrorOpen();
 		});
 	}
 
@@ -155,6 +157,7 @@ class DonationInput extends Component {
 						message: true,
 						messageContent: 'Something went wrong.'
 					});
+					this.props.handleErrorOpen();
 				}
 			}).catch(err => {
 				console.log(err);
@@ -162,6 +165,7 @@ class DonationInput extends Component {
 					message: true,
 					messageContent: 'Something went wrong.'
 				});
+				this.props.handleErrorOpen();
 			});
 		} else if (this.props.userInfo.loggedIn && this.state.subscriptionStarted){
 			console.log('subscribe!!!');
@@ -199,6 +203,7 @@ class DonationInput extends Component {
 						message: true,
 						messageContent: 'Something went wrong.'
 					});
+					this.props.handleErrorOpen();
 				}
         	}).catch((err) => {
 				console.log(err);
@@ -206,6 +211,7 @@ class DonationInput extends Component {
 					message: true,
 					messageContent: 'Something went wrong.'
 				});
+				this.props.handleErrorOpen();
 			});
 		}
 	}
@@ -281,7 +287,7 @@ class DonationInput extends Component {
 				)}
 
 				{this.props.userInfo.loggedIn && !this.props.userInfo.hasCustomerAccount ? (
-					<Checkbox
+					<CBox
 						handleCheckbox = {this.handleCheckbox}
 						handleSubscribe = {this.handleSubscribe}
 					/>
