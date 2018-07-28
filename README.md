@@ -42,7 +42,6 @@ Donation App was created for non-profits to quickly implement a platform to rece
 - In the DonationInput.js and Settings.js components you will need to plug your publishable key into the code - look for the comments
 - Next, set the variable SECRET_KEY in the production environment to your secret key, and you should be good to 
 go!
-```
 
 ## Contributors:
 - [Daniel Thweatt](https://github.com/Danielthweatt)
