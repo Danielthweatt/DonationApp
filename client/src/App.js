@@ -7,43 +7,35 @@ import Donations from './pages/Donations';
 import AccountSettings from './pages/AccountSettings';
 import ForgotPassword from './pages/ForgotPassword';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import axios from 'axios';
+import API from './utils/API';
 import './App.css';
 
-
-// import Home from './pages/Home';
-
-
 class App extends Component {
-	constructor(){
-		super();
-		this.state = {
-			loggedIn: false,
-			hasCustomerAccount: false,
-			email: null,
-			firstName: null,
-			lastName: null,
-			userId: null
-		};
-		this.updateUser = this.updateUser.bind(this);
-		this.checkUser = this.checkUser.bind(this);
-		this.componentDidMount = this.componentDidMount.bind(this);
-	}
+	state = {
+		loggedIn: false,
+		hasCustomerAccount: false,
+		hasSubscription: false,
+		email: null,
+		firstName: null,
+		lastName: null,
+		userId: null
+	};
 
-	componentDidMount(){
+	componentDidMount = () => {
 		this.checkUser();
 	}
 
-	updateUser(userObject){
+	updateUser = (userObject) => {
 		this.setState(userObject);
 	}
 
-	checkUser(){
-		axios.get('/user').then(response => {
+	checkUser = () => {
+		API.checkUser().then(response => {
 			if (response.data.user) {
 			  	this.setState({
 					loggedIn: true,
 					hasCustomerAccount: response.data.user.hasCustomerAccount,
+					hasSubscription: response.data.user.hasSubscription,
 					email: response.data.user.email,
 					firstName: response.data.user.firstName,
 					lastName: response.data.user.lastName,
@@ -53,6 +45,7 @@ class App extends Component {
 			  	this.setState({
 					loggedIn: false,
 					hasCustomerAccount: false,
+					hasSubscription: false,
 					email: null,
 					firstName: null,
 					lastName: null,
@@ -75,6 +68,7 @@ class App extends Component {
 								userInfo={{
 									loggedIn: this.state.loggedIn,
 									hasCustomerAccount: this.state.hasCustomerAccount,
+									hasSubscription: this.state.hasSubscription,
 									email: this.state.email,
 									firstName: this.state.firstName,
 									lastName: this.state.lastName,

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'; 
-import axios from 'axios';
+import API from '../../utils/API';
 import { Redirect, Link } from 'react-router-dom';
 import Input from '../Input'; 
 import './ForgotPasswordForm.css';
@@ -7,7 +7,6 @@ import ButtonPrimary from '../Buttons/ButtonPrimary'
 
 
 class ForgotPasswordForm extends Component {
-
 	state = {
 		userId: '',
 		email: '',
@@ -19,9 +18,9 @@ class ForgotPasswordForm extends Component {
 		redirectTo: null
 	}
 
-	componentDidMount(){
+	componentDidMount = () => {
 		if (this.props.userInfo.resetOrForgot === 'reset') {
-			axios.get(`/reset/check/${window.location.pathname.slice(7)}`).then(res => { 
+			API.resetUserPasswordCheck(window.location.pathname.slice(7)).then(res => { 
 				if (res.message) {
 					this.setState({
 						message: true,
@@ -34,7 +33,14 @@ class ForgotPasswordForm extends Component {
 						resetOrForgot: 'reset success' 
 					});
 				}
-			}).catch();
+			}).catch(err => {
+				this.setState({
+					message: true,
+					messageContent: 'Something went wrong.'
+				});
+				console.log('Something went wrong: ');
+				console.log(err);
+			});
 		} else {
 			this.setState({
 				resetOrForgot: 'forgot'
@@ -66,9 +72,7 @@ class ForgotPasswordForm extends Component {
 				messageContent: 'Please enter your email.'
 			});
 		} else {
-			axios.post('/forgot', {
-				email: this.state.email
-			}).then(res => 
+			API.forgotUserPassword(this.state.email).then(res => 
 				this.setState({
 					message: true,
 					messageContent: res.data
@@ -106,9 +110,7 @@ class ForgotPasswordForm extends Component {
 				messageContent: 'Please re-enter a matching password.'
 			});
 		} else {
-			axios.put('/reset/' + this.state.userId, {
-				password: this.state.password
-			}).then(res => 
+			API.resetUserPassword(this.state.userId, this.state.password).then(() => 
 				this.setState({
 					redirectTo: '/'
 				})
@@ -126,24 +128,32 @@ class ForgotPasswordForm extends Component {
 	render() {
 		if (this.state.redirectTo) {
             return <Redirect to={{ pathname: this.state.redirectTo }} />
-        } else {
+        } else if (this.props.userInfo.loggedIn) {
+			return <Redirect to={{ pathname: '/' }} />
+		} else {
 			return (
 				<div>
 					{this.state.resetOrForgot === 'forgot' ? (
-						<form>
-							<Input title="Email" name="Email" type="text" value={this.state.email} handleInput={this.handleEmailInput}/>
-							<ButtonPrimary type="submit" handleClick={this.handleEmailSubmit}>Submit</ButtonPrimary>
-						</form>
+						<div>
+							<h4>Please enter your email address to reset your password:</h4>
+							<form>
+								<Input title="Email" name="Email" type="text" value={this.state.email} handleInput={this.handleEmailInput}/>
+								<ButtonPrimary type="submit" handleClick={this.handleEmailSubmit}>Submit</ButtonPrimary>
+							</form>
+						</div>
 					) : (
 						<div></div>
 					)}
 
 					{this.state.resetOrForgot === 'reset success' ? (
-						<form>
-							<Input title="Password" name="Password" type="password" value={this.state.password} handleInput={this.handlePasswordInput}/>
-							<Input title="Confirm Password" name="Confirm Password" type="password" value={this.state.confirmPassword} handleInput={this.handlePasswordConfirmInput}/>
-							<ButtonPrimary type="submit" handleClick={this.handlePasswordSubmit}>Submit</ButtonPrimary>
-						</form>
+						<div>
+							<h4>Please reset your password now:</h4>
+							<form>
+								<Input title="Password" name="Password" type="password" value={this.state.password} handleInput={this.handlePasswordInput}/>
+								<Input title="Confirm Password" name="Confirm Password" type="password" value={this.state.confirmPassword} handleInput={this.handlePasswordConfirmInput}/>
+								<ButtonPrimary type="submit" handleClick={this.handlePasswordSubmit}>Submit</ButtonPrimary>
+							</form>
+						</div>
 					) : (
 						<div></div>
 					)}

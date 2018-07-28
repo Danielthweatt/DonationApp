@@ -14,7 +14,7 @@ class Login extends Component {
 				<div className="pageHeight">
 					<Header page="login" updateUser={this.props.updateUser} userInfo={this.props.userInfo} />
 					<Wrapper>
-						<LoginForm updateUser={this.props.updateUser} />
+						<LoginForm updateUser={this.props.updateUser} userInfo={this.props.userInfo} />
 
 
 					
