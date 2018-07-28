@@ -302,7 +302,7 @@ class DonationInput extends Component {
 				{this.props.userInfo.loggedIn && this.props.userInfo.hasCustomerAccount ? (
 					<button onClick={this.chargeSavedUser}>Donate</button>
 				) : (
-					<StripeProvider apiKey="pk_test_laDoJCqgOQpou2PvCdG07DE2">
+					<StripeProvider apiKey="pk_test_xwATFGfvWsyNnp1dDh2MOk8I">
 						<Elements>
 						<StripeCheckout
 							allowRememberMe = {false}
@@ -321,9 +321,13 @@ class DonationInput extends Component {
 							) : (
 								this.state.customAmount * 100
 							)}
-							token={this.onToken}
-							stripeKey={'pk_test_laDoJCqgOQpou2PvCdG07DE2'}
-					
+							token={this.state.amount ? (
+								this.onToken
+							) : (
+								<div/>
+							)}
+							//replace with your public key
+							stripeKey={'pk_test_xwATFGfvWsyNnp1dDh2MOk8I'}
 						/>
 						</Elements>
 					</StripeProvider>

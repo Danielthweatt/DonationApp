@@ -144,7 +144,7 @@ class Settings extends Component {
     }
 
     onToken = token => {
-        API.updateUserPaymentInfo(this.state.userId, this.state.email, token.id, "pk_test_laDoJCqgOQpou2PvCdG07DE2").then(res => {
+        API.updateUserPaymentInfo(this.state.userId, this.state.email, token.id).then(res => {
             if (res.status === 200) { 
                 this.setState({
                     message: true,
@@ -255,12 +255,14 @@ class Settings extends Component {
 
                     <h4>Update Payment Information:</h4>
 
+                    {/*replace with your public key*/}
                     <StripeProvider apiKey="pk_test_laDoJCqgOQpou2PvCdG07DE2">
                         <Elements>
                             <StripeCheckout
                                 email={this.state.email}
                                 label ="Update Payment Information"
                                 token={this.onToken}
+                                //replace with your public key
                                 stripeKey={'pk_test_laDoJCqgOQpou2PvCdG07DE2'}
                                 allowRememberMe = {false}
                             />

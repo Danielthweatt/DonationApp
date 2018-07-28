@@ -22,11 +22,10 @@ export default {
 			password
 		});
 	},
-	updateUserPaymentInfo: function(userId, email, source, stripeKey){
+	updateUserPaymentInfo: function(userId, email, source){
 		return axios.put(`/user/charge/update/${userId}`,{
 			email,
-			source,
-			stripeKey
+			source
 		});
 	},
 	deleteUserPaymentInfo: function(userId){
