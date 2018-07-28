@@ -39,15 +39,9 @@ Donation App was created for non-profits to quickly implement a platform to rece
 - Once you have an account, you'll need your API keys
 - You can find your keys through your Stripe dashboard and hitting the Developers section (found in the left navbar)
 - The publishable key will start with 'pk_test' and the secret will start with 'sk_test'
-- In the DonationInput.js, Settings.js, and index.js (in the routes folder) you will need to plug your publishable key into the code - look for the comments
-- Next, at the root, create a dir called stripe
-- Inside the stripe dir create a file called config.js. Copy and paste the following code into it:
-```
-const keys = {
-	SECRET_KEY: 'PUT YOUR SECRET KEY HERE'
-};
-
-module.exports = keys;
+- In the DonationInput.js and Settings.js components you will need to plug your publishable key into the code - look for the comments
+- Next, set the variable SECRET_KEY in the production environment to your secret key, and you should be good to 
+go!
 ```
 
 ## Contributors:

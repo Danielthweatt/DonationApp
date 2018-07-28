@@ -302,6 +302,7 @@ class DonationInput extends Component {
 				{this.props.userInfo.loggedIn && this.props.userInfo.hasCustomerAccount ? (
 					<button onClick={this.chargeSavedUser}>Donate</button>
 				) : (
+					//replace apiKey with your public key
 					<StripeProvider apiKey="pk_test_xwATFGfvWsyNnp1dDh2MOk8I">
 						<Elements>
 						<StripeCheckout
@@ -322,7 +323,7 @@ class DonationInput extends Component {
 								this.state.customAmount * 100
 							)}
 							token={this.onToken}
-							//replace with your public key
+							//replace stripeKey with your public key
 							stripeKey={'pk_test_xwATFGfvWsyNnp1dDh2MOk8I'}
 						/>
 						</Elements>
