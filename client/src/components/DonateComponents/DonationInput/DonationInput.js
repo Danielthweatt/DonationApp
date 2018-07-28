@@ -294,8 +294,10 @@ class DonationInput extends Component {
 					/>
 				)}
 
-				{this.props.userInfo.loggedIn && !this.props.userInfo.hasCustomerAccount ? (
+				{this.props.userInfo.loggedIn ? (
 					<CBox
+						hasCustomerAccount = {this.props.hasCustomerAccount}
+						hasSubscription = {this.props.hasSubscription}
 						handleCheckbox = {this.handleCheckbox}
 						handleSubscribe = {this.handleSubscribe}
 					/>
