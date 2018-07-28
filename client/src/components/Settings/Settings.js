@@ -255,14 +255,14 @@ class Settings extends Component {
 
                     <h4>Update Payment Information:</h4>
 
-                    {/*replace with your public key*/}
+                    {/*replace apiKey with your public key*/}
                     <StripeProvider apiKey="pk_test_xwATFGfvWsyNnp1dDh2MOk8I">
                         <Elements>
                             <StripeCheckout
                                 email={this.state.email}
                                 label ="Update Payment Information"
                                 token={this.onToken}
-                                //replace with your public key
+                                //replace stripeKey with your public key
                                 stripeKey={'pk_test_xwATFGfvWsyNnp1dDh2MOk8I'}
                                 allowRememberMe = {false}
                             />
