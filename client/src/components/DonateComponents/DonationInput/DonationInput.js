@@ -190,7 +190,7 @@ class DonationInput extends Component {
 			});
 		} else if (amount) {
 			let email;
-			if (this.state.loggedIn) {
+			if (this.props.userInfo.loggedIn) {
 				email = this.props.userInfo.email;
 			} else {
 				email = this.state.email;
