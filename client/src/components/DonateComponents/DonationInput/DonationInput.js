@@ -1,32 +1,27 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+import API from '../../../utils/API';
 import Input from '../../Input'; 
 import {Elements, StripeProvider} from 'react-stripe-elements';
 import StripeCheckout from 'react-stripe-checkout';
+import Donate from '../Donate/Donate'; 
 import DonateOptions from '../DonateOptions'; 
 import Checkbox from "../Checkbox";
+import './DonationInput.css';
 
 class DonationInput extends Component {
-	constructor() {
-		super();
-		this.state = {
-			firstName: '',
-			lastName: '',
-			email: '',
-			amount: '',
-			customAmount: '',
-			custom: false,
-			rememberMe: false
-		};
-		this.handleFirstNameInput = this.handleFirstNameInput.bind(this);
-		this.handleLastNameInput = this.handleLastNameInput.bind(this);
-		this.handleEmailInput = this.handleEmailInput.bind(this);
-		this.handleMoneyButton = this.handleMoneyButton.bind(this);
-		this.handleMoneyCustom = this.handleMoneyCustom.bind(this);
-		this.handleCheckbox = this.handleCheckbox.bind(this);
-		this.chargeACustomer = this.chargeACustomer.bind(this);
-		this.onToken = this.onToken.bind(this);
-	}
+	state = {
+		firstName: '',
+		lastName: '',
+		email: '',
+		amount: '',
+		customAmount: '',
+		custom: false,
+		rememberMe: false, 
+		buttonClicked: 0,
+		subscriptionStarted: false,
+		message: false,
+		messageContent: ''
+	};
 	
 	handleFirstNameInput = e => {
 		this.setState({firstName: e.target.value});
@@ -43,26 +38,51 @@ class DonationInput extends Component {
 	handleMoneyButton = e => {
 		this.setState({
 			customAmount: '',
-			amount: e.target.value,
-			custom: false
+			amount: e.currentTarget.value,
+			custom: false,
+			buttonClicked: e.currentTarget.value
 		});
 	}
 	
+	handleMoneyCustomButton = e => {
+		this.setState({
+			customAmount: e.currentTarget.value,
+			amount: '',
+			custom: true,
+			buttonClicked: e.currentTarget.value
+		});
+	}
+
 	handleMoneyCustom = e => {
 		this.setState({
-			customAmount: e.target.value,
-			amount: '',
-			custom: true
+			customAmount: e.target.value
 		});
+  	}
+
+	checkMoneyInput = () => {
+
+		
+		const regex = /^\d+(?:\.\d{0,2})$/;
+		console.log('testies', this.state.amount)
+
+		if (!regex.test(this.state.amount))
+			console.log("Invalid Number");
+			
 	}
 
 	handleCheckbox = () => {
-		let newRememberMeValue = !this.state.rememberMe;
-		this.setState({rememberMe: newRememberMeValue});
+		this.setState({rememberMe: !this.state.rememberMe})
 	}
 
-	chargeACustomer() {
-		//charge the customer instead of the card
+	handleSubscribe = () => {
+		this.setState({subscriptionStarted: !this.state.subscriptionStarted})
+	}
+
+	chargeSavedUser = () => {
+		this.setState({
+			message: false,
+			messageContent: ''
+		});
 		let userId = this.props.userInfo.userId;
 		let amount;
 		if (this.state.amount) {
@@ -70,21 +90,41 @@ class DonationInput extends Component {
 		} else {
 			amount = this.state.customAmount;
 		}
-		axios.post('/charge/' + userId, {
-			amount
-		}).then(res => {
-			if (res.status === 200) { 
-				alert('Great job!');
-			} else {
-				alert('Something went wrong.');
-			}
-		}).catch(err => {
-			console.log(err);
-			alert('Something went wrong.');
-		});
+		if (amount) {
+			API.chargeSavedUser(userId, amount).then(res => {
+				if (res.status === 200) { 
+					this.setState({
+						message: true,
+						messageContent: 'Donation complete.'
+					});
+					this.props.handleModalOpen();
+				} else {
+					this.setState({
+						message: true,
+						messageContent: 'Something went wrong.'
+					});
+				}
+			}).catch(err => {
+				this.setState({
+					message: true,
+					messageContent: 'Something went wrong.'
+				});
+				console.log('Something went wrong: ');
+				console.log(err);
+			});
+		} else {
+			this.setState({
+				message: true,
+				messageContent: 'Please enter an amount to donate.'
+			});
+		}
 	}
 
 	onToken = (token) => {
+		this.setState({
+			message: false,
+			messageContent: ''
+		});
 		let userId = this.props.userInfo.userId;
 		let amount;
 		if (this.state.amount) {
@@ -92,61 +132,125 @@ class DonationInput extends Component {
 		} else {
 			amount = this.state.customAmount;
 		}
-		if (this.props.userInfo.loggedIn && this.state.rememberMe) {
-			axios.post('/charge/create/' + userId, {
-				email: this.props.userInfo.email,
-				source: token.id,
-				amount
-			}).then(res => {
+		if (this.props.userInfo.loggedIn && this.state.rememberMe && amount) {
+			API.chargeAndSaveAUser(userId, this.props.userInfo.email, token.id, amount).then(res => {
 				if (res.status === 200) {
-					alert('Customer saved!');
 					this.setState({
-						rememberMe: false
+						rememberMe: false,
+						message: true,
+						messageContent: 'Donation complete and payment information saved. To update or delete payment information, see settings page.'
 					});
 					this.props.updateUser({
 						hasCustomerAccount: true
 					});
+					this.props.handleModalOpen();
 				} else {
-					alert('Something went wrong.');
+					this.setState({
+						message: true,
+						messageContent: 'Something went wrong.'
+					});
 				}
 			}).catch(err => {
+				this.setState({
+					message: true,
+					messageContent: 'Something went wrong.'
+				});
+				console.log('Something went wrong: ');
 				console.log(err);
-				alert('Something went wrong.');
 			});
-		} else {
-			axios.post('/charge', {
-				email: this.state.email,
-				source: token.id,
-				amount
-        	}).then(res => {
+		} else if (this.props.userInfo.loggedIn && this.state.subscriptionStarted && amount) {
+			API.startASubscription(userId, amount).then(res => {
 				if (res.status === 200) {
-					alert('It worked!');
+					this.setState({
+						rememberMe: false,
+						message: true,
+						messageContent: 'This donation is complete and will automatically be repeated monthly.'
+					});
+					this.props.updateUser({
+						hasSubscription: true
+					});
+					this.props.handleModalOpen();
+				} else {
+					this.setState({
+						message: true,
+						messageContent: 'Something went wrong.'
+					});
+				}
+			}).catch(err => {
+				this.setState({
+					message: true,
+					messageContent: 'Something went wrong.'
+				});
+				console.log('Something went wrong: ');
+				console.log(err);
+			});
+		} else if (amount) {
+			API.charge(this.state.email, token.id, amount).then(res => {
+				if (res.status === 200) {
 					this.setState({
 						firstName: '',
 						lastName: '',
 						email: '',
-						rememberMe: false
+						rememberMe: false,
+						message: true,
+						messageContent: 'Donation complete.'
 					});
+					this.props.handleModalOpen();
 				} else {
-					alert('Something went wrong.');
+					this.setState({
+						message: true,
+						messageContent: 'Something went wrong.'
+					});
 				}
         	}).catch((err) => {
+				this.setState({
+					message: true,
+					messageContent: 'Something went wrong.'
+				});
+				console.log('Something went wrong: ');
 				console.log(err);
-				alert('Something went wrong.');
+			});
+		} else {
+			this.setState({
+				message: true,
+				messageContent: 'Please enter an amount to donate.'
 			});
 		}
 	}
 	
 	render() {
 		return (
-			<div className = "donation-input">
-
+			<div className = "donation-input-card">
+				<center>
+					<h2>Donate</h2>
+					<hr/>
+				</center>
 				<DonateOptions
+					buttonClicked={this.state.buttonClicked}
 					handleMoneyButton={this.handleMoneyButton}
-					handleMoneyCustom={this.handleMoneyCustom}
+					handleMoneyCustomButton={this.handleMoneyCustomButton}
 					customAmount={this.state.customAmount}
 					custom={this.state.custom}
+					checkMoneyInput={this.checkMoneyInput}
 				/>
+
+				{this.state.custom ? (
+					<div>
+						<Input 
+							title="Amount"
+							name="Amount"
+							id="custom-payment" 
+							handleInput={this.handleMoneyCustom} 
+							onBlur={this.state.checkMoneyInput}
+							value={this.state.customAmount} 
+							type="number" 
+							step="0.01" 
+							min="0.01" 
+							type={Donate}/>
+					</div>
+				) : (
+					<div></div>
+				)}
 
 				{this.props.userInfo.loggedIn ? (
 					<div></div>
@@ -155,11 +259,10 @@ class DonationInput extends Component {
 						title = "First Name"
 						name = "First Name"
 						type="text"
-						value={this.props.firstName}
+						value={this.state.firstName}
 						handleInput={this.handleFirstNameInput}
 					/>
 				)}
-
 
 				{this.props.userInfo.loggedIn ? (
 					<div></div>
@@ -168,7 +271,7 @@ class DonationInput extends Component {
 						title = "Last Name"
 						name = "Last Name"
 						type="text"
-						value={this.props.lastName}
+						value={this.state.lastName}
 						handleInput={this.handleLastNameInput}
 					/>
 				)}
@@ -180,21 +283,24 @@ class DonationInput extends Component {
 						title = "Email"
 						name = "Email"
 						type="text"
-						value={this.props.email}
+						value={this.state.email}
 						handleInput={this.handleEmailInput}
 					/>
 				)}
 
-				{this.props.userInfo.loggedIn && !this.props.userInfo.hasCustomerAccount ? (
+				{this.props.userInfo.loggedIn ? (
 					<Checkbox
+						hasCustomerAccount = {this.props.userInfo.hasCustomerAccount}
+						hasSubscription = {this.props.userInfo.hasSubscription}
 						handleCheckbox = {this.handleCheckbox}
+						handleSubscribe = {this.handleSubscribe}
 					/>
 				) : (
 					<div></div>
 				)}
 			
 				{this.props.userInfo.loggedIn && this.props.userInfo.hasCustomerAccount ? (
-					<button onClick={this.chargeACustomer}>Donate</button>
+					<button onClick={this.chargeSavedUser}>Donate</button>
 				) : (
 					<StripeProvider apiKey="pk_test_xwATFGfvWsyNnp1dDh2MOk8I">
 						<Elements>
@@ -210,11 +316,23 @@ class DonationInput extends Component {
 							) : (	
 								this.state.email
 							)}
+							amount={this.state.amount ? (
+								this.state.amount * 100
+							) : (
+								this.state.customAmount * 100
+							)}
 							token={this.onToken}
+							//replace with your public key
 							stripeKey={'pk_test_xwATFGfvWsyNnp1dDh2MOk8I'}
 						/>
 						</Elements>
 					</StripeProvider>
+				)}
+
+				{this.state.message ? (
+					<p>{this.state.messageContent}</p>
+				) : (
+					<div></div>
 				)}
 
 			</div>

@@ -5,18 +5,24 @@ import PillarSection from '../../components/HomeComponents/PillarSection';
 import Mission from '../../components/HomeComponents/Mission';
 import Footer from '../../components/Footer/Footer'; 
 import Jumbotron from '../../components/HomeComponents/Jumbotron';
+import './Home.css';
 
 
 class Home extends React.Component {
 	render () {
 		return (
-			< Wrapper >
-				< Header updateUser={this.props.updateUser} userInfo={this.props.userInfo} />
-				< Jumbotron />
-				< PillarSection />
-				< Mission />
+			<div>
+				<div className="pageHeight">
+					< Header page="home" updateUser={this.props.updateUser} userInfo={this.props.userInfo} />
+					< Jumbotron />
+					< Wrapper >
+						< PillarSection />
+						< Mission />
+						
+					</ Wrapper > 
+				</div>
 				< Footer />
-			</ Wrapper > 
+			</div>
 		);
 	}
 }
