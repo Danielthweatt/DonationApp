@@ -1,6 +1,5 @@
 import React from 'react';
 import Checkbox from '@material-ui/core/Checkbox';
-import './CheckBox.css'; 
 
 const CBox = props => (
 	<div className="checkbox">
