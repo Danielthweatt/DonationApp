@@ -128,7 +128,9 @@ class ForgotPasswordForm extends Component {
 	render() {
 		if (this.state.redirectTo) {
             return <Redirect to={{ pathname: this.state.redirectTo }} />
-        } else {
+        } else if (this.props.userInfo.loggedIn) {
+			return <Redirect to={{ pathname: '/' }} />
+		} else {
 			return (
 				<div>
 					{this.state.resetOrForgot === 'forgot' ? (

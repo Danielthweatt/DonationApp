@@ -12,7 +12,8 @@ module.exports = function(User){
 								email: user.email,
 								firstName: user.firstName,
 								lastName: user.lastName,
-								hasCustomerAccount: true
+								hasCustomerAccount: true,
+								hasSubscription: user.hasSubscription
 							}
 						});
 					} else {
@@ -22,7 +23,8 @@ module.exports = function(User){
 								email: user.email,
 								firstName: user.firstName,
 								lastName: user.lastName,
-								hasCustomerAccount: false
+								hasCustomerAccount: false,
+								hasSubscription: user.hasSubscription
 							}
 						});
 					}
@@ -122,7 +124,8 @@ module.exports = function(User){
 							console.log(confirmation);
 							User.findOneAndUpdate({_id: userId}, {
 								$set: {
-									customerId: ''
+									customerId: '',
+									hasSubscription: false
 								}
 							}, (err) => {
 								if (err) {
@@ -218,7 +221,69 @@ module.exports = function(User){
 					res.status(422).send({ message: 'DB search error.' });
 				}
 			});
+		},
+		startSubscription: function(userId, res, stripe, amount){
+			User.findById({ _id: userId }, (err, user) => {
+				if (err) {
+					res.status(422).send(err);
+				} else if (user) {
+					stripe.charges.create({
+						amount: amount * 100,
+						customer: user.customerId,
+						currency: 'usd',
+						receipt_email: user.email
+					}).then(() => {
+						stripe.products.create({
+							name: 'Love Member',
+							type: 'service' 
+						}, (err, product) => {
+							if (err) {
+								res.status(500).send(err);
+							} else {
+								stripe.plans.create({
+									nickname: 'Standard Monthly',
+									product: product.id, 
+									amount: amount * 100,
+									currency: 'usd',
+									interval: 'month',
+									usage_type: 'licensed',
+								}, (err, plan) => {
+									if (err) {
+										res.status(500).send(err);
+									} else {
+										stripe.subscriptions.create({
+											customer: user.customerId,
+											items: [
+												{
+													plan: plan.id,
+												}
+											]
+										}, (err, subscription) => {
+											if (err) {
+												res.status(500).send(err);
+											} else {
+												console.log(subscription);
+												user.hasSubscription = true;
+												user.save(function(err){
+													if (err) {
+														res.status(422).send(err);
+													} else {
+														res.send('Success');
+													}
+												});
+											}
+										});
+									}
+								});
+							}
+						});
+					}).catch(err => 
+						res.status(500).send(err)
+					);	
+				} else {
+					res.status(422).send({ message: 'DB search error.' });
+				}
+			});
 		}
-
 	};
 };

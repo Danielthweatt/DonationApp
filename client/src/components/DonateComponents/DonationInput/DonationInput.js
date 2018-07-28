@@ -105,11 +105,12 @@ class DonationInput extends Component {
 					});
 				}
 			}).catch(err => {
-				console.log(err);
 				this.setState({
 					message: true,
 					messageContent: 'Something went wrong.'
 				});
+				console.log('Something went wrong: ');
+				console.log(err);
 			});
 		} else {
 			this.setState({
@@ -131,7 +132,7 @@ class DonationInput extends Component {
 		} else {
 			amount = this.state.customAmount;
 		}
-		if (this.props.userInfo.loggedIn && this.state.rememberMe && !this.state.handleSubscribe && amount) {
+		if (this.props.userInfo.loggedIn && this.state.rememberMe && amount) {
 			API.chargeAndSaveAUser(userId, this.props.userInfo.email, token.id, amount).then(res => {
 				if (res.status === 200) {
 					this.setState({
@@ -150,11 +151,12 @@ class DonationInput extends Component {
 					});
 				}
 			}).catch(err => {
-				console.log(err);
 				this.setState({
 					message: true,
 					messageContent: 'Something went wrong.'
 				});
+				console.log('Something went wrong: ');
+				console.log(err);
 			});
 		} else if (this.props.userInfo.loggedIn && this.state.subscriptionStarted && amount) {
 			API.startASubscription(userId, amount).then(res => {
@@ -162,10 +164,10 @@ class DonationInput extends Component {
 					this.setState({
 						rememberMe: false,
 						message: true,
-						messageContent: 'Donation complete and subscription started.'
+						messageContent: 'This donation is complete and will automatically be repeated monthly.'
 					});
 					this.props.updateUser({
-						hasCustomerAccount: true
+						hasSubscription: true
 					});
 					this.props.handleModalOpen();
 				} else {
@@ -175,11 +177,12 @@ class DonationInput extends Component {
 					});
 				}
 			}).catch(err => {
-				console.log(err);
 				this.setState({
 					message: true,
 					messageContent: 'Something went wrong.'
 				});
+				console.log('Something went wrong: ');
+				console.log(err);
 			});
 		} else if (amount) {
 			API.charge(this.state.email, token.id, amount).then(res => {
@@ -288,6 +291,7 @@ class DonationInput extends Component {
 				{this.props.userInfo.loggedIn ? (
 					<Checkbox
 						hasCustomerAccount = {this.props.userInfo.hasCustomerAccount}
+						hasSubscription = {this.props.userInfo.hasSubscription}
 						handleCheckbox = {this.handleCheckbox}
 						handleSubscribe = {this.handleSubscribe}
 					/>

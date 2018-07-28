@@ -14,6 +14,7 @@ class App extends Component {
 	state = {
 		loggedIn: false,
 		hasCustomerAccount: false,
+		hasSubscription: false,
 		email: null,
 		firstName: null,
 		lastName: null,
@@ -34,6 +35,7 @@ class App extends Component {
 			  	this.setState({
 					loggedIn: true,
 					hasCustomerAccount: response.data.user.hasCustomerAccount,
+					hasSubscription: response.data.user.hasSubscription,
 					email: response.data.user.email,
 					firstName: response.data.user.firstName,
 					lastName: response.data.user.lastName,
@@ -43,6 +45,7 @@ class App extends Component {
 			  	this.setState({
 					loggedIn: false,
 					hasCustomerAccount: false,
+					hasSubscription: false,
 					email: null,
 					firstName: null,
 					lastName: null,
@@ -65,6 +68,7 @@ class App extends Component {
 								userInfo={{
 									loggedIn: this.state.loggedIn,
 									hasCustomerAccount: this.state.hasCustomerAccount,
+									hasSubscription: this.state.hasSubscription,
 									email: this.state.email,
 									firstName: this.state.firstName,
 									lastName: this.state.lastName,

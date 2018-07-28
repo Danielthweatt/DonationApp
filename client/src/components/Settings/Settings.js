@@ -174,7 +174,8 @@ class Settings extends Component {
                     messageContent: 'Payment information deleted.'
                 });
                 this.props.updateUser({
-                    hasCustomerAccount: false
+                    hasCustomerAccount: false,
+                    hasSubscription: false
                 });
             } else {
                 this.setState({

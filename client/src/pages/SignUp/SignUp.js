@@ -13,7 +13,7 @@ class SignUp extends Component {
 				<div className="pageHeight">
 					<Header updateUser={this.props.updateUser} userInfo={this.props.userInfo} />
 					<Wrapper>
-						<SignUpForm />
+						<SignUpForm userInfo={this.props.userInfo}  />
 					
 					</Wrapper>
 				</div>

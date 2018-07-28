@@ -39,7 +39,8 @@ module.exports = function(express, passport, userController){
 			email: req.user.email,
 			hasCustomerAccount: hasCustomerAccount,
 			firstName: req.user.firstName,
-			lastName: req.user.lastName
+			lastName: req.user.lastName,
+			hasSubscription: req.user.hasSubscription
 		};
 		res.send(userInfo);
 	});
@@ -183,55 +184,55 @@ module.exports = function(express, passport, userController){
 
 	// Start A Subscription Route
 	router.post('/charge/subscription/:id', (req, res) => {
-		userController.startSubscription();
-		stripe.customers.create({
-			email: req.body.email,
-			source: req.body.source
-		}).then((customer) => {
-			console.log('find it', customer.id); 
-			stripe.charges.create({
-				amount: req.body.amount * 100,
-				currency: 'usd',
-				customer: customer.id,
-				receipt_email: req.body.email
-			}).then(() => {
-				stripe.products.create({
-					name: 'Love Member',
-					type: 'service' 
-				}, function(err, product) {
-				// asynchronously called
-					if (err) console.log(err);
-					else {
-						stripe.plans.create({
-							nickname: 'Standard Monthly',
-							product: product.id, 
-							amount: req.body.amount * 100,
-							currency: 'usd',
-							interval: 'month',
-							usage_type: 'licensed',
-						}, function(err, plan) {
-							// asynchronously called
-							if (err) console.log(err);
+		userController.startSubscription(req.params.userId, res, stripe, req.body.amount);
+		// stripe.customers.create({
+		// 	email: req.body.email,
+		// 	source: req.body.source
+		// }).then((customer) => {
+		// 	console.log('find it', customer.id); 
+		// 	stripe.charges.create({
+		// 		amount: req.body.amount * 100,
+		// 		currency: 'usd',
+		// 		customer: customer.id,
+		// 		receipt_email: req.body.email
+		// 	}).then(() => {
+		// 		stripe.products.create({
+		// 			name: 'Love Member',
+		// 			type: 'service' 
+		// 		}, function(err, product) {
+		// 		// asynchronously called
+		// 			if (err) console.log(err);
+		// 			else {
+		// 				stripe.plans.create({
+		// 					nickname: 'Standard Monthly',
+		// 					product: product.id, 
+		// 					amount: req.body.amount * 100,
+		// 					currency: 'usd',
+		// 					interval: 'month',
+		// 					usage_type: 'licensed',
+		// 				}, function(err, plan) {
+		// 					// asynchronously called
+		// 					if (err) console.log(err);
 			
-							else {
-								console.log('testies', customer.id); 
-								stripe.subscriptions.create({
-									customer: customer.id,
-									items: [
-										{
-											plan: plan.id,
-										}
-									]
-								}, function(err, subscription) {
-									// asynchronously called
-									if (err) console.log(err);
+		// 					else {
+		// 						console.log('testies', customer.id); 
+		// 						stripe.subscriptions.create({
+		// 							customer: customer.id,
+		// 							items: [
+		// 								{
+		// 									plan: plan.id,
+		// 								}
+		// 							]
+		// 						}, function(err, subscription) {
+		// 							// asynchronously called
+		// 							if (err) console.log(err);
 								
 						
-								});}
-						});
-					}});
-			});
-		});
+		// 						});}
+		// 				});
+		// 			}});
+		// 	});
+		// });
 	});
 
 	//React App

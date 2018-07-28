@@ -10,7 +10,7 @@ class LoginForm extends Component {
         password: '',
 		redirectTo: null,
 		message: false,
-		messageContent: ''  
+		messageContent: ''
     };
 
 	handleEmailInput = e => {
@@ -55,6 +55,7 @@ class LoginForm extends Component {
 							userId: response.data.id,
 							email: response.data.email,
 							hasCustomerAccount: response.data.hasCustomerAccount,
+							hasSubscription: response.data.hasSubscription,
 							firstName: response.data.firstName,
 							lastName: response.data.lastName
                 		});
@@ -77,7 +78,9 @@ class LoginForm extends Component {
 	render() {
 		if (this.state.redirectTo) {
             return <Redirect to={{ pathname: this.state.redirectTo }} />
-        } else {
+        } else if (this.props.userInfo.loggedIn) {
+			return <Redirect to={{ pathname: '/' }} />
+		} else {
 			return (
 				<div>
 					<form>
