@@ -9,7 +9,7 @@ const Team = () => (
 		</div>
 
 		<div className="card-deck team-card-deck">
-			<div className="col-xs-12 col-sm-6 col-lg-4">
+			<div className="col-xs-12 col-s-12 col-sm-6 col-lg-4">
 				<div className="card card-custom-styling">
 					<div className = 'team-card'>
 						<div className="team-circle-gradient-styling">
@@ -26,7 +26,7 @@ const Team = () => (
 					</div>
 				</div>
 			</div>
-			<div className="col-xs-12 col-sm-6 col-lg-4">
+			<div className="col-xs-12 col-s-12 col-sm-6 col-lg-4">
 				<div className="card card-custom-styling">
 					<div className = 'team-card'>
 						<div className="team-circle-gradient-styling">
@@ -43,7 +43,7 @@ const Team = () => (
 					</div>
 				</div>
 			</div>
-			<div className="col-xs-12 col-sm-6 col-lg-4">
+			<div className="col-xs-12 col-s-12 col-sm-6 col-lg-4">
 				<div className="card card-custom-styling">
 					<div className = 'team-card'>
 						<div className="team-circle-gradient-styling">
@@ -60,7 +60,7 @@ const Team = () => (
 					</div>
 				</div>
 			</div>
-			<div className="col-xs-12 col-sm-6 col-lg-4">
+			<div className="col-xs-12 col-s-12 col-sm-6 col-lg-4">
 				<div className="card card-custom-styling">
 					<div className = 'team-card'>
 						<div className="team-circle-gradient-styling">
@@ -77,7 +77,7 @@ const Team = () => (
 					</div>
 				</div>
 			</div>
-			<div className="col-xs-12 col-sm-6 col-lg-4">
+			<div className="col-xs-12 col-s-12 col-sm-6 col-lg-4">
 				<div className="card card-custom-styling">
 					<div className = 'team-card'>
 						<div className="team-circle-gradient-styling">

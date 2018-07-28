@@ -265,7 +265,9 @@ class Settings extends Component {
                                 //replace stripeKey with your public key
                                 stripeKey={'pk_test_xwATFGfvWsyNnp1dDh2MOk8I'}
                                 allowRememberMe = {false}
-                            />
+                            >
+                                <ButtonPrimary>Update Info</ButtonPrimary>
+                            </StripeCheckout>
                         </Elements>
                     </StripeProvider>
                     <br/><br/>
