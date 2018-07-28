@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+import API from '../../utils/API';
 import Input from '../Input'; 
 import { Redirect } from 'react-router-dom'; 
 import {Elements, StripeProvider} from 'react-stripe-elements';
@@ -8,30 +8,24 @@ import ButtonPrimary from '../Buttons/ButtonPrimary'
 
 
 class Settings extends Component {
-    constructor(){
-        super();
-        this.state = {
-            firstName: "",
-            lastName: "",
-            email: "",
-            password: '',
-            confirmPassword: '',
-            message: false,
-            messageContent: '',
-            customerId: "",
-            userId: ""
-        };
-        this.deleteCustomer = this.deleteCustomer.bind(this);
-}
+    state = {
+        firstName: '',
+        lastName: '',
+        email: '',
+        password: '',
+        confirmPassword: '',
+        message: false,
+        messageContent: '',
+        userId: ''
+    };
 
-
-    componentDidMount(){
+    componentDidMount = () => {
         this.setState({
             userId: this.props.userInfo.userId,
             firstName: this.props.userInfo.firstName,
             lastName: this.props.userInfo.lastName,
-            email: this.props.userInfo.email,
-        })
+            email: this.props.userInfo.email
+        });
     }
 
     handleFirstNameInput = e => {
@@ -76,11 +70,7 @@ class Settings extends Component {
 				messageContent: 'Please enter your email.'
 			});
 		} else {
-            axios.put('/user/update/' + this.state.userId, {
-                firstName: this.state.firstName,
-                lastName: this.state.lastName,
-                email: this.state.email
-            }).then(res => {
+            API.updateUserInfo(this.state.userId, this.state.firstName, this.state.lastName, this.state.email).then(res => {
 			    if (res.status === 200) { 
 				    this.setState({
 					    message: true,
@@ -98,11 +88,12 @@ class Settings extends Component {
 				    });
 			    }
 		    }).catch(err => {
-			    console.log(err);
 			    this.setState({
 				    message: true,
 				    messageContent: 'Something went wrong.'
-			    });
+                });
+                console.log('Something went wrong: ');
+				console.log(err);
             });
         }
     }
@@ -129,9 +120,7 @@ class Settings extends Component {
 				messageContent: 'Please re-enter a matching password.'
 			});
 		} else {
-            axios.put('/user/update/' + this.state.userId, {
-				password: this.state.password
-			}).then(res => {
+            API.updateUserPassword(this.state.userId, this.state.password).then(res => {
 				if (res.status === 200) { 
 				    this.setState({
 					    message: true,
@@ -154,38 +143,54 @@ class Settings extends Component {
         }
     }
 
-    //update card info
-    onToken = (token) => {
-        axios.put('/settings/' + this.state.userId,{
-            email: this.state.email,
-            data: token.id,
-            //replace with your public key
-            stripeKey: "pk_test_xwATFGfvWsyNnp1dDh2MOk8I"
-        }).then(res => {
-            console.log(res)
-            this.setState({
-                message: true,
-                messageContent: 'Congratulations, your default payment method was updated.'
-            })
-            }).catch(err => {
-            console.log(err)
+    onToken = token => {
+        API.updateUserPaymentInfo(this.state.userId, this.state.email, token.id).then(res => {
+            if (res.status === 200) { 
                 this.setState({
                     message: true,
-                    messageContent: 'Uh oh.. something has gone awry'
-                })
-            })
+                    messageContent: 'Payment information updated.'
+                });
+            } else {
+                this.setState({
+                    message: true,
+                    messageContent: 'Something went wrong.'
+                });
+            }
+        }).catch(err => {
+            this.setState({
+                message: true,
+                messageContent: 'Something went wrong.'
+            });
+            console.log('Something went wrong: ');
+            console.log(err);
+        });
     }
 
-    //delete customers info
-    deleteCustomer(){
-        //console.log(this.state)
-        axios.put('/settings/delete/' + this.state.userId, {})
-        .then(res => {
-            console.log(res)
-            this.props.updateUser({
-                hasCustomerAccount: false
+    deletePaymentInfo = () => {
+        API.deleteUserPaymentInfo(this.state.userId).then(res => {
+            if (res.status === 200) { 
+                this.setState({
+                    message: true,
+                    messageContent: 'Payment information deleted.'
+                });
+                this.props.updateUser({
+                    hasCustomerAccount: false,
+                    hasSubscription: false
+                });
+            } else {
+                this.setState({
+                    message: true,
+                    messageContent: 'Something went wrong.'
+                });
+            }
+        }).catch(err => {
+            this.setState({
+                message: true,
+                messageContent: 'Something went wrong.'
             });
-        })
+            console.log('Something went wrong: ');
+            console.log(err);
+        });
     }
     
     render() {
@@ -255,7 +260,7 @@ class Settings extends Component {
                         <Elements>
                             <StripeCheckout
                                 email={this.state.email}
-                                label ="Update Info"
+                                label ="Update Payment Information"
                                 token={this.onToken}
                                 //replace with your public key
                                 stripeKey={'pk_test_laDoJCqgOQpou2PvCdG07DE2'}
@@ -264,7 +269,7 @@ class Settings extends Component {
                         </Elements>
                     </StripeProvider>
                     <br/><br/>
-                    <ButtonPrimary handleClick={this.deleteCustomer}>
+                    <ButtonPrimary handleClick={this.deletePaymentInfo}>
                         Delete My Payment Information
                     </ButtonPrimary>
 

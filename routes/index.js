@@ -1,169 +1,32 @@
 //Dependencies
 const path = require('path');
-//replace with your public key
-const keyPublishable = 'pk_test_xwATFGfvWsyNnp1dDh2MOk8I';
-const secret = require('../config.js');
+const secret = require('../config/stripe/config.js');
 const keySecret = secret.SECRET_KEY;
 const stripe = require('stripe')(keySecret);
 const waterfall = require('async-waterfall');
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 
-module.exports = function(app, passport, User){
+module.exports = function(express, passport, userController){
 
-	//Standard Charge Route
-	app.post('/charge', (req, res) => {
-		//get to dollar amount by *100
-		stripe.charges.create({
-			amount: req.body.amount * 100,
-			source: req.body.source,
-			//description: 'test charge',
-			currency: 'usd',
-			//receipt_email: req.body.email
-		}).then(charge => {
-			console.log(charge);
-			res.send('Success');
-		}).catch(err => 
-			res.status(500).send(err)
-		);
+	const router = express.Router();
+
+	// Check To See If Signed-In Route
+	router.get('/user', (req, res) => {
+		if (req.user) {
+			userController.findLoggedInUser(req.user._id, res);
+		} else {
+			res.send({ user: null });
+		}
 	});
 
-	//Charge and Save User Payment Info Route
-	app.post('/charge/create/:id', (req, res) => {
-		stripe.customers.create({
-			email: req.body.email,
-			//source is the token linked to their card
-			source: req.body.source
-		}).then((customer) => {
-			stripe.charges.create({
-				amount: req.body.amount * 100,
-				currency: 'usd',
-				customer: customer.id,
-				receipt_email: req.body.email
-			}).then(() => {
-				User.findOneAndUpdate({_id: req.params.id}, {
-					$set: {customerId : customer.id}
-				}, (err, user) => {
-					if (err) {
-						res.status(422).send(err);
-					} 
-					else {
-						res.send('Success');
-					}
-				});
-			}).catch(err => 
-				res.status(500).send(err)
-			);
-		}).catch(err => 
-			res.status(500).send(err)
-		);
-	
+	// Sign-Up Route
+	router.post('/user/signup', (req, res) => {
+		userController.signUp(req.body.email, res, req.body.firstName, req.body.lastName, req.body.password);
 	});
 
-	app.post('/charge/subscription/:id', (req,res) => {
-		console.log('here is the user/mongo id', req.params.id);
-		stripe.customers.create({
-			email: req.body.email,
-			//source is the token linked to their card
-			source: req.body.source
-		}).then((customer) => {
-			console.log('find it', customer.id); 
-			stripe.charges.create({
-				amount: req.body.amount * 100,
-				currency: 'usd',
-				customer: customer.id,
-				receipt_email: req.body.email
-			}).then(() => {
-				stripe.products.create({
-					name: 'Love Member',
-					type: 'service' 
-				}, function(err, product) {
-				// asynchronously called
-					if (err) console.log(err);
-					else {
-						stripe.plans.create({
-							nickname: 'Standard Monthly',
-							product: product.id, 
-							amount: req.body.amount * 100,
-							currency: 'usd',
-							interval: 'month',
-							usage_type: 'licensed',
-						}, function(err, plan) {
-							// asynchronously called
-							if (err) console.log(err);
-			
-							else {
-								console.log('testies', customer.id); 
-								stripe.subscriptions.create({
-									customer: customer.id,
-									items: [
-										{
-											plan: plan.id,
-										}
-									]
-								}, function(err, subscription) {
-									// asynchronously called
-									if (err) console.log(err);
-								
-						
-								});}
-						});
-					}});
-			});
-		});
-	});
-
-	//Charge a Customer With a Saved Card Route
-	app.post('/charge/:id', (req, res) => {
-		User.findById({ _id: req.params.id }, (err, user) => {
-			if (err) {
-				res.status(422).send(err);
-			} else if (user) {
-				stripe.charges.create({
-					amount: req.body.amount * 100,
-					customer: user.customerId,
-					currency: 'usd',
-					receipt_email: user.email
-				}).then(charge => 
-					res.send('Success')
-				).catch(err => 
-					res.status(500).send(err)
-				);
-			} else {
-				res.status(422).send({ message: 'DB search error.' });
-			}
-		});
-	});
-
-	//Sign-Up Route
-	app.post('/user/signup', (req, res) => {
-		const { firstName, lastName, email, password } = req.body;
-		User.findOne({ email: email }, (err, user) => {
-			if (err) {
-				console.log('User signup db search error: ', err);
-				res.status(422).send(err);
-			} else if (user) {
-				res.send({
-					error: `Sorry, there is already a user with the email: ${email}`
-				});
-			}
-			else {
-				const newUser = new User({
-					firstName: firstName,
-					lastName: lastName,
-					email: email,
-					password: password
-				});
-				newUser.save((err, savedUser) => {
-					if (err) return res.status(422).send(err);
-					res.send('Success');
-				});
-			}
-		});
-	});
-
-	//Sign-In Route
-	app.post('/user/signin', passport.authenticate('local', {
+	// Sign-In Route
+	router.post('/user/signin', passport.authenticate('local', {
 		failureRedirect: '/user/signin/failure',
 		failureFlash: true
 	}), (req, res) => {
@@ -174,55 +37,43 @@ module.exports = function(app, passport, User){
 		const userInfo = {
 			id: req.user._id,
 			email: req.user.email,
-			hasCustomerAccount,
+			hasCustomerAccount: hasCustomerAccount,
 			firstName: req.user.firstName,
-			lastName: req.user.lastName
+			lastName: req.user.lastName,
+			hasSubscription: req.user.hasSubscription
 		};
 		res.send(userInfo);
 	});
 
-	app.get('/user/signin/failure', (req, res) => {
+	// Sign-In Failure Route
+	router.get('/user/signin/failure', (req, res) => {
 		let message = req.flash('error')[0];
-		res.send({message});
+		res.send({
+			message: message
+		});
 	});
 
-	//Check to see if signed-in Route
-	app.get('/user', (req, res) => {
-		if (req.user) {
-			User.findById({_id: req.user._id}, (err, user) => {
-				if (err) {
-					res.send(err);
-				} else {
-					if (user.customerId) {
-						res.send({
-							user: {
-								userId: user._id,
-								email: user.email,
-								firstName: user.firstName,
-								lastName: user.lastName,
-								hasCustomerAccount: true
-							}
-						});
-					} else {
-						res.send({
-							user: {
-								userId: user._id,
-								email: user.email,
-								firstName: user.firstName,
-								lastName: user.lastName,
-								hasCustomerAccount: false
-							}
-						});
-					}
-				}
-			});
+	// Update User Info Route
+	router.put('/user/update/:userId', function(req, res){
+		if (req.body.password) {
+			userController.updateUserPassword(req.params.userId, res, req.body.password);
 		} else {
-			res.send({ user: null });
+			userController.updateUserInfo(req.params.userId, req.body.firstName, req.body.lastName, req.body.email, res);
 		}
 	});
 
-	//Sign-Out Route
-	app.post('/user/signout', (req, res) => {
+	// Update User Payment Info Route
+	router.put('/user/charge/update/:userId', (req, res) => {
+		userController.updateUserPaymentInfo(req.params.userId, res, stripe, req.body.source);
+	});
+
+	// Delete User Payment Info (from stripe and our db)
+	router.delete('/user/charge/update/:userId', (req, res) => {
+		userController.deleteUserPaymentInfo(req.params.userId, res, stripe);
+	});
+
+	// Sign-Out Route
+	router.post('/user/signout', (req, res) => {
 		if (req.user) {
 			req.logout();
 			res.send({ message: 'Logging out' });
@@ -231,8 +82,8 @@ module.exports = function(app, passport, User){
 		}
 	});
 
-	//Forgot Password Route
-	app.post('/forgot', (req, res) => {
+	// Forgot Password Route
+	router.post('/user/forgot', (req, res) => {
 		waterfall([
 			function(done){
 				crypto.randomBytes(20, function(err, buf){
@@ -241,19 +92,7 @@ module.exports = function(app, passport, User){
 				});
 			},
 			function(token, done){
-				User.findOne({ email: req.body.email }, (err, user) => { 
-					if (err) {
-						res.status(422).send(err);
-					} else if (!user) {
-						res.send('Could not find a user account with that email address.');
-					} else {
-						user.passwordResetToken = token;
-						user.passwordResetTokenExpiration = Date.now() + 3600000;
-						user.save(function(err){
-							done(err, token, user);
-						});
-					}
-				});
+				userController.setPasswordResetToken(req.body.email, res, token, done);
 			},
 			function(token, user, done){
 				let host;
@@ -290,162 +129,119 @@ module.exports = function(app, passport, User){
 		});
 	});
 
-	//Reset Password Token Check Route
-	app.get('/reset/check/:token', function(req, res){
-		User.findOne({
-			passwordResetToken: req.params.token,
-			passwordResetTokenExpiration: {
-				$gt: Date.now()
-			} 
-		}, (err, user) => {
-			if (err) {
-				res.status(422).send(err);
-			} else if (!user) {
-				res.send({ message: 'Password reset token invalid or expired.' });
-			} else {
-				res.send({ userId: user._id});
-			}
-		});
+	// Reset Password Token Check Route
+	router.get('/user/reset/check/:token', function(req, res){
+		userController.checkPasswordResetToken(req.params.token, res);
 	});
 
-	//Reset Password Route
-	app.put('/reset/:userId', function(req, res){
-		User.findOne({ _id: req.params.userId }, (err, user) => { 
-			if (err) {
-				res.status(422).send(err);
-			} else if (!user) {
-				res.status(422).send('Something went wrong.');
-			} else {
-				user.passwordResetToken = '';
-				user.passwordResetTokenExpiration = null;
-				user.password = req.body.password;
-				user.save(function(err){
-					if (err) {
-						res.status(422).send(err);
-					} else {
-						res.send('Success');
-					}
-				});
-			}
-		});
+	// Reset Password Route
+	router.put('/user/reset/:userId', function(req, res){
+		userController.resetUserPassword(req.params.userId, res, req.body.password);
 	});
 
-	// Update User Info Route
-	app.put('/user/update/:userId', function(req, res){
-		if (req.body.password) {
-			console.log('updating password');
-			User.findOne({ _id: req.params.userId }, (err, user) => { 
-				if (err) {
-					res.status(422).send(err);
-				} else if (!user) {
-					res.status(422).send('Something went wrong.');
-				} else {
-					user.password = req.body.password;
-					user.save(function(err){
-						if (err) {
-							res.status(422).send(err);
-						} else {
-							res.send('Success');
-						}
-					});
-				}
-			});
-		} else {
-			User.findOneAndUpdate({ _id: req.params.userId }, {
-				$set: {
-					firstName: req.body.firstName,
-					lastName: req.body.lastName,
-					email: req.body.email
-				}
-			}, (err, user) => { 
-				if (err) {
-					res.status(422).send(err);
-				} else if (!user) {
-					res.status(422).send('Something went wrong.');
-				} else {
-					res.send({
-						firstName: req.body.firstName,
-						lastName: req.body.lastName,
-						email: req.body.email
-					});
-				}
-			});
-		}
+	// Standard Charge Route
+	router.post('/charge', (req, res) => {
+		// Get to dollar amount by *100
+		// Source is the token linked to their card
+		stripe.charges.create({
+			amount: req.body.amount * 100,
+			source: req.body.source,
+			currency: 'usd',
+			receipt_email: req.body.email
+		}).then(charge => {
+			console.log(charge);
+			res.send('Success');
+		}).catch(err => 
+			res.status(500).send(err)
+		);
 	});
 
-	//update customer card info
-	app.put('/settings/:id', (req,res) => {
-		let id = req.params.id;
-		User.findById({_id: id}, (err, user) => {
-			if (err) {
-				res.send(err);
-			} else {
-				//console.log(user)
-				//console.log('the req body',req.body)
-				let customerId = user.customerId;
-				//update the customer card
-				stripe.customers.update(customerId, {
-					source: req.body.data
-				}, (err, confirmation) => {
-					if(err) console.log(err);
-					else{
-						res.send(confirmation);
-					}
-				});} 
-		});
+	// Charge and Save User Payment Info Route
+	router.post('/charge/create/:userId', (req, res) => {
+		stripe.customers.create({
+			email: req.body.email,
+			source: req.body.source
+		}).then((customer) => {
+			stripe.charges.create({
+				amount: req.body.amount * 100,
+				currency: 'usd',
+				customer: customer.id,
+				receipt_email: req.body.email
+			}).then(() => {
+				userController.addCustomerId(req.params.userId, customer.id, res);
+			}).catch(err => 
+				res.status(500).send(err)
+			);
+		}).catch(err => 
+			res.status(500).send(err)
+		);
 	});
 
-	//delete a customer and delete cust id from db
-	app.put('/settings/delete/:id', (req,res) => {
-		console.log(req.params.id);
-		let id = req.params.id;
-		User.findById({_id: id}, (err, user) => {
-			if(err) console.log(err);
-			else {
-				//console.log(user.customerId)
-				stripe.customers.del(
-					user.customerId,
-					(err, confirmation) => {
-						if (err) console.log(err);
-						else {
-							console.log(confirmation);
-						}
-					}
-				  );
-			}
-		})
-			.then(() => {
-			//console.log('here')
-				User.findOneAndUpdate({_id: id}, {
-					$set: 
-				{
-					customerId : '',
-				}}, {new: true}, (err, user) => {
-					if (err) {
-						res.status(422).send(err);
-					} 
-					else {
-						console.log(user);
-						res.send({user:{
-							userId: user._id,
-							firstName: user.firstName,
-							lastName: user.lastName,
-							email: user.email,
-							customerId: user.customerId,
-							hasCustomerAccount: false,
-						}});
-					}
-				});
-			})
-			.catch(err => console.log(err));
+	// Charge User With Saved Payment Info Route
+	router.post('/charge/:userId', (req, res) => {
+		userController.chargeSavedUser(req.params.userId, res, stripe, req.body.amount);
 	});
-	
+
+	// Start A Subscription Route
+	router.post('/charge/subscription/:id', (req, res) => {
+		userController.startSubscription(req.params.userId, res, stripe, req.body.amount);
+		// stripe.customers.create({
+		// 	email: req.body.email,
+		// 	source: req.body.source
+		// }).then((customer) => {
+		// 	console.log('find it', customer.id); 
+		// 	stripe.charges.create({
+		// 		amount: req.body.amount * 100,
+		// 		currency: 'usd',
+		// 		customer: customer.id,
+		// 		receipt_email: req.body.email
+		// 	}).then(() => {
+		// 		stripe.products.create({
+		// 			name: 'Love Member',
+		// 			type: 'service' 
+		// 		}, function(err, product) {
+		// 		// asynchronously called
+		// 			if (err) console.log(err);
+		// 			else {
+		// 				stripe.plans.create({
+		// 					nickname: 'Standard Monthly',
+		// 					product: product.id, 
+		// 					amount: req.body.amount * 100,
+		// 					currency: 'usd',
+		// 					interval: 'month',
+		// 					usage_type: 'licensed',
+		// 				}, function(err, plan) {
+		// 					// asynchronously called
+		// 					if (err) console.log(err);
+			
+		// 					else {
+		// 						console.log('testies', customer.id); 
+		// 						stripe.subscriptions.create({
+		// 							customer: customer.id,
+		// 							items: [
+		// 								{
+		// 									plan: plan.id,
+		// 								}
+		// 							]
+		// 						}, function(err, subscription) {
+		// 							// asynchronously called
+		// 							if (err) console.log(err);
+								
+						
+		// 						});}
+		// 				});
+		// 			}});
+		// 	});
+		// });
+	});
 
 	//React App
 	if (process.env.NODE_ENV === 'production') {
-		app.get('*', function(req, res) {
+		router.get('*', function(req, res) {
 			res.sendFile(path.join(__dirname, '../client/build/index.html'));
 		});
 	}
+
+	return router;
 
 };

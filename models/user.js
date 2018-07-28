@@ -11,6 +11,10 @@ const userSchema = new Schema({
 	email: String,
 	password: String,
 	customerId: String,
+	hasSubscription: {
+		type: Boolean,
+		default: false
+	},
 	passwordResetToken: String,
 	passwordResetTokenExpiration: Date,
 	dateCreated: { 

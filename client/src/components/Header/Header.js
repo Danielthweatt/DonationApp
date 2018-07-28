@@ -1,5 +1,5 @@
 import React, { Component } from 'react'; 
-import axios from 'axios';
+import API from '../../utils/API';
 import './Header.css'; 
 import Wrapper from '../Wrapper';
 import Button from '@material-ui/core/Button';
@@ -14,28 +14,25 @@ const styles = {
 	}
 }
 class Header extends Component {
-
-	constructor() {
-        super();
-		this.logout = this.logout.bind(this);
-		this.state = {
-			navHamClicked: false
-		}
-    }
+	state = {
+		navHamClicked: false
+	};
 
 	logout = () => {
-		axios.post('/user/signout').then(response => {
+		API.logout().then(response => {
 			console.log(response.data);
 			if (response.status === 200) {
 				this.props.updateUser({
 					loggedIn: false,
 					hasCustomerAccount: false,
 					email: null,
+					firstName: null,
+					lastName: null,
 					userId: null
 				});
 			}
 		}).catch(err => {
-				console.log(`Logout error: ${err}`);
+			console.log(`Logout error: ${err}`);
 		});
 	}
 
