@@ -1,0 +1,50 @@
+{
+  "name": "donationapp",
+  "version": "1.0.0",
+  "engines": {
+    "node": "8.9.4",
+    "npm": "5.6.0"
+  },
+  "description": "This is a template for an app that accepts donations for a non-profit that implements it.",
+  "main": "server.js",
+  "scripts": {
+    "start": "if-env NODE_ENV=production && npm run start:prod || npm run start:dev",
+    "start:prod": "node server.js",
+    "start:dev": "concurrently \"nodemon --ignore 'client/*'\" \"npm run client\"",
+    "client": "cd client && npm run start",
+    "install": "cd client && npm install",
+    "build": "cd client && npm run build",
+    "heroku-postbuild": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Danielthweatt/DonationApp.git"
+  },
+  "author": "Cavan Wagg, Majid Jamaleldine, Maddy Fiksdal, Robert Queeney, Daniel Thweatt",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Danielthweatt/DonationApp/issues"
+  },
+  "homepage": "https://github.com/Danielthweatt/DonationApp",
+  "devDependencies": {
+    "eslint": "^5.0.1",
+    "eslint-plugin-react": "^7.10.0",
+    "concurrently": "^3.6.0",
+    "nodemon": "^1.17.5"
+  },
+  "dependencies": {
+    "@material/button": "^0.37.1",
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.4",
+    "dotenv": "^6.0.0",
+    "express": "^4.16.3",
+    "express-http-to-https": "^1.1.4",
+    "express-session": "^1.15.6",
+    "if-env": "^1.0.4",
+    "mongoose": "^5.2.1",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
+    "stripe": "^6.2.1"
+  }
+}
