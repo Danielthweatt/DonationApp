@@ -183,7 +183,7 @@ module.exports = function(express, passport, userController){
 	});
 
 	// Start A Subscription Route
-	router.post('/charge/subscription/:id', (req, res) => {
+	router.post('/charge/subscription/:userId', (req, res) => {
 		userController.startSubscription(req.params.userId, res, stripe, req.body.amount);
 	});
 
