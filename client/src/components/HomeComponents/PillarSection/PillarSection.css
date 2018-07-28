@@ -10,7 +10,7 @@
 }
 
 @media (max-width: 575.98px) {
-    .pillar-card-deck {
+    .desktop-pillars {
         display: none;
     }
     .mobile-pillars {
@@ -19,7 +19,7 @@
 }
 
 @media (min-width: 576px) { 
-    .card-deck {
+    .desktop-pillars {
         display: visible;
     }
     .mobile-pillars {
