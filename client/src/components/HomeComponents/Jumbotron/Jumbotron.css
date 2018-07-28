@@ -1,0 +1,102 @@
+.jumbotron {
+    position: relative;
+    background-image: url('../../../assets/images/hero.jpg');
+    background-size: cover;
+    background-position: bottom;
+    color:#ffffff;
+    padding: 25em 5em 15em 5em;
+    margin-top: -15em;
+}
+
+
+.color-overlay {
+    position: absolute;
+    content:" ";
+    z-index: 1;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(to right, #ffb40f, #ff3e00);
+    /* -webkit-mask-image: linear-gradient(rgba(0, 0, 0, 1.0), rgba(0, 0, 0, .5)); */
+    opacity: 0.7;
+}
+
+.inner {
+    position: relative;
+    z-index: 2;
+    font-family: 'Roboto Condensed', sans-serif;
+    text-align: center;
+}
+
+/* .inner > h1 {
+    font-weight: bolder;
+    font-size: 5em;
+    font-kerning: none;
+}
+
+.lead-text {
+    font-weight: 300;
+    font-style: italic;
+    font-kerning: none;
+} */
+
+
+
+@media (max-width: 575.98px) {
+    .white-box {
+        position: absolute;
+        top: 18em;
+        left: 0;
+        background: linear-gradient(to bottom, #ffffff, #eaeaea);
+        content: ' ';
+        width: 800px;
+        overflow: hidden;
+        height: 500px;
+        -webkit-clip-path: polygon(0 25%, 100% 0%, 100% 100%, 0% 100%);
+        clip-path: polygon(0 25%, 100% 0%, 100% 100%, 0% 100%);
+        z-index: 1;
+    
+    }
+    .inner {
+        margin-top: 25em;
+        margin-bottom: 5em;
+    }
+    .jumbotron {
+        margin-top: -18em;
+        padding: 5%;
+        overflow: hidden;
+    }
+
+
+
+
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) { 
+    .white-box {
+        display: hidden;
+    }
+    .jumbotron {
+        padding: 17em 4em 10em 4em;
+        margin-top: -13em;
+    }
+
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+
+
+}
+
+@media (min-width: 992px) and (max-width: 1199.98px) {
+
+}
+
+@media (min-width: 1200px) and (max-width: 1699.98px) {
+
+}
+
+@media (min-width: 1700px) {
+
+}

@@ -1,8 +1,13 @@
-import React from 'react'; 
+import React from 'react';
+import './DonationImpact.css'; 
 
 const DonationImpact = () => (
-	<div className = "donation-impact">
-		<h2>What your donations help accomplish:</h2>
+	<div className = "donation-impact-card">
+		<center>
+			<h2>What your donations help accomplish:</h2>
+			<hr/>
+		</center>
+		<br/>
 		<p>1. In research conducted by the National Institutes of Health2, participants who chose to donate a portion of $100 they were provided enjoyed activated pleasure centers in the brain. Although this experiment was controlled and scientific, it did show that donating money simply makes you feel better, which is something we can all benefit from.</p>
 
 		<p>2. Help Others in Need

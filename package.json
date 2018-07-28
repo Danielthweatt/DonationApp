@@ -1,9 +1,9 @@
 {
   "name": "donationapp",
   "version": "1.0.0",
-  "engines": { 
-    "node": "8.9.4", 
-    "npm": "5.6.0" 
+  "engines": {
+    "node": "8.9.4",
+    "npm": "5.6.0"
   },
   "description": "This is a template for an app that accepts donations for a non-profit that implements it.",
   "main": "server.js",
@@ -12,6 +12,7 @@
     "start:prod": "node server.js",
     "start:dev": "concurrently \"nodemon --ignore 'client/*'\" \"npm run client\"",
     "client": "cd client && npm run start",
+    "test": "react-scripts test --env=jsdom",
     "install": "cd client && npm install",
     "build": "cd client && npm run build",
     "heroku-postbuild": "npm run build"
@@ -27,24 +28,30 @@
   },
   "homepage": "https://github.com/Danielthweatt/DonationApp",
   "devDependencies": {
+    "concurrently": "^3.6.0",
     "eslint": "^5.0.1",
     "eslint-plugin-react": "^7.10.0",
-    "concurrently": "^3.6.0",
-    "nodemon": "^1.17.5"
+    "nodemon": "^1.17.5",
+    "react-social-icons": "^3.0.0"
   },
   "dependencies": {
-    "@material/button": "^0.37.1",
+    "@material-ui/core": "^1.4.1",
+    "async-waterfall": "^0.1.5",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.18.3",
+    "connect-flash": "^0.1.1",
     "cors": "^2.8.4",
     "dotenv": "^6.0.0",
     "express": "^4.16.3",
     "express-http-to-https": "^1.1.4",
     "express-session": "^1.15.6",
     "if-env": "^1.0.4",
+    "jsdom": "^11.11.0",
     "mongoose": "^5.2.1",
+    "nodemailer": "^4.6.7",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
+    "react-test-renderer": "^16.4.1",
     "stripe": "^6.2.1"
   }
 }

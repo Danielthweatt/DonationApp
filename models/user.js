@@ -11,6 +11,10 @@ const userSchema = new Schema({
 	email: String,
 	password: String,
 	customerId: String,
+	hasSubscription: {
+		type: Boolean,
+		default: false
+	},
 	passwordResetToken: String,
 	passwordResetTokenExpiration: Date,
 	dateCreated: { 
@@ -34,8 +38,10 @@ userSchema.pre('save', function(next){
 	if (!this.password) {
 		console.log('models/user.js =======NO PASSWORD PROVIDED=======');
 		next();
-	} else {
+	} else if (this.password.charAt(0) !== '$') {
 		this.password = this.hashPassword(this.password);
+		next();
+	} else {
 		next();
 	}
 });

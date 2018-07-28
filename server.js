@@ -1,11 +1,13 @@
-//Dependecies
+// Dependecies
 const express = require('express');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const passport = require('passport');
-const User = require('./models').User;
 const mongoose = require('mongoose');
+const flash = require('connect-flash');
 const redirectToHTTPS = require('express-http-to-https').redirectToHTTPS;
+
+// Create App
 const app = express();
 const PORT = process.env.PORT || 3001;
  
@@ -19,21 +21,31 @@ if (process.env.NODE_ENV === 'production') {
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(session({secret: 'keyboard cat', resave: false, saveUninitialized:false}));
+app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
+
+// Create User Model
+const User = require('./models').User;
 
 // Configure Passport
 require('./config/passport/passport.js')(passport, User);
 
-// Configure Routes
-require('./routes')(app, passport, User);
+// Create User Controller
+const userController = require('./controllers/userController.js')(User);
 
-// Connection to MongoDB
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost/donation_app'
+// Create Router
+const router = require('./routes')(express, passport, userController);
+
+// Use Router
+app.use(router);
+
+// Connect to MongoDB
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost/donation_app';
 mongoose.Promise = Promise;
 mongoose.connect(MONGODB_URI);
 
-// API server Start
+// API Server Start
 app.listen(PORT, function() {
 	console.log(`API Server now listening on PORT ${PORT}!`);
 });
