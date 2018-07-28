@@ -12,6 +12,7 @@ Donation App was created for non-profits to quickly implement a platform to rece
 - [Built With](#built-with)
 - [Installation](#installation)
 - [Setting Up Stripe](#setting-up-stripe)
+- [User Accounts](#user-accounts)
 - [Contributors](#contributors)
 - [License](#license)
 
@@ -42,7 +43,12 @@ Donation App was created for non-profits to quickly implement a platform to rece
 - In the DonationInput.js and Settings.js components you will need to plug your publishable key into the code - look for the comments
 - Next, set the variable SECRET_KEY in the production environment to your secret key, and you should be good to 
 go!
-```
+
+## User Accounts
+- Users are able to donate without creating an account. Their account information is then stored in the mongo database. 
+- If they do make an account they can save their credit card information so they do not need to re-enter it. Payment info can also be edited and/or deleted at any point.
+- They are able to update their saved password and other account settings.
+- If a user forgets their password, they can request a password reset - this utilizes [Nodemailer](https://nodemailer.com/about/) to send the user an email with a password reset link.
 
 ## Contributors:
 - [Daniel Thweatt](https://github.com/Danielthweatt)
