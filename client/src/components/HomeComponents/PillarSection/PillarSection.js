@@ -15,7 +15,7 @@ class PillarSection extends React.Component {
                     <hr></hr>
                 </center>
                 <br></br>
-                <div className="card-deck">
+                <div className="card-deck desktop-pillars">
                     < Pillar imageURL={iconClock} />
                     < Pillar imageURL={iconHeart} />
                     < Pillar imageURL={iconPerson} />
