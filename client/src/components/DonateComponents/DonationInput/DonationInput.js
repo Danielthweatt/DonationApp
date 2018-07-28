@@ -189,7 +189,13 @@ class DonationInput extends Component {
 				console.log(err);
 			});
 		} else if (amount) {
-			API.charge(this.state.email, token.id, amount).then(res => {
+			let email;
+			if (this.state.loggedIn) {
+				email = this.props.userInfo.email;
+			} else {
+				email = this.state.email;
+			}
+			API.charge(email, token.id, amount).then(res => {
 				if (res.status === 200) {
 					this.setState({
 						firstName: '',
