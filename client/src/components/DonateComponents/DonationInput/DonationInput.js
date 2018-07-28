@@ -93,7 +93,7 @@ class DonationInput extends Component {
 		} else {
 			amount = this.state.customAmount;
 		}
-		if (amount) {
+		if (amount && !this.state.subscriptionStarted) {
 			API.chargeSavedUser(userId, amount).then(res => {
 				if (res.status === 200) { 
 					this.setState({
@@ -114,6 +114,31 @@ class DonationInput extends Component {
 				});
 				console.log('Something went wrong: ');
 				console.log(err);
+			});
+		} else if (amount && this.state.subscriptionStarted) {
+			API.startASubscription(userId, amount).then(res => {
+				if (res.status === 200) {
+					this.setState({
+						rememberMe: false,
+						message: true,
+						messageContent: 'This donation is complete and will automatically be repeated monthly.'
+					});
+					this.props.updateUser({
+						hasSubscription: true
+					});
+					this.props.handleModalOpen();
+				} else {
+					this.setState({
+						message: true,
+						messageContent: 'Something went wrong.'
+					});
+				}
+			}).catch(err => {
+				this.setState({
+					message: true,
+					messageContent: 'Something went wrong.'
+				});
+				this.props.handleErrorOpen();
 			});
 		} else {
 			this.setState({
@@ -162,31 +187,6 @@ class DonationInput extends Component {
 				});
 				console.log('Something went wrong: ');
 				console.log(err);
-			});
-		} else if (this.props.userInfo.loggedIn && this.state.subscriptionStarted && amount) {
-			API.startASubscription(userId, amount).then(res => {
-				if (res.status === 200) {
-					this.setState({
-						rememberMe: false,
-						message: true,
-						messageContent: 'This donation is complete and will automatically be repeated monthly.'
-					});
-					this.props.updateUser({
-						hasSubscription: true
-					});
-					this.props.handleModalOpen();
-				} else {
-					this.setState({
-						message: true,
-						messageContent: 'Something went wrong.'
-					});
-				}
-			}).catch(err => {
-				this.setState({
-					message: true,
-					messageContent: 'Something went wrong.'
-				});
-				this.props.handleErrorOpen();
 			});
 		} else if (amount) {
 			API.charge(this.state.email, token.id, amount).then(res => {
@@ -296,8 +296,8 @@ class DonationInput extends Component {
 
 				{this.props.userInfo.loggedIn ? (
 					<CBox
-						hasCustomerAccount = {this.props.hasCustomerAccount}
-						hasSubscription = {this.props.hasSubscription}
+						hasCustomerAccount = {this.props.userInfo.hasCustomerAccount}
+						hasSubscription = {this.props.userInfo.hasSubscription}
 						handleCheckbox = {this.handleCheckbox}
 						handleSubscribe = {this.handleSubscribe}
 					/>
@@ -306,7 +306,7 @@ class DonationInput extends Component {
 				)}
 			
 				{this.props.userInfo.loggedIn && this.props.userInfo.hasCustomerAccount ? (
-					<button onClick={this.chargeSavedUser}>Donate</button>
+					<ButtonPrimary handleClick={this.chargeSavedUser}>Donate</ButtonPrimary>
 				) : (
 					//replace apiKey with your public key
 					<StripeProvider apiKey="pk_test_xwATFGfvWsyNnp1dDh2MOk8I">
