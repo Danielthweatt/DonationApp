@@ -53,7 +53,7 @@ go!
 ## Contributors:
 - [Daniel Thweatt](https://github.com/Danielthweatt)
 - [Maddy Fiksdal](https://github.com/m-fiks)
-- [Majid Jamaleldine](https://github.com/Taxlife)
+- [Majid Jamaleldine](https://github.com/MajidJ)
 - [Robert Queeney](https://github.com/scoslo5512)
 - [Cavan Wagg](https://github.com/CavanWagg)
 
