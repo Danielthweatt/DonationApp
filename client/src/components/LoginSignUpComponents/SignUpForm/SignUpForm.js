@@ -106,7 +106,7 @@ class SignUpForm extends Component {
 		if (this.state.redirectTo) {
             return <Redirect to={{ pathname: this.state.redirectTo }} />
         } else if (this.props.userInfo.loggedIn) {
-			return <Redirect to={{ pathname: '/' }} />
+			return <Redirect to={{ pathname: "/login" }} />
 		} else {
 			return (
 				<div>
