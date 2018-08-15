@@ -11,9 +11,12 @@ module.exports = function(express, passport, userController){
 
 	const router = express.Router();
 
-	// Check To See If Signed-In Route
+	// Check to see if signed-in route
 	router.get('/user', (req, res) => {
+		// Check to see if req has user property attached by passport's deserialize 
+		// function called when there is an authenticated session 
 		if (req.user) {
+			// Pass User ID and res into Controller
 			userController.findLoggedInUser(req.user._id, res);
 		} else {
 			res.send({ user: null });

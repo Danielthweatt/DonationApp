@@ -3,7 +3,6 @@ import API from '../../utils/API';
 import './Header.css'; 
 import Wrapper from '../Wrapper';
 import Button from '@material-ui/core/Button';
-// import Button from '@material/react-button/dist'; // /index.js is implied
 import { Link } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 
@@ -38,14 +37,16 @@ class Header extends Component {
 	}
 
 	handleNavHamClick = () => {
-		this.setState({ navHamClicked: !this.state.navHamClicked});
+		this.setState((prevState) => ({
+			navHamClicked: !prevState.navHamClicked
+		}));
 	}
 
 	render() {
 		return (
 			<nav className={this.props.page !== "home"? "navbar navbar-expand-lg navbar-gradient" : "navbar navbar-expand-lg"}>
 				<Wrapper>
-				<a className="navbar-brand" href="/">Love Foundation</a>
+				<Link to="/" className="navbar-brand">Love Foundation</Link>
 				<button className={this.state.navHamClicked ? "navbar-toggler change" : "navbar-toggler"} onClick={this.handleNavHamClick} type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 					{/* <span className="navbar-toggler-icon"></span> */}
 					<div className="bar1"></div>

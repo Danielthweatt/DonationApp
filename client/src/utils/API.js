@@ -2,6 +2,7 @@ import axios from 'axios';
 
 export default {
 	checkUser: function(){
+		// Route to check if a user is logged in
 		return axios.get('/user');
 	},
 	signUp: function(signUpInfo){
