@@ -216,11 +216,11 @@ class DonationInput extends Component {
         	}).catch((err) => {
 				this.setState({
 					message: true,
-					messageContent: 'Something went wrong.'
+					messageContent: err.response.data.message
 				});
 				this.props.handleErrorOpen();
 				console.log('Something went wrong: ');
-				console.log(err);
+				console.log(err.response.data.message);
 			});
 		} else {
 			this.setState({

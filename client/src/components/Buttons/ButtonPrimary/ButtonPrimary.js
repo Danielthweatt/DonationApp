@@ -14,7 +14,7 @@ const styles = {
 class ButtonPrimary extends React.Component {
 	render () {
 		return (
-			<Button raised className={this.props.classes.ButtonPrimary} onClick={this.props.handleClick}>
+			<Button raised="true" className={this.props.classes.ButtonPrimary} onClick={this.props.handleClick}>
 				{this.props.children}
 			</Button>
 		);

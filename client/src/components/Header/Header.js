@@ -25,6 +25,7 @@ class Header extends Component {
 				this.props.updateUser({
 					loggedIn: false,
 					hasCustomerAccount: false,
+					hasSubscription: false,
 					email: null,
 					firstName: null,
 					lastName: null,
