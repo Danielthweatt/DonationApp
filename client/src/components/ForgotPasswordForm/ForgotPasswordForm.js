@@ -36,7 +36,7 @@ class ForgotPasswordForm extends Component {
 			}).catch(err => {
 				this.setState({
 					message: true,
-					messageContent: 'Something went wrong.'
+					messageContent: err
 				});
 				console.log('Something went wrong: ');
 				console.log(err);
@@ -80,7 +80,7 @@ class ForgotPasswordForm extends Component {
 			).catch(err => {
 				this.setState({
 					message: true,
-					messageContent: 'Something went wrong.'
+					messageContent: err
 				});
 				console.log('Something went wrong: ');
 				console.log(err);
@@ -117,7 +117,7 @@ class ForgotPasswordForm extends Component {
 			).catch(err => {
 				this.setState({
 					message: true,
-					messageContent: 'Something went wrong.'
+					messageContent: err
 				});
 				console.log('Something went wrong: ');
 				console.log(err);
