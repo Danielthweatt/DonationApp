@@ -1,8 +1,8 @@
 import React,  { Component } from 'react'; 
-import Header from '../../components/Header/Header'; 
+import Header from '../../components/Header'; 
 import SignUpForm from '../../components/LoginSignUpComponents/SignUpForm'; 
 import Wrapper from '../../components/Wrapper'; 
-import Footer from '../../components/Footer/Footer'; 
+import Footer from '../../components/Footer'; 
 
 
 class SignUp extends Component {

@@ -9,14 +9,14 @@ import ButtonPrimary from '../Buttons/ButtonPrimary'
 
 class Settings extends Component {
     state = {
-        firstName: '',
-        lastName: '',
-        email: '',
-        password: '',
-        confirmPassword: '',
+        firstName: null,
+        lastName: null,
+        email: null,
+        password: null,
+        confirmPassword: null,
         message: false,
-        messageContent: '',
-        userId: ''
+        messageContent: null,
+        userId: null
     };
 
     componentDidMount = () => {
@@ -52,7 +52,7 @@ class Settings extends Component {
         event.preventDefault();
 		this.setState({
 			message: false,
-			messageContent: ''
+			messageContent: null
 		});
 		if (!this.state.firstName) {
 			this.setState({
@@ -102,7 +102,7 @@ class Settings extends Component {
         event.preventDefault();
 		this.setState({
 			message: false,
-			messageContent: ''
+			messageContent: null
 		});
         if (!this.state.password) {
 			this.setState({
@@ -144,6 +144,10 @@ class Settings extends Component {
     }
 
     onToken = token => {
+        this.setState({
+			message: false,
+			messageContent: null
+		});
         API.updateUserPaymentInfo(this.state.userId, this.state.email, token.id).then(res => {
             if (res.status === 200) { 
                 this.setState({
@@ -167,6 +171,10 @@ class Settings extends Component {
     }
 
     deletePaymentInfo = () => {
+        this.setState({
+			message: false,
+			messageContent: null
+		});
         API.deleteUserPaymentInfo(this.state.userId).then(res => {
             if (res.status === 200) { 
                 this.setState({
@@ -278,7 +286,7 @@ class Settings extends Component {
                     {this.state.message ? (
 					    <p>{this.state.messageContent}</p>
 				    ) : (
-					    <div></div>
+					    null
 				    )}
                 </div>
             )

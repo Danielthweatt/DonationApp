@@ -7,14 +7,14 @@ import ButtonPrimary from '../../Buttons/ButtonPrimary'
 
 class SignUpForm extends Component {
 	state = {
-		firstName: '',
-		lastName: '',
-		email: '',
-		password: '',
-		confirmPassword: '',
+		firstName: null,
+		lastName: null,
+		email: null,
+		password: null,
+		confirmPassword: null,
 		redirectTo: null,
 		message: false,
-		messageContent: ''
+		messageContent: null
 	};
 
 	handleFirstNameInput = e => {
@@ -41,7 +41,7 @@ class SignUpForm extends Component {
 		event.preventDefault();
 		this.setState({
 			message: false,
-			messageContent: ''
+			messageContent: null
 		});
 		if (!this.state.firstName) {
 			this.setState({
@@ -88,7 +88,7 @@ class SignUpForm extends Component {
 					});
 				} else {
 					this.setState({
-						redirectTo: '/'
+						redirectTo: '/login'
 					});
 				} 
 			}).catch(error => {
@@ -106,7 +106,7 @@ class SignUpForm extends Component {
 		if (this.state.redirectTo) {
             return <Redirect to={{ pathname: this.state.redirectTo }} />
         } else if (this.props.userInfo.loggedIn) {
-			return <Redirect to={{ pathname: "/login" }} />
+			return <Redirect to={{ pathname: "/" }} />
 		} else {
 			return (
 				<div>
@@ -121,7 +121,7 @@ class SignUpForm extends Component {
 					{this.state.message ? (
 						<p>{this.state.messageContent}</p>
 					) : (
-						<div></div>
+						null
 					)}
 					{/* <Link to="/login">Login</Link> <br/> */}
 				</div>
