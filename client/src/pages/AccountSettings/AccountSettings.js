@@ -1,7 +1,7 @@
 import React,  { Component } from 'react'; 
-import Header from '../../components/Header/Header'; 
-import Wrapper from '../../components/Wrapper/Wrapper'; 
-import Footer from '../../components/Footer/Footer'; 
+import Header from '../../components/Header'; 
+import Wrapper from '../../components/Wrapper'; 
+import Footer from '../../components/Footer'; 
 import Settings from '../../components/Settings';
 
 class AccountSettings extends Component {

@@ -8,13 +8,13 @@ import ButtonPrimary from '../Buttons/ButtonPrimary'
 
 class ForgotPasswordForm extends Component {
 	state = {
-		userId: '',
-		email: '',
-		password: '',
-		confirmPassword: '',
+		userId: null,
+		email: null,
+		password: null,
+		confirmPassword: null,
 		message: false,
-		messageContent: '',
-		resetOrForgot: '',
+		messageContent: null,
+		resetOrForgot: null,
 		redirectTo: null
 	}
 
@@ -64,7 +64,7 @@ class ForgotPasswordForm extends Component {
 		event.preventDefault();
 		this.setState({
 			message: false,
-			messageContent: ''
+			messageContent: null
 		});
 		if (!this.state.email) {
 			this.setState({
@@ -92,7 +92,7 @@ class ForgotPasswordForm extends Component {
 		event.preventDefault();
 		this.setState({
 			message: false,
-			messageContent: ''
+			messageContent: null
 		});
 		if (!this.state.password) {
 			this.setState({
@@ -142,7 +142,7 @@ class ForgotPasswordForm extends Component {
 							</form>
 						</div>
 					) : (
-						<div></div>
+						null
 					)}
 
 					{this.state.resetOrForgot === 'reset success' ? (
@@ -155,13 +155,13 @@ class ForgotPasswordForm extends Component {
 							</form>
 						</div>
 					) : (
-						<div></div>
+						null
 					)}
 
 					{this.state.message ? (
 						<p>{this.state.messageContent}</p>
 					) : (
-						<div></div>
+						null
 					)}
 
 					<Link to="/login">Login</Link> <br/>

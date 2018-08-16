@@ -1,9 +1,9 @@
 import React,  { Component } from 'react'; 
-import Header from '../../components/Header/Header'; 
-import AboutUs from '../../components/AboutComponents/AboutUs/AboutUs'; 
-import Team from '../../components/AboutComponents/Team/Team'; 
+import Header from '../../components/Header'; 
+import AboutUs from '../../components/AboutComponents/AboutUs'; 
+import Team from '../../components/AboutComponents/Team'; 
 import Wrapper from '../../components/Wrapper'; 
-import Footer from '../../components/Footer/Footer'; 
+import Footer from '../../components/Footer'; 
 
 
 class About extends Component {
@@ -15,10 +15,7 @@ class About extends Component {
 					<Header page="about" updateUser={this.props.updateUser} userInfo={this.props.userInfo} />
 					<Wrapper>			
 						<AboutUs />
-					
 						<Team />
-
-						
 					</Wrapper>
 				</div>
 				<Footer />

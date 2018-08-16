@@ -3,7 +3,7 @@ module.exports = function(User){
 		findLoggedInUser: function(userId, res){
 			User.findById({_id: userId}, (err, user) => {
 				if (err) {
-					res.send(err);
+					res.status(422).end(err);
 				} else {
 					if (user.customerId) {
 						res.send({

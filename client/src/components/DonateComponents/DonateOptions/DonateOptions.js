@@ -46,22 +46,58 @@ class DonateOptions extends Component {
 
 	render () { 
 		return (
-			
 			<div className="row">
-				
 				<div className="col-3 col-sm-3 col-lg-3">
-	
-					<Button className={this.props.buttonClicked === '5' ? this.props.classes.donationButtonClicked: this.props.classes.donationButton} variant="fab" onClick={this.props.handleMoneyButton} value="5"> $5 </Button>
-	
+					<Button 
+						className={this.props.buttonClicked === '5' ? ( 
+							this.props.classes.donationButtonClicked 
+						) : ( 
+							this.props.classes.donationButton
+						)} 
+						variant="fab" 
+						onClick={this.props.handleMoneyButton} 
+						value="5"> 
+						$5 
+					</Button>
 				</div>
 				<div className="col-3 col-sm-3 col-lg-3">
-  				<Button className={this.props.buttonClicked === '10' ? this.props.classes.donationButtonClicked: this.props.classes.donationButton} variant="fab" onClick={this.props.handleMoneyButton} value="10"> $10 </Button>
-				  </div>
-				  <div className="col-3 col-sm-3 col-lg-3">
-  				<Button className={this.props.buttonClicked === '20' ? this.props.classes.donationButtonClicked: this.props.classes.donationButton} variant="fab" onClick={this.props.handleMoneyButton} value="20"> $20 </Button>
-				  </div>
+					<Button 
+						className={this.props.buttonClicked === '10' ? (
+							this.props.classes.donationButtonClicked
+						) : ( 
+							this.props.classes.donationButton
+						)} 
+						variant="fab" 
+						onClick={this.props.handleMoneyButton} 
+						value="10"> 
+						$10 
+					</Button>
+				</div>
+				<div className="col-3 col-sm-3 col-lg-3">
+					<Button 
+					  	className={this.props.buttonClicked === '20' ? (
+							this.props.classes.donationButtonClicked
+						) : (
+							this.props.classes.donationButton
+						)} 
+						variant="fab" 
+						onClick={this.props.handleMoneyButton} 
+						value="20"> 
+						$20 
+					</Button>
+				</div>
 				<div className="col-3 col-sm-3 col-lg-3 custom">
-					<Button className={this.props.buttonClicked === '0' ? this.props.classes.donationButtonClicked: this.props.classes.donationButton} variant="fab" onClick={this.props.handleMoneyCustomButton} value='0'> Custom Amount </Button>
+					<Button 
+						className={this.props.buttonClicked === '0' ? (
+							this.props.classes.donationButtonClicked
+						) : (
+							this.props.classes.donationButton
+						)} 
+						variant="fab" 
+						onClick={this.props.handleMoneyCustomButton} 
+						value='0'> 
+						Custom Amount 
+					</Button>
 				</div>
 				{/* <div>
 				<button onClick={this.props.handleMoneyButton} value="5"> $5 </button>

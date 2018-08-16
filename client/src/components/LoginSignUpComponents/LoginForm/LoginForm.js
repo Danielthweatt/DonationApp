@@ -6,11 +6,11 @@ import ButtonPrimary from '../../Buttons/ButtonPrimary'
 
 class LoginForm extends Component {
 	state = {
-        email: '',
-        password: '',
+        email: null,
+        password: null,
 		redirectTo: null,
 		message: false,
-		messageContent: ''
+		messageContent: null
     };
 
 	handleEmailInput = e => {
@@ -25,7 +25,7 @@ class LoginForm extends Component {
 		event.preventDefault();
 		this.setState({
 			message: false,
-			messageContent: ''
+			messageContent: null
 		});
 		if (!this.state.email) {
 			this.setState({
@@ -91,7 +91,7 @@ class LoginForm extends Component {
 					{this.state.message ? (
 						<p>{this.state.messageContent}</p>
 					) : (
-						<div></div>
+						null
 					)}
 					<Link to="/signup">Sign Up</Link> <br/>
 					<Link to="/forgot">Forgot Password?</Link>

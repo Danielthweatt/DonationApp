@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import About from './pages/About/About';
+import About from './pages/About';
 import Home from './pages/Home';
 import Login from './pages/Login'; 
 import SignUp from './pages/SignUp'; 
@@ -30,6 +30,7 @@ class App extends Component {
 	}
 
 	checkUser = () => {
+		// Check to see if a user is logged in
 		API.checkUser().then(response => {
 			if (response.data.user) {
 			  	this.setState({

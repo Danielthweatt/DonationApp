@@ -6,24 +6,23 @@ import StripeCheckout from 'react-stripe-checkout';
 import Donate from '../Donate/Donate'; 
 import DonateOptions from '../DonateOptions'; 
 import CBox from "../Checkbox";
-import './DonationInput.css'; 
-import DonationModal from "../DonationModal";
+import './DonationInput.css';
 import ButtonPrimary from '../../Buttons/ButtonPrimary'
 
 
 class DonationInput extends Component {
 	state = {
-		firstName: '',
-		lastName: '',
-		email: '',
-		amount: '',
-		customAmount: '',
+		firstName: null,
+		lastName: null,
+		email: null,
+		amount: 0,
+		customAmount: 0,
 		custom: false,
 		rememberMe: false, 
 		buttonClicked: 0,
 		subscriptionStarted: false,
 		message: false,
-		messageContent: ''
+		messageContent: null
 	};
 	
 	handleFirstNameInput = e => {
@@ -40,7 +39,7 @@ class DonationInput extends Component {
 
 	handleMoneyButton = e => {
 		this.setState({
-			customAmount: '',
+			customAmount: 0,
 			amount: e.currentTarget.value,
 			custom: false,
 			buttonClicked: e.currentTarget.value
@@ -50,7 +49,7 @@ class DonationInput extends Component {
 	handleMoneyCustomButton = e => {
 		this.setState({
 			customAmount: e.currentTarget.value,
-			amount: '',
+			amount: 0,
 			custom: true,
 			buttonClicked: e.currentTarget.value
 		});
@@ -63,22 +62,22 @@ class DonationInput extends Component {
   	}
 
 	checkMoneyInput = () => {
-
-		
+		// To be completed...
 		const regex = /^\d+(?:\.\d{0,2})$/;
 		console.log('testies', this.state.amount)
-
-		if (!regex.test(this.state.amount))
-			console.log("Invalid Number");
-			
+		if (!regex.test(this.state.amount)) console.log("Invalid Number");
 	}
 
 	handleCheckbox = () => {
-		this.setState({rememberMe: !this.state.rememberMe})
+		this.setState((prevState) => ({
+			rememberMe: !prevState.rememberMe
+		}));
 	}
 
 	handleSubscribe = () => {
-		this.setState({subscriptionStarted: !this.state.subscriptionStarted})
+		this.setState((prevState) => ({
+			subscriptionStarted: !prevState.subscriptionStarted
+		}));
 	}
 
 	chargeSavedUser = () => {
@@ -106,12 +105,14 @@ class DonationInput extends Component {
 						message: true,
 						messageContent: 'Something went wrong.'
 					});
+					this.props.handleErrorOpen();
 				}
 			}).catch(err => {
 				this.setState({
 					message: true,
 					messageContent: 'Something went wrong.'
 				});
+				this.props.handleErrorOpen();
 				console.log('Something went wrong: ');
 				console.log(err);
 			});
@@ -185,6 +186,7 @@ class DonationInput extends Component {
 					message: true,
 					messageContent: 'Something went wrong.'
 				});
+				this.props.handleErrorOpen();
 				console.log('Something went wrong: ');
 				console.log(err);
 			});
@@ -241,9 +243,6 @@ class DonationInput extends Component {
 					buttonClicked={this.state.buttonClicked}
 					handleMoneyButton={this.handleMoneyButton}
 					handleMoneyCustomButton={this.handleMoneyCustomButton}
-					customAmount={this.state.customAmount}
-					custom={this.state.custom}
-					checkMoneyInput={this.checkMoneyInput}
 				/>
 
 				{this.state.custom ? (
@@ -261,11 +260,11 @@ class DonationInput extends Component {
 							type={Donate}/>
 					</div>
 				) : (
-					<div></div>
+					null
 				)}
 
 				{this.props.userInfo.loggedIn ? (
-					<div></div>
+					null
 				) : (
 					<Input 
 						title = "First Name"
@@ -277,7 +276,7 @@ class DonationInput extends Component {
 				)}
 
 				{this.props.userInfo.loggedIn ? (
-					<div></div>
+					null
 				) : (
 					<Input 
 						title = "Last Name"
@@ -289,7 +288,7 @@ class DonationInput extends Component {
 				)}
 
 				{this.props.userInfo.loggedIn ? (
-					<div></div>
+					null
 				) : (
 					<Input 
 						title = "Email"
@@ -308,7 +307,7 @@ class DonationInput extends Component {
 						handleSubscribe = {this.handleSubscribe}
 					/>
 				) : (
-					<div></div>
+					null
 				)}
 			
 				{this.props.userInfo.loggedIn && this.props.userInfo.hasCustomerAccount ? (
@@ -348,7 +347,7 @@ class DonationInput extends Component {
 				{this.state.message ? (
 					<p>{this.state.messageContent}</p>
 				) : (
-					<div></div>
+					null
 				)}
 
 			</div>
