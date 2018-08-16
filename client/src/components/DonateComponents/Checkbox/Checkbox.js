@@ -7,7 +7,7 @@ const CBox = props => (
 			null
 		) : (
 			<div>
-				<label for="save-payment">Save My Payment Information</label>
+				<label htmlFor="save-payment">Save My Payment Information</label>
 				<Checkbox id="save-payment"  onChange={props.handleCheckbox} />
 			</div>
 		)}
