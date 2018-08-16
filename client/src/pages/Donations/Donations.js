@@ -1,9 +1,9 @@
 import React,  { Component } from 'react'; 
-import Header from '../../components/Header/Header'; 
+import Header from '../../components/Header'; 
 import DonationInput from '../../components/DonateComponents/DonationInput'; 
 import DonationImpact from '../../components/DonateComponents/DonationImpact'; 
-import Wrapper from '../../components/Wrapper/Wrapper'; 
-import Footer from '../../components/Footer/Footer'; 
+import Wrapper from '../../components/Wrapper'; 
+import Footer from '../../components/Footer'; 
 import DonationModal from '../../components/DonateComponents/DonationModal';
 
 class Donations extends Component {
@@ -18,21 +18,22 @@ class Donations extends Component {
 	}
 
 	handleModalOpen = () => {
-		this.setState({ isOpen: true })
+		this.setState({ 
+			isOpen: true 
+		});
 	}
 
 	handleErrorOpen = () => {
 		this.setState({ 
-			
 			isError: true
-		})
+		});
 	}
 
 	onClose = () => {
 		this.setState({
 			isOpen: false,
 			isError: false
-		})
+		});
 	}
 
 	render() {

@@ -6,24 +6,23 @@ import StripeCheckout from 'react-stripe-checkout';
 import Donate from '../Donate/Donate'; 
 import DonateOptions from '../DonateOptions'; 
 import CBox from "../Checkbox";
-import './DonationInput.css'; 
-import DonationModal from "../DonationModal";
+import './DonationInput.css';
 import ButtonPrimary from '../../Buttons/ButtonPrimary'
 
 
 class DonationInput extends Component {
 	state = {
-		firstName: '',
-		lastName: '',
-		email: '',
-		amount: '',
-		customAmount: '',
+		firstName: null,
+		lastName: null,
+		email: null,
+		amount: null,
+		customAmount: null,
 		custom: false,
 		rememberMe: false, 
 		buttonClicked: 0,
 		subscriptionStarted: false,
 		message: false,
-		messageContent: ''
+		messageContent: null
 	};
 	
 	handleFirstNameInput = e => {
@@ -40,7 +39,7 @@ class DonationInput extends Component {
 
 	handleMoneyButton = e => {
 		this.setState({
-			customAmount: '',
+			customAmount: null,
 			amount: e.currentTarget.value,
 			custom: false,
 			buttonClicked: e.currentTarget.value
@@ -50,7 +49,7 @@ class DonationInput extends Component {
 	handleMoneyCustomButton = e => {
 		this.setState({
 			customAmount: e.currentTarget.value,
-			amount: '',
+			amount: null,
 			custom: true,
 			buttonClicked: e.currentTarget.value
 		});
@@ -63,22 +62,22 @@ class DonationInput extends Component {
   	}
 
 	checkMoneyInput = () => {
-
-		
+		// To be completed...
 		const regex = /^\d+(?:\.\d{0,2})$/;
 		console.log('testies', this.state.amount)
-
-		if (!regex.test(this.state.amount))
-			console.log("Invalid Number");
-			
+		if (!regex.test(this.state.amount)) console.log("Invalid Number");
 	}
 
 	handleCheckbox = () => {
-		this.setState({rememberMe: !this.state.rememberMe})
+		this.setState((prevState) => ({
+			rememberMe: !prevState.rememberMe
+		}));
 	}
 
 	handleSubscribe = () => {
-		this.setState({subscriptionStarted: !this.state.subscriptionStarted})
+		this.setState((prevState) => ({
+			subscriptionStarted: !prevState.subscriptionStarted
+		}));
 	}
 
 	chargeSavedUser = () => {
