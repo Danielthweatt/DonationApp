@@ -70,7 +70,7 @@ class Header extends Component {
 								<Link to="/settings" className="nav-link" href="/settings">Settings</Link>
 							</li>
 						) : ( 
-							<div></div>
+							null
 						)}
 						<li className={this.props.page !== "login"? "nav-item" : "nav-item active"}>
 							{this.props.userInfo.loggedIn ? (	

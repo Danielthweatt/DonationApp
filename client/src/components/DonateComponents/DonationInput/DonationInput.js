@@ -260,11 +260,11 @@ class DonationInput extends Component {
 							type={Donate}/>
 					</div>
 				) : (
-					<div></div>
+					null
 				)}
 
 				{this.props.userInfo.loggedIn ? (
-					<div></div>
+					null
 				) : (
 					<Input 
 						title = "First Name"
@@ -276,7 +276,7 @@ class DonationInput extends Component {
 				)}
 
 				{this.props.userInfo.loggedIn ? (
-					<div></div>
+					null
 				) : (
 					<Input 
 						title = "Last Name"
@@ -288,7 +288,7 @@ class DonationInput extends Component {
 				)}
 
 				{this.props.userInfo.loggedIn ? (
-					<div></div>
+					null
 				) : (
 					<Input 
 						title = "Email"
@@ -307,7 +307,7 @@ class DonationInput extends Component {
 						handleSubscribe = {this.handleSubscribe}
 					/>
 				) : (
-					<div></div>
+					null
 				)}
 			
 				{this.props.userInfo.loggedIn && this.props.userInfo.hasCustomerAccount ? (
@@ -347,7 +347,7 @@ class DonationInput extends Component {
 				{this.state.message ? (
 					<p>{this.state.messageContent}</p>
 				) : (
-					<div></div>
+					null
 				)}
 
 			</div>
