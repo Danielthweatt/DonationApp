@@ -15,8 +15,8 @@ class DonationInput extends Component {
 		firstName: null,
 		lastName: null,
 		email: null,
-		amount: null,
-		customAmount: null,
+		amount: 0,
+		customAmount: 0,
 		custom: false,
 		rememberMe: false, 
 		buttonClicked: 0,
@@ -39,7 +39,7 @@ class DonationInput extends Component {
 
 	handleMoneyButton = e => {
 		this.setState({
-			customAmount: null,
+			customAmount: 0,
 			amount: e.currentTarget.value,
 			custom: false,
 			buttonClicked: e.currentTarget.value
@@ -49,7 +49,7 @@ class DonationInput extends Component {
 	handleMoneyCustomButton = e => {
 		this.setState({
 			customAmount: e.currentTarget.value,
-			amount: null,
+			amount: 0,
 			custom: true,
 			buttonClicked: e.currentTarget.value
 		});
@@ -240,9 +240,6 @@ class DonationInput extends Component {
 					buttonClicked={this.state.buttonClicked}
 					handleMoneyButton={this.handleMoneyButton}
 					handleMoneyCustomButton={this.handleMoneyCustomButton}
-					customAmount={this.state.customAmount}
-					custom={this.state.custom}
-					checkMoneyInput={this.checkMoneyInput}
 				/>
 
 				{this.state.custom ? (
