@@ -20,7 +20,7 @@ const Team = () => (
 						<div className="card-body">
 							<h5 className="card-title">Robert Queeney</h5>
 							<hr/>
-							<p className="card-text">Quiet Conqueror.  (Wu-tang name generated) The Boss.  Big Boss Man.  Sad puppy human hybrid.  Bad-code-writer.  Up too late. Breeder of disease-ridden offspring.</p>
+							<p className="card-text">Project Manager/Frontend. Quiet Conqueror.  Big Boss Man.  Sad puppy human hybrid.   Up too late. Breeder of disease-ridden offspring.</p>
 							<p className="card-text"><small className="text-muted">Last updated 3 mins ago</small></p>
 						</div>
 					</div>
@@ -37,7 +37,7 @@ const Team = () => (
 						<div className="card-body">
 							<h5 className="card-title">Majid (No last name like Cher, or Chingy)</h5>
 							<hr/>
-							<p className="card-text">Annoyin’ Commander (Wu).  Chaos.  That is all.</p>
+							<p className="card-text">Frontend Development. Prefers to live in chaos.</p>
 							<p className="card-text"><small className="text-muted">Last updated 3 mins ago</small></p>
 						</div>
 					</div>
@@ -54,7 +54,7 @@ const Team = () => (
 						<div className="card-body">
 							<h5 className="card-title">Maddy Fiksdal</h5>
 							<hr/>
-							<p className="card-text">Wu: Profound Warrior.  The GD Wizard.  Next Jeffry Dean.  </p>
+							<p className="card-text">Front and Backend Development. Stripe implementation.</p>
 							<p className="card-text"><small className="text-muted">Last updated 3 mins ago</small></p>
 						</div>
 					</div>
@@ -71,7 +71,7 @@ const Team = () => (
 						<div className="card-body">
 							<h5 className="card-title">Daniel Thweatt</h5>
 							<hr/>
-							<p className="card-text">Wu: Lucky Desperado.  Silent Killer.  Maddy 2.0. </p>
+							<p className="card-text">Backend Development. Database management and Passport implementation. </p>
 							<p className="card-text"><small className="text-muted">Last updated 3 mins ago</small></p>
 						</div>
 					</div>
@@ -88,7 +88,7 @@ const Team = () => (
 						<div className="card-body">
 							<h5 className="card-title">Cavan Wagg</h5>
 							<hr/>
-							<p className="card-text">Wu: Respected Magician.  The dark horse.   Brooding and budding code writer.  Engaged fool.</p>
+							<p className="card-text">Front and Backend Development. Stripe implementation.</p>
 							<p className="card-text"><small className="text-muted">Last updated 3 mins ago</small></p>
 						</div>
 					</div>
