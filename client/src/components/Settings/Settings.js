@@ -84,13 +84,13 @@ class Settings extends Component {
 			    } else {
 				    this.setState({
 					    message: true,
-					    messageContent: 'Something went wrong.'
+					    messageContent: 'something went wrong'
 				    });
 			    }
 		    }).catch(err => {
 			    this.setState({
 				    message: true,
-				    messageContent: 'Something went wrong.'
+				    messageContent: err
                 });
                 console.log('Something went wrong: ');
 				console.log(err);
