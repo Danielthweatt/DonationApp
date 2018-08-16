@@ -4,7 +4,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 const CBox = props => (
 	<div className="checkbox">
 		{props.hasCustomerAccount ? (
-			<div></div>
+			null
 		) : (
 			<div>
 				<label for="save-payment">Save My Payment Information</label>
@@ -17,7 +17,7 @@ const CBox = props => (
 				<Checkbox id="save-subscribe" onChange={props.handleSubscribe}/>
 			</div>
 		) : (
-			<div></div>
+			null
 		)}
 	</div>
 );

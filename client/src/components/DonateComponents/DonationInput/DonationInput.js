@@ -105,12 +105,14 @@ class DonationInput extends Component {
 						message: true,
 						messageContent: 'Something went wrong.'
 					});
+					this.props.handleErrorOpen();
 				}
 			}).catch(err => {
 				this.setState({
 					message: true,
 					messageContent: 'Something went wrong.'
 				});
+				this.props.handleErrorOpen();
 				console.log('Something went wrong: ');
 				console.log(err);
 			});
@@ -184,6 +186,7 @@ class DonationInput extends Component {
 					message: true,
 					messageContent: 'Something went wrong.'
 				});
+				this.props.handleErrorOpen();
 				console.log('Something went wrong: ');
 				console.log(err);
 			});
