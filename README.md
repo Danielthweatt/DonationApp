@@ -1,6 +1,7 @@
 # The Love Foundation
 
-
+## Description
+Donation App was created for non-profits to quickly implement a platform to receive online donations. 
 
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
